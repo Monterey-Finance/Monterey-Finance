@@ -135,6 +135,7 @@ def test_run_session_writes_files_without_refresh(tmp_path):
         coverage=False,
         persist=True,
         breaches=False,
+        trade=False,
         runs_root=tmp_path,
     )
     assert result.book.sma_on is True

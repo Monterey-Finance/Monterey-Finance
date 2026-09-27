@@ -24,6 +24,7 @@ def persist_session(
     coverage: pd.DataFrame | None = None,
     refresh: pd.DataFrame | None = None,
     extra: dict[str, Any] | None = None,
+    tables: dict[str, pd.DataFrame] | None = None,
     root: Path | None = None,
 ) -> Path:
     folder = run_dir(book.as_of, root)
@@ -36,6 +37,8 @@ def persist_session(
         _write_table(folder / "coverage_summary", coverage)
     if refresh is not None:
         _write_table(folder / "refresh_summary", refresh)
+    for name, table in (tables or {}).items():
+        _write_table(folder / name, table)
 
     payload = book.summary()
     payload["paths"] = {

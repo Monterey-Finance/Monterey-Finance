@@ -160,36 +160,49 @@ These rules apply to both ends. They stop the product from looking like generic 
 
 ## Implementation (current)
 
-Code lives in [`ops/`](../ops/) at the repo root (a Python package cannot sit in a folder name with spaces). `halalquant` 0.3.0 is the data layer. This step writes **today’s intended book**. It does not send orders.
+Code lives in [`ops/`](../ops/). `halalquant` supplies facts. This package runs the **paper fund**.
 
 ```bash
-# From the repo root. Needs a prepared ~/.halalquant cache.
 python -m ops run --as-of today
-python -m ops run --as-of today --skip-refresh   # facts already fresh
+python -m ops run --as-of today --skip-refresh
+python -m ops run --as-of today --targets-only
 python -m ops run --as-of today --coverage
 ```
 
-Each run writes `ops/runs/YYYY-MM-DD/`:
+What one `run` does:
 
-| File | Meaning |
+1. Refresh prices, filings, and dividends (`--skip-refresh` to use the cache as it is).
+2. Write today’s target weights (FCF list, 10% cap, cash if the SPY 200-day average is off).
+3. Fill paper orders. The **first** session fills at that day’s **close** so a NAV exists. Later sessions fill yesterday’s orders at today’s **open**, then queue new orders for the next open.
+4. If holdings do not match the weights just traded (gap above 3 percentage points, missing price, or negative cash), **halt**. No new orders until the account file is cleared.
+5. Accrue ex-date purification from cached dividends when an impure ratio is known. That cash leaves NAV. It is not a real charity payment.
+6. Append `ops/state/nav.csv`. A second run on the same date does not trade again.
+
+| Path | Meaning |
 | --- | --- |
-| `summary.json` | Date, SMA on/off, cash weight, holding count, top 5 names |
-| `intended_book.csv` | Target weights **after** the cash switch (empty rows if 100% cash) |
-| `invested_book.csv` | The FCF list we would hold if the SMA were on |
-| `filing_fails.csv` | New 10-Q/10-K AAOIFI fails on those names (library reports; we do not sell here) |
+| `ops/runs/YYYY-MM-DD/summary.json` | SMA flag, NAV, fills, halt reason |
+| `ops/runs/YYYY-MM-DD/intended_book.csv` | Target weights after the cash switch |
+| `ops/runs/YYYY-MM-DD/invested_book.csv` | FCF list if the switch were on |
+| `ops/runs/YYYY-MM-DD/filing_fails.csv` | New AAOIFI fails. Reported here. Sold on a later open via the order diff |
+| `ops/runs/YYYY-MM-DD/orders.csv` | Orders created this session |
+| `ops/runs/YYYY-MM-DD/fills.csv` | Paper fills |
+| `ops/state/account.json` | Cash, shares, pending orders, halt flag |
+| `ops/state/nav.csv` | Official paper NAV path |
 
-Offline tests: `pytest ops/tests` from the repo root.
+Starting paper cash is **$1,000,000** (`--capital`). This is not a broker API. It is a local paper account marked with cache prices.
 
-**Not built yet:** paper broker, OMS diff, NAV ledger, dashboards.
+Offline tests: `pytest ops/tests`.
+
+**Not built yet:** a live paper-broker API (Alpaca / IBKR), operator UI, investor UI.
 
 ---
 
 ## Build order
 
 1. Incremental **halalquant** refresh + filing-event breach feed — **done in [halalquant v0.3.0](https://github.com/regional-specter/halalquant/releases/tag/v0.3.0)**
-2. Target-weight job that writes today’s intended book — **in `ops/`**
-3. OMS-lite + one paper broker
-4. Reconciliation, kill switch, **NAV ledger**
+2. Target-weight job — **in `ops/`**
+3. OMS-lite + local paper broker — **in `ops/`**
+4. Reconciliation, kill switch, NAV ledger — **in `ops/`**
 5. Operator terminal (health + order matrix) so we can see if the loop is honest
 6. Investor dashboard (NAV, Shariah badge, holdings, purification tracker)
 7. Onboarding, paper deposits, and audit-console polish last

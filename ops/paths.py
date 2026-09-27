@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 RESEARCH = ROOT / "Research"
 RUNS = Path(__file__).resolve().parent / "runs"
+STATE = Path(__file__).resolve().parent / "state"
 
 
 def ensure_research_on_path() -> Path:

@@ -11,13 +11,16 @@ from typing import Optional, Sequence
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m ops",
-        description="Build today's intended Halal book from the frozen FCF + SMA rules.",
+        description="Refresh facts, write target weights, fill the paper account, and mark NAV.",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
-    run = sub.add_parser("run", help="Refresh (optional), write target weights, preview filing fails.")
+    run = sub.add_parser("run", help="Refresh, write target weights, trade the paper account, mark NAV.")
     run.add_argument("--as-of", default="today", help="YYYY-MM-DD or today.")
     run.add_argument("--skip-refresh", action="store_true", help="Do not call halalquant refresh.")
+    run.add_argument("--targets-only", action="store_true", help="Write the intended book and do not trade.")
+    run.add_argument("--capital", type=float, default=1_000_000, help="Starting paper cash if the account is new.")
+    run.add_argument("--min-notional", type=float, default=100, help="Skip rebalance trades smaller than this many dollars.")
     run.add_argument("--coverage", action="store_true", help="Write coverage_summary from the cache.")
     run.add_argument("--lookback-days", type=int, default=550, help="Price/metrics window into the cache.")
     run.add_argument("--no-persist", action="store_true", help="Print only; do not write ops/runs/.")
@@ -31,6 +34,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             refresh=not args.skip_refresh,
             coverage=args.coverage,
             persist=not args.no_persist,
+            trade=not args.targets_only,
+            capital=args.capital,
+            min_notional=args.min_notional,
             lookback_days=args.lookback_days,
         )
     except Exception as exc:

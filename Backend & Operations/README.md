@@ -156,6 +156,8 @@ These rules apply to both ends. They stop the product from looking like generic 
 4. **Deterministic real-time feedback**  
    Pending paper orders, background jobs, and connection state are explicit. Do not leave NAV or compliance as a spinner with no as-of time.
 
+Screen-level requirements are in [PRD.md](PRD.md). Type, theme, widgets, and motion are in [DESIGN.md](DESIGN.md).
+
 ---
 
 ## Implementation (current)

@@ -11,7 +11,7 @@ from ops.account import PaperAccount
 from ops.broker import fill_orders
 from ops.oms import build_orders, target_map
 from ops.purify_ops import accrue_purification
-from ops.quotes import prices_on
+from ops.quotes import session_quotes
 from ops.reconcile import reconcile
 from ops.targets import IntendedBook
 
@@ -48,8 +48,11 @@ def run_paper_day(
         return result
 
     as_of = book.as_of if isinstance(book.as_of, date) else pd.Timestamp(book.as_of).date()
-    opens = prices_on(prices, as_of, "open")
-    closes = prices_on(prices, as_of, "close")
+    opens = session_quotes(prices, as_of, "open")
+    closes = session_quotes(prices, as_of, "close")
+    # A blank open still trades at the last real close.
+    for symbol, price in closes.items():
+        opens.setdefault(symbol, price)
     never_traded = not account.fills and not account.positions and not account.pending
 
     if account.pending:
@@ -73,12 +76,17 @@ def run_paper_day(
     actionable = [o for o in orders if o.get("status") != "rejected"]
     rejected = [o for o in orders if o.get("status") == "rejected"]
     if rejected:
-        account.halted = True
-        account.halt_reason = "missing price for " + ", ".join(sorted({o["symbol"] for o in rejected}))
-        result.reconcile_reason = account.halt_reason
-        result.fill_basis = result.fill_basis or "rejected"
-        _purify(book, account, dividends, impure_ratios, result)
-        return result
+        skipped = sorted({o["symbol"] for o in rejected})
+        skipped_weight = sum(float(o.get("target_weight") or 0.0) for o in rejected)
+        note = "no price for " + ", ".join(skipped)
+        if skipped_weight > 0.03:
+            account.halted = True
+            account.halt_reason = note
+            result.reconcile_reason = account.halt_reason
+            result.fill_basis = result.fill_basis or "rejected"
+            _purify(book, account, dividends, impure_ratios, result)
+            return result
+        result.reconcile_reason = "skipped " + note
 
     if never_traded and actionable:
         filled = fill_orders(account, actionable, closes, as_of=as_of, price_field="close")

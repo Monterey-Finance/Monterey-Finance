@@ -16,7 +16,7 @@ from ops.ledger import already_marked, append_nav, mark_row
 from ops.oms import MIN_NOTIONAL
 from ops.persist import persist_session
 from ops.pipeline import TradeResult, run_paper_day
-from ops.quotes import prices_on
+from ops.quotes import session_quotes
 from ops.targets import IntendedBook, build_intended_book
 from ops.paths import ensure_research_on_path
 
@@ -84,11 +84,16 @@ def run_session(
     account = None
     if trade:
         account = load_account(state_root, capital=capital)
-        if already_marked(book.as_of, state_root):
+        # A halt that never bought anything is not a finished session.
+        empty_halt = account.halted and not account.positions and not account.fills
+        if already_marked(book.as_of, state_root) and not empty_halt:
             trade_result.fill_basis = "already_marked"
             trade_result.reconcile_reason = "NAV for this session is already on the ledger"
             nav_row = _nav_on(book.as_of, state_root)
         else:
+            if empty_halt:
+                account.halted = False
+                account.halt_reason = ""
             divs = dividends
             if divs is None and loaded_from_cache:
                 divs = _cached_dividends(account, book.as_of)
@@ -100,7 +105,7 @@ def run_session(
                 dividends=divs,
                 impure_ratios=_impure_ratios(session_lab, book.as_of),
             )
-            closes = prices_on(session_lab.prices, book.as_of, "close")
+            closes = session_quotes(session_lab.prices, book.as_of, "close")
             nav_row = mark_row(
                 account,
                 closes,

@@ -46,7 +46,7 @@ export function loadFund(): FundSnapshot {
   const halted = Boolean(run?.halted ?? latest?.halted)
   const holdings = (run?.holdings ?? []).map((row) => {
     const shares = positions[row.symbol]
-    const marketValue = latest ? row.weight * latest.nav : null
+    const marketValue = shares != null && latest ? row.weight * latest.nav : null
     return {
       ...row,
       shares: shares ?? null,

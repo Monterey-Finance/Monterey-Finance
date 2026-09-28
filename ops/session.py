@@ -10,13 +10,21 @@ from typing import Any, Sequence
 import pandas as pd
 
 from ops.account import STARTING_CASH, load_account, save_account
+from ops.activity import append_activity
+from ops.audit import append_event
+from ops.batches import batch_by_id, public_batch, save_batch, transition
 from ops.breaches import breach_preview
+from ops.cash import record_contribution, take_due_contribution
 from ops.data import load_lab, refresh_facts, resolve_as_of
-from ops.ledger import already_marked, append_nav, mark_row
+from ops.ledger import already_marked, append_nav, ledger_path, mark_row
+from ops.limits import near_limit_flags
+from ops.live_rules import BOOK_VERSION
 from ops.oms import MIN_NOTIONAL
 from ops.persist import persist_session
 from ops.pipeline import TradeResult, run_paper_day
+from ops.purify_ledger import upsert_entries
 from ops.quotes import session_quotes
+from ops.ruleset import rules_for_run
 from ops.targets import IntendedBook, build_intended_book
 from ops.paths import ensure_research_on_path
 
@@ -54,6 +62,9 @@ def run_session(
     dividends: pd.DataFrame | None = None,
     runs_root: Path | None = None,
     state_root: Path | None = None,
+    venue: str = "local",
+    commit: bool = True,
+    broker=None,
 ) -> SessionResult:
     want = resolve_as_of(as_of)
     refresh_frame = None
@@ -61,13 +72,21 @@ def run_session(
         refresh_frame = refresh_facts(want)
 
     loaded_from_cache = lab is None
-    session_lab = lab or load_lab(
-        want,
-        symbols=symbols,
-        lookback_days=lookback_days,
-        cache=True,
-    )
+    overlay = None
+    if lab is None:
+        rules, overlay = rules_for_run(state_root)
+        session_lab = load_lab(
+            want,
+            symbols=symbols,
+            lookback_days=lookback_days,
+            cache=True,
+            rules=rules,
+        )
+    else:
+        session_lab = lab
     book = build_intended_book(session_lab, want)
+    if overlay:
+        book.book_version = f"{BOOK_VERSION}+{str(overlay.get('id', ''))[:8]}"
     fails = (
         breach_preview(book, lookback_days=breach_lookback_days, cache=True)
         if breaches
@@ -82,6 +101,8 @@ def run_session(
     nav_row = None
     trade_result = TradeResult()
     account = None
+    contribution = None
+    previous_sma = _previous_sma(book.as_of, state_root) if trade else None
     if trade:
         account = load_account(state_root, capital=capital)
         # A halt that never bought anything is not a finished session.
@@ -90,21 +111,54 @@ def run_session(
             trade_result.fill_basis = "already_marked"
             trade_result.reconcile_reason = "NAV for this session is already on the ledger"
             nav_row = _nav_on(book.as_of, state_root)
+            append_event(
+                "run_skipped",
+                actor="session",
+                root=state_root,
+                as_of=book.as_of.isoformat(),
+                reason="already marked",
+            )
         else:
             if empty_halt:
                 account.halted = False
                 account.halt_reason = ""
+            if not account.halted:
+                contribution = take_due_contribution(account, book.as_of, state_root)
             divs = dividends
             if divs is None and loaded_from_cache:
                 divs = _cached_dividends(account, book.as_of)
-            trade_result = run_paper_day(
-                book,
-                account,
-                session_lab.prices,
-                min_notional=min_notional,
-                dividends=divs,
-                impure_ratios=_impure_ratios(session_lab, book.as_of),
-            )
+            fail_symbols = _fail_symbols(fails)
+            schedule = str(getattr(session_lab.rules.book, "purify_schedule", "ex_date"))
+            if venue == "alpaca":
+                from ops.alpaca import from_env
+                from ops.venues import run_alpaca_day
+
+                trade_result = run_alpaca_day(
+                    book,
+                    account,
+                    session_lab.prices,
+                    broker or from_env(),
+                    commit=commit,
+                    min_notional=min_notional,
+                    dividends=divs,
+                    impure_ratios=_impure_ratios(session_lab, book.as_of),
+                    fail_symbols=fail_symbols,
+                    purify_schedule=schedule,
+                )
+            elif venue != "local":
+                raise ValueError("venue must be local or alpaca")
+            else:
+                trade_result = run_paper_day(
+                    book,
+                    account,
+                    session_lab.prices,
+                    min_notional=min_notional,
+                    dividends=divs,
+                    impure_ratios=_impure_ratios(session_lab, book.as_of),
+                    commit=commit,
+                    fail_symbols=fail_symbols,
+                    purify_schedule=schedule,
+                )
             closes = session_quotes(session_lab.prices, book.as_of, "close")
             nav_row = mark_row(
                 account,
@@ -120,6 +174,15 @@ def run_session(
             if not match.empty:
                 nav_row = match.iloc[-1].to_dict()
             save_account(account, state_root)
+            if contribution:
+                record_contribution(contribution, state_root)
+            _record_operations(
+                account,
+                book,
+                trade_result,
+                state_root,
+                previous_sma=previous_sma,
+            )
 
     extra = {
         "n_filing_fails": 0 if fails.empty else int(len(fails)),
@@ -133,6 +196,7 @@ def run_session(
         "halted": False if account is None else account.halted,
         "halt_reason": "" if account is None else account.halt_reason,
         "purification_today": trade_result.purification_today,
+        **public_batch(trade_result.batch),
     }
     if nav_row:
         extra["nav"] = nav_row.get("nav")
@@ -142,6 +206,7 @@ def run_session(
     folder = Path()
     if persist:
         tables = _trade_tables(account, trade_result, nav_row)
+        tables["near_limits"] = near_limit_flags(book.holdings)
         folder = persist_session(
             book,
             breaches=fails,
@@ -160,6 +225,119 @@ def run_session(
         nav=nav_row,
         extra=extra,
     )
+
+
+def _fail_symbols(fails: pd.DataFrame) -> set[str]:
+    if fails is None or fails.empty or "symbol" not in fails.columns:
+        return set()
+    return {str(symbol) for symbol in fails["symbol"].dropna().unique()}
+
+
+def _previous_sma(as_of: date, root: Path | None) -> bool | None:
+    path = ledger_path(root)
+    if not path.exists():
+        return None
+    frame = pd.read_csv(path)
+    if frame.empty or "sma_on" not in frame.columns:
+        return None
+    day = as_of.isoformat()
+    prior = frame.loc[frame["as_of"].astype(str).str.slice(0, 10) < day]
+    if prior.empty:
+        return None
+    return bool(prior.iloc[-1]["sma_on"])
+
+
+def _record_operations(account, book, trade: TradeResult, root, *, previous_sma: bool | None) -> None:
+    if trade.batch:
+        save_batch(trade.batch, root)
+    if trade.closed_batch_id:
+        closed = batch_by_id(root, trade.closed_batch_id)
+        if closed and closed.get("status") == "executing":
+            save_batch(transition(closed, "completed", actor="session"), root)
+    if trade.purification_entries:
+        upsert_entries(trade.purification_entries, root)
+    if trade.purification_today:
+        append_event(
+            "purification_posted",
+            actor="session",
+            root=root,
+            as_of=book.as_of.isoformat(),
+            amount=trade.purification_today,
+        )
+        append_activity(
+            {
+                "as_of": book.as_of.isoformat(),
+                "type": "purification_post",
+                "symbol": "",
+                "amount": -float(trade.purification_today),
+                "shares": None,
+                "price": None,
+                "detail": "ex-date impure dividend",
+                "actor": "session",
+                "ref": "",
+            },
+            root,
+        )
+    for fill in trade.fills:
+        if fill.get("status") not in {"filled", "partial"}:
+            continue
+        price = float(fill.get("price") or 0.0)
+        shares = float(fill.get("shares") or 0.0)
+        amount = shares * price
+        if fill.get("side") == "buy":
+            amount = -amount
+        append_activity(
+            {
+                "as_of": str(fill.get("as_of") or book.as_of.isoformat())[:10],
+                "type": "fill",
+                "symbol": fill.get("symbol"),
+                "amount": amount,
+                "shares": shares,
+                "price": price,
+                "detail": fill.get("side"),
+                "actor": "session",
+                "ref": trade.batch.get("id") if trade.batch else "",
+            },
+            root,
+        )
+    if previous_sma is not None and previous_sma != bool(book.sma_on):
+        append_activity(
+            {
+                "as_of": book.as_of.isoformat(),
+                "type": "cash_throttle",
+                "symbol": "SPY",
+                "amount": None,
+                "shares": None,
+                "price": None,
+                "detail": book.sma_reason,
+                "actor": "session",
+                "ref": "",
+            },
+            root,
+        )
+    if account.halted or trade.fill_basis == "halted":
+        event = "run_halted"
+    else:
+        event = "run_completed"
+    append_event(
+        event,
+        actor="session",
+        root=root,
+        as_of=book.as_of.isoformat(),
+        fill_basis=trade.fill_basis,
+        halted=bool(account.halted),
+        reason=account.halt_reason or trade.reconcile_reason,
+    )
+    approved = any(step.get("status") == "approved" for step in (trade.batch or {}).get("history") or [])
+    if trade.batch and approved:
+        append_event(
+            "order_batch_approved",
+            actor="session",
+            root=root,
+            as_of=book.as_of.isoformat(),
+            batch_id=trade.batch.get("id"),
+            n_orders=len(trade.batch.get("orders") or []),
+        )
 
 
 def _nav_on(as_of: date, root: Path | None) -> dict | None:

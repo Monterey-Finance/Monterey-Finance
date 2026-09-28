@@ -49,6 +49,7 @@ def load_lab(
     symbols: Sequence[str] | None = None,
     lookback_days: int = 550,
     cache: bool = True,
+    rules=None,
 ) -> Lab:
     """Metrics + prices for the live FCF book. Needs a prepared cache."""
     session = resolve_as_of(as_of)
@@ -60,7 +61,7 @@ def load_lab(
         names,
         start=start.isoformat(),
         end=session.isoformat(),
-        rules=live_rules(),
+        rules=rules or live_rules(),
         freq="ME",
         cache=cache,
     )

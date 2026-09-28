@@ -9,26 +9,23 @@ import pandas as pd
 from ops.account import PaperAccount
 
 
-def accrue_purification(
+def purification_lines(
     account: PaperAccount,
     as_of: date | str,
     dividends: pd.DataFrame | None,
     impure_ratios: dict[str, float] | None,
-) -> float:
-    """Donate impure dividend cash on the ex-date. Returns today's amount."""
+) -> list[dict]:
+    """Impure dividend slices for this ex-date. Does not change the account."""
     if dividends is None or dividends.empty or "symbol" not in dividends.columns:
-        return 0.0
+        return []
     day = pd.Timestamp(as_of).date()
     frame = dividends.copy()
     frame["_day"] = pd.to_datetime(frame["ex_date"]).dt.date
     frame = frame.loc[frame["_day"] == day]
     ratios = impure_ratios or {}
-    paid = 0.0
+    lines = []
     for _, row in frame.iterrows():
         symbol = str(row["symbol"])
-        key = f"{symbol}|{day.isoformat()}"
-        if key in account.purified_keys:
-            continue
         shares = float(account.positions.get(symbol, 0.0))
         if shares <= 0:
             continue
@@ -39,8 +36,37 @@ def accrue_purification(
         amount = shares * dividend * float(ratio)
         if amount <= 0:
             continue
-        account.cash -= amount
-        account.purification_cumulative += amount
+        lines.append(
+            {
+                "key": f"{symbol}|{day.isoformat()}",
+                "symbol": symbol,
+                "ex_date": day.isoformat(),
+                "shares": shares,
+                "gross_dividend": dividend,
+                "impure_ratio": float(ratio),
+                "amount": amount,
+            }
+        )
+    return lines
+
+
+def accrue_purification(
+    account: PaperAccount,
+    as_of: date | str,
+    dividends: pd.DataFrame | None,
+    impure_ratios: dict[str, float] | None,
+    entries: list | None = None,
+) -> float:
+    """Donate impure dividend cash on the ex-date. Returns today's amount."""
+    paid = 0.0
+    for line in purification_lines(account, as_of, dividends, impure_ratios):
+        key = line["key"]
+        if key in account.purified_keys:
+            continue
+        account.cash -= line["amount"]
+        account.purification_cumulative += line["amount"]
         account.purified_keys.append(key)
-        paid += amount
+        paid += line["amount"]
+        if entries is not None:
+            entries.append({**line, "status": "posted", "actor": "session"})
     return paid

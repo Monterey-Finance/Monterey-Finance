@@ -5,7 +5,10 @@ from __future__ import annotations
 from datetime import date
 
 from ops.account import PaperAccount
+from ops.calendar import is_month_end_session
 from ops.targets import IntendedBook
+
+COST_BPS = 10.0
 
 MIN_NOTIONAL = 100.0
 
@@ -31,12 +34,36 @@ def equity(account: PaperAccount, closes: dict[str, float]) -> float:
     return float(account.cash) + invested
 
 
+def default_order_reason(book: IntendedBook, account: PaperAccount) -> str:
+    if account.rebalance_reason:
+        return account.rebalance_reason
+    if not book.sma_on:
+        return "SMA cash"
+    if isinstance(book.as_of, date) and is_month_end_session(book.as_of):
+        return "monthly rebuild"
+    return "rebalance"
+
+
+def rejected_halt(orders: list[dict], band: float = 0.03) -> str | None:
+    rejected = [order for order in orders if order.get("status") == "rejected"]
+    if not rejected:
+        return None
+    skipped_weight = sum(float(order.get("target_weight") or 0.0) for order in rejected)
+    if skipped_weight <= band:
+        return None
+    skipped = sorted({str(order["symbol"]) for order in rejected})
+    return "no price for " + ", ".join(skipped)
+
+
 def build_orders(
     book: IntendedBook,
     account: PaperAccount,
     closes: dict[str, float],
     *,
     min_notional: float = MIN_NOTIONAL,
+    default_reason: str = "rebalance",
+    exit_reasons: dict[str, str] | None = None,
+    cost_bps: float = COST_BPS,
 ) -> list[dict]:
     """Whole-share buys and sells. A name that leaves the book is always sold."""
     nav = equity(account, closes)
@@ -72,17 +99,29 @@ def build_orders(
         exiting = weight <= 0 and held > 0
         if not exiting and notional < min_notional:
             continue
+        if exiting and exit_reasons and symbol in exit_reasons:
+            reason = exit_reasons[symbol]
+        elif exiting and default_reason == "SMA cash":
+            reason = "SMA cash"
+        elif exiting:
+            reason = "exit"
+        else:
+            reason = default_reason or "rebalance"
+        current_weight = (held * price) / nav if nav > 0 else 0.0
         orders.append(
             {
                 "symbol": symbol,
                 "side": "buy" if delta > 0 else "sell",
                 "shares": abs(delta),
                 "target_weight": weight,
+                "current_weight": current_weight,
+                "drift": weight - current_weight,
                 "price_ref": price,
                 "notional": notional,
+                "est_cost": notional * float(cost_bps) / 10_000.0,
                 "created_as_of": as_of,
                 "status": "pending",
-                "reason": "exit" if exiting else "rebalance",
+                "reason": reason,
             }
         )
     return orders

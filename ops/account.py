@@ -21,8 +21,14 @@ class PaperAccount:
     halted: bool = False
     halt_reason: str = ""
     purification_cumulative: float = 0.0
+    purification_payable: float = 0.0
     purified_keys: list[str] = field(default_factory=list)
+    staged_purify_keys: list[str] = field(default_factory=list)
     starting_cash: float = STARTING_CASH
+    rebalance_reason: str = ""
+    venue: str = ""
+    open_batch_id: str = ""
+    contribution_months: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         return {
@@ -34,8 +40,14 @@ class PaperAccount:
             "halted": self.halted,
             "halt_reason": self.halt_reason,
             "purification_cumulative": self.purification_cumulative,
+            "purification_payable": self.purification_payable,
             "purified_keys": self.purified_keys,
+            "staged_purify_keys": self.staged_purify_keys,
             "starting_cash": self.starting_cash,
+            "rebalance_reason": self.rebalance_reason,
+            "venue": self.venue,
+            "open_batch_id": self.open_batch_id,
+            "contribution_months": self.contribution_months,
         }
 
     @classmethod
@@ -49,8 +61,14 @@ class PaperAccount:
             halted=bool(payload.get("halted", False)),
             halt_reason=str(payload.get("halt_reason") or ""),
             purification_cumulative=float(payload.get("purification_cumulative") or 0.0),
+            purification_payable=float(payload.get("purification_payable") or 0.0),
             purified_keys=[str(k) for k in (payload.get("purified_keys") or [])],
+            staged_purify_keys=[str(k) for k in (payload.get("staged_purify_keys") or [])],
             starting_cash=float(payload.get("starting_cash", STARTING_CASH)),
+            rebalance_reason=str(payload.get("rebalance_reason") or ""),
+            venue=str(payload.get("venue") or ""),
+            open_batch_id=str(payload.get("open_batch_id") or ""),
+            contribution_months=[str(k) for k in (payload.get("contribution_months") or [])],
         )
 
 

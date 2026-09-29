@@ -36475,3 +36475,4 @@ as_of,type,symbol,amount,shares,price,detail,actor,ref
 2025-03-27,fill,VRTX,8476.02993774414,17.0,498.5899963378906,sell,session,
 2025-03-27,fill,WDAY,5005.0,20.0,250.25,sell,session,
 2025-03-27,fill,ZTS,5224.0,32.0,163.25,sell,session,
+2025-05-12,cash_throttle,SPY,,,,SPY above 200-day SMA,session,

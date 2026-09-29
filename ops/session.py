@@ -65,6 +65,8 @@ def run_session(
     venue: str = "local",
     commit: bool = True,
     broker=None,
+    selection_cache: dict | None = None,
+    cache_dividends: bool | None = None,
 ) -> SessionResult:
     want = resolve_as_of(as_of)
     refresh_frame = None
@@ -84,7 +86,7 @@ def run_session(
         )
     else:
         session_lab = lab
-    book = build_intended_book(session_lab, want)
+    book = build_intended_book(session_lab, want, selection_cache=selection_cache)
     if overlay:
         book.book_version = f"{BOOK_VERSION}+{str(overlay.get('id', ''))[:8]}"
     fails = (
@@ -125,7 +127,8 @@ def run_session(
             if not account.halted:
                 contribution = take_due_contribution(account, book.as_of, state_root)
             divs = dividends
-            if divs is None and loaded_from_cache:
+            fetch_divs = loaded_from_cache if cache_dividends is None else cache_dividends
+            if divs is None and fetch_divs:
                 divs = _cached_dividends(account, book.as_of)
             fail_symbols = _fail_symbols(fails)
             schedule = str(getattr(session_lab.rules.book, "purify_schedule", "ex_date"))

@@ -15,7 +15,7 @@ ensure_research_on_path()
 
 from sleeves.book import SleeveBook  # noqa: E402
 from sleeves.lab import Lab  # noqa: E402
-from sleeves.triggers import sma_trigger  # noqa: E402
+from sleeves.triggers import last_rebalance_on_or_before, rebalance_dates, sma_trigger  # noqa: E402
 
 HOLDING_COLUMNS = (
     "as_of",
@@ -76,23 +76,37 @@ def clip_session(lab: Lab, as_of: date | str) -> date:
     return pd.Timestamp(known.index[-1]).date()
 
 
-def build_intended_book(lab: Lab, as_of: date | str) -> IntendedBook:
-    """Target weights for one session. Cash when the SPY SMA is off."""
+def build_intended_book(
+    lab: Lab,
+    as_of: date | str,
+    selection_cache: dict | None = None,
+) -> IntendedBook:
+    """Target weights for one session. Cash when the SPY SMA is off.
+
+    ``selection_cache`` reuses the month's stock list. The cash switch is still
+    decided from this session's prices.
+    """
     rules = lab.rules
     session = clip_session(lab, as_of)
     regime = sma_trigger(lab.spy_series(), session, rules)
-    book = SleeveBook(lab, rules=rules)
-    invested = book.blended_holdings(session, apply_throttle=False)
-    targeted = book.blended_holdings(session, apply_throttle=True)
-    extras = lab.holdings("fcf_quality", session)
-    name_cap = float(book.name_cap or 0.0)
+    snap = last_rebalance_on_or_before(rebalance_dates(lab.metrics), session)
+    cached = None if selection_cache is None or snap is None else selection_cache.get(snap)
+    if cached is None:
+        book = SleeveBook(lab, rules=rules)
+        invested = book.blended_holdings(session, apply_throttle=False)
+        extras = lab.holdings("fcf_quality", session)
+        name_cap = float(book.name_cap or 0.0)
+        if selection_cache is not None and snap is not None:
+            selection_cache[snap] = (invested, extras, name_cap)
+    else:
+        invested, extras, name_cap = cached
 
     invested_w = _weight_map(invested)
-    if targeted.empty or not regime.on:
+    if invested.empty or not regime.on:
         holdings = _empty_holdings(session)
         cash_weight = 1.0
     else:
-        holdings = _attach_invested(targeted, invested_w, extras, session, name_cap)
+        holdings = _attach_invested(invested, invested_w, extras, session, name_cap)
         cash_weight = max(0.0, 1.0 - float(holdings["target_weight"].sum()))
 
     invested_out = (

@@ -27,6 +27,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     schedule.add_argument("--venue", choices=("local", "alpaca"), default="local")
     schedule.add_argument("--capital", type=float, default=1_000_000)
 
+    replay = sub.add_parser("replay", help="Walk a date range in one process, loading the market cache once.")
+    replay.add_argument("--start", required=True, help="YYYY-MM-DD.")
+    replay.add_argument("--end", required=True, help="YYYY-MM-DD.")
+    replay.add_argument("--budget-minutes", type=float, default=0, help="Stop cleanly after this many minutes. 0 runs the whole range.")
+    replay.add_argument("--lookback-days", type=int, default=550)
+
     approve = sub.add_parser("approve", help="Approve a draft batch and queue it for the next open.")
     approve.add_argument("--as-of", default="today")
     approve.add_argument("--actor", required=True)
@@ -119,6 +125,8 @@ def _dispatch(args) -> int:
         return _cmd_run(args)
     if args.cmd == "schedule":
         return _cmd_schedule(args)
+    if args.cmd == "replay":
+        return _cmd_replay(args)
     if args.cmd == "approve":
         from ops.commit import approve_draft
 
@@ -190,6 +198,20 @@ def _cmd_schedule(args) -> int:
         _print_session(outcome["result"])
         return 0
     print(json.dumps(outcome, indent=2))
+    return 0
+
+
+def _cmd_replay(args) -> int:
+    from ops.replay import replay_range
+
+    budget = None if not args.budget_minutes else float(args.budget_minutes) * 60
+    result = replay_range(
+        args.start,
+        args.end,
+        budget_s=budget,
+        lookback_days=args.lookback_days,
+    )
+    print(json.dumps(result.as_dict(), indent=2))
     return 0
 
 

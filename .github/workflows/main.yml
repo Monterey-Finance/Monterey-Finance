@@ -106,10 +106,10 @@ jobs:
             exit 1
           fi
           python - <<'PY'
+          import json
           import os
           import subprocess
           import sys
-          import time
           from datetime import date, timedelta
 
           import pandas as pd
@@ -189,19 +189,17 @@ jobs:
               write_outputs("false", end.isoformat())
               raise SystemExit(0)
 
-          deadline = time.monotonic() + BUDGET_S
-          day = start
-          since_save = 0
-          while day <= end and time.monotonic() < deadline:
-              run_day(day, refresh=False)
-              since_save += 1
-              if since_save >= SAVE_EVERY:
-                  checkpoint(day.isoformat())
-                  since_save = 0
-              day += timedelta(days=1)
+          from ops.replay import replay_range
 
-          reached = last_nav()
-          write_outputs("true" if reached is not None and reached < end else "false", end.isoformat())
+          result = replay_range(
+              start,
+              end,
+              budget_s=BUDGET_S,
+              save_every=SAVE_EVERY,
+              on_checkpoint=checkpoint,
+          )
+          print(json.dumps(result.as_dict()), flush=True)
+          write_outputs("true" if not result.complete else "false", end.isoformat())
           PY
 
       - name: Upload market cache

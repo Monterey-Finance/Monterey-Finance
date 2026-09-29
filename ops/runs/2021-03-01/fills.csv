@@ -1,0 +1,39 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2021-03-01,open,0.1,monthly rebuild,2,123.75,filled,sell
+ADI,sell,2021-03-01,open,0.006820505510442041,monthly rebuild,1,157.0800018310547,filled,sell
+AMAT,sell,2021-03-01,open,0.011071628767442172,monthly rebuild,3,121.18000030517578,filled,sell
+CDNS,sell,2021-03-01,open,0.004556902576002256,monthly rebuild,1,143.22999572753906,filled,sell
+HD,sell,2021-03-01,open,0.03651082895320878,monthly rebuild,2,258.80999755859375,filled,sell
+INTC,sell,2021-03-01,open,0.028251389310623334,monthly rebuild,4,61.720001220703125,filled,sell
+INTU,sell,2021-03-01,open,0.011846296517070047,monthly rebuild,1,396.3299865722656,filled,sell
+KEYS,sell,2021-03-01,open,0.003352918918477361,monthly rebuild,1,144.00999450683594,filled,sell
+LOW,sell,2021-03-01,open,0.015720731274342554,monthly rebuild,1,160.75999450683594,filled,sell
+META,sell,2021-03-01,open,0.09347612203032835,monthly rebuild,4,260.82000732421875,filled,sell
+MSFT,sell,2021-03-01,open,0.1,monthly rebuild,7,235.89999389648438,filled,sell
+NXPI,sell,2021-03-01,open,0.0056189228024907155,monthly rebuild,1,186.52000427246094,filled,sell
+PYPL,sell,2021-03-01,open,0.03440702379277043,monthly rebuild,3,268.8949890136719,filled,sell
+SBUX,sell,2021-03-01,open,0.014349396311087354,monthly rebuild,6,108.5999984741211,filled,sell
+SWKS,sell,2021-03-01,open,0.0034968581022836974,monthly rebuild,1,181.10000610351562,filled,sell
+TEL,sell,2021-03-01,open,0.005023418984274831,monthly rebuild,1,131.55999755859375,filled,sell
+TROW,sell,2021-03-01,open,0.004611589797233258,monthly rebuild,1,164.41000366210938,filled,sell
+TXN,sell,2021-03-01,open,0.019285934831881738,monthly rebuild,1,174.5,filled,sell
+ACN,buy,2021-03-01,open,0.01960757989026367,monthly rebuild,1,254.0,filled,buy
+ADSK,buy,2021-03-01,open,0.007727189264727104,monthly rebuild,1,279.8599853515625,filled,buy
+AMCR,buy,2021-03-01,open,0.010976656382978638,monthly rebuild,7,55.45000076293945,filled,buy
+AME,buy,2021-03-01,open,0.003284590185500667,monthly rebuild,1,119.52999877929688,filled,buy
+AMGN,buy,2021-03-01,open,0.017650652231259147,monthly rebuild,1,225.8800048828125,filled,buy
+AMT,buy,2021-03-01,open,0.0126535246493824,monthly rebuild,2,218.55999755859375,filled,buy
+CL,buy,2021-03-01,open,0.008377021880435188,monthly rebuild,2,75.44000244140625,filled,buy
+CME,buy,2021-03-01,open,0.00816539855597781,monthly rebuild,1,202.05999755859375,filled,buy
+CRM,buy,2021-03-01,open,0.02653727653420547,monthly rebuild,8,219.89999389648438,filled,buy
+CSCO,buy,2021-03-01,open,0.02366612873417158,monthly rebuild,8,45.220001220703125,filled,buy
+GPN,buy,2021-03-01,open,0.006619272141826553,monthly rebuild,1,201.17999267578125,filled,buy
+ILMN,buy,2021-03-01,open,0.007692282029727425,monthly rebuild,1,436.7704162597656,filled,buy
+MCD,buy,2021-03-01,open,0.019403441721951777,monthly rebuild,2,207.35000610351562,filled,buy
+MCO,buy,2021-03-01,open,0.006265131748208281,monthly rebuild,1,277.3299865722656,filled,buy
+NEM,buy,2021-03-01,open,0.006018800758299352,monthly rebuild,2,54.9900016784668,filled,buy
+ORCL,buy,2021-03-01,open,0.022351034359571538,monthly rebuild,4,64.94999694824219,filled,buy
+PG,buy,2021-03-01,open,0.04218055050722673,monthly rebuild,9,124.16000366210938,filled,buy
+RMD,buy,2021-03-01,open,0.0036591863975253634,monthly rebuild,1,194.33999633789062,filled,buy
+UNP,buy,2021-03-01,open,0.016701480597242,monthly rebuild,0,208.5800018310547,rejected,no cash
+VEEV,buy,2021-03-01,open,0.005601045845618267,monthly rebuild,0,287.92999267578125,rejected,no cash

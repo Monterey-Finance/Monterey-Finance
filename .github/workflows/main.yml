@@ -32,6 +32,7 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   run:
@@ -65,6 +66,7 @@ jobs:
           test -f "$HALALQUANT_DATA_DIR/cache.duckdb"
 
       - name: Run session
+        id: session
         env:
           MODE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mode || 'today' }}
           AS_OF: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.as_of || 'today' }}
@@ -107,31 +109,99 @@ jobs:
           import os
           import subprocess
           import sys
+          import time
           from datetime import date, timedelta
+
+          import pandas as pd
+
+          BUDGET_S = 3 * 60 * 60
+          SAVE_EVERY = 21
+
+          def last_nav():
+              frame = pd.read_csv("ops/state/nav.csv")
+              if frame.empty or "as_of" not in frame.columns:
+                  return None
+              return pd.Timestamp(frame["as_of"].iloc[-1]).date()
+
+          def run_day(day, refresh):
+              print(f"=== {day.isoformat()} ===", flush=True)
+              command = [sys.executable, "-m", "ops", "schedule", "--as-of", day.isoformat()]
+              if not refresh:
+                  command.append("--skip-refresh")
+              result = subprocess.run(command, check=False)
+              if result.returncode != 0:
+                  sys.exit(result.returncode)
+
+          def checkpoint(label):
+              subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
+              subprocess.run(
+                  ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
+                  check=True,
+              )
+              subprocess.run(["git", "add", "-f", "ops/state", "ops/runs"], check=True)
+              subprocess.run(["git", "reset", "--", "ops/state/.gitignore"], check=True)
+              if subprocess.run(["git", "diff", "--staged", "--quiet"]).returncode == 0:
+                  print("No ledger changes.", flush=True)
+                  return
+              subprocess.run(["git", "commit", "-m", f"Mark paper NAV through {label}"], check=True)
+              ref = os.environ["GITHUB_REF_NAME"]
+              subprocess.run(["git", "pull", "--rebase", "origin", ref], check=True)
+              subprocess.run(["git", "push", "origin", f"HEAD:{ref}"], check=True)
+              print(f"Saved ledger through {label}.", flush=True)
+
+          def write_outputs(continue_replay, replay_end):
+              path = os.environ.get("GITHUB_OUTPUT")
+              if not path:
+                  return
+              with open(path, "a", encoding="utf-8") as handle:
+                  handle.write(f"continue={continue_replay}\n")
+                  handle.write(f"replay_end={replay_end}\n")
 
           mode = os.environ.get("MODE") or "today"
           if mode != "replay":
-              as_of = os.environ.get("AS_OF") or "today"
-              raise SystemExit(subprocess.call([sys.executable, "-m", "ops", "schedule", "--as-of", as_of]))
+              requested = os.environ.get("AS_OF") or "today"
+              if requested == "today":
+                  previous = last_nav()
+                  start = previous + timedelta(days=1) if previous else date.today()
+                  end = date.today()
+                  if (end - start).days > 10:
+                      sys.exit(f"Refusing to catch up {start} through {end} from the nightly job.")
+              else:
+                  start = end = date.fromisoformat(requested)
+              day = start
+              while day <= end:
+                  run_day(day, refresh=True)
+                  day += timedelta(days=1)
+              write_outputs("false", "")
+              raise SystemExit(0)
 
-          start_text = os.environ.get("REPLAY_START") or ""
           end_text = os.environ.get("REPLAY_END") or ""
-          if not start_text or not end_text:
-              sys.exit("replay needs replay_start and replay_end")
-          start = date.fromisoformat(start_text)
+          if not end_text:
+              sys.exit("replay needs replay_end")
           end = date.fromisoformat(end_text)
-          if end < start:
-              sys.exit("replay_end is before replay_start")
+          previous = last_nav()
+          if previous is not None:
+              start = previous + timedelta(days=1)
+          else:
+              start = date.fromisoformat(os.environ.get("REPLAY_START") or "2020-01-02")
+          if start > end:
+              print(f"Replay already complete through {previous}.", flush=True)
+              write_outputs("false", end.isoformat())
+              raise SystemExit(0)
+
+          deadline = time.monotonic() + BUDGET_S
           day = start
-          while day <= end:
-              print(f"=== {day.isoformat()} ===", flush=True)
-              result = subprocess.run(
-                  [sys.executable, "-m", "ops", "schedule", "--as-of", day.isoformat(), "--skip-refresh"],
-                  check=False,
-              )
-              if result.returncode != 0:
-                  sys.exit(result.returncode)
+          since_save = 0
+          while day <= end and time.monotonic() < deadline:
+              run_day(day, refresh=False)
+              since_save += 1
+              if since_save >= SAVE_EVERY:
+                  checkpoint(day.isoformat())
+                  since_save = 0
               day += timedelta(days=1)
+
+          reached = last_nav()
+          write_outputs("true" if reached is not None and reached < end else "false", end.isoformat())
           PY
 
       - name: Upload market cache
@@ -154,3 +224,12 @@ jobs:
           git commit -m "Mark paper NAV"
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      - name: Continue replay
+        if: success() && steps.session.outputs.continue == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run main.yml --ref "${GITHUB_REF_NAME}" \
+            -f mode=replay \
+            -f replay_end="${{ steps.session.outputs.replay_end }}"

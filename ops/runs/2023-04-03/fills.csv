@@ -1,0 +1,67 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ABNB,sell,2023-04-03,open,0.0075084284531146935,monthly rebuild,2,123.0,filled,sell
+AMCR,sell,2023-04-03,open,0.007656516587400832,monthly rebuild,2,56.349998474121094,filled,sell
+BMY,sell,2023-04-03,open,0.013202170877176213,monthly rebuild,6,69.02999877929688,filled,sell
+BX,sell,2023-04-03,open,0.005537831815016148,monthly rebuild,6,86.62000274658203,filled,sell
+CF,sell,2023-04-03,open,0.0012585673586117563,monthly rebuild,5,73.75,filled,sell
+CSX,sell,2023-04-03,open,0.005490373242395554,monthly rebuild,9,29.760000228881836,filled,sell
+DDOG,sell,2023-04-03,open,0.002034185818313582,monthly rebuild,5,71.61499786376953,filled,sell
+DVN,sell,2023-04-03,open,0.0029333863869964675,monthly rebuild,7,53.40999984741211,filled,sell
+EBAY,sell,2023-04-03,open,0.002122745514412814,monthly rebuild,3,44.150001525878906,filled,sell
+EL,sell,2023-04-03,open,0.007982520963294054,monthly rebuild,1,245.4600067138672,filled,sell
+EXE,sell,2023-04-03,open,0.000985141675619724,monthly rebuild,2,77.94999694824219,filled,sell
+EXPE,sell,2023-04-03,open,0.0012725470223787926,monthly rebuild,2,96.54000091552734,filled,sell
+FIS,sell,2023-04-03,open,0.0029127043652809686,monthly rebuild,14,54.5,filled,sell
+GL,sell,2023-04-03,open,0.001027500811403416,monthly rebuild,2,109.88999938964844,filled,sell
+GOOG,sell,2023-04-03,open,0.10000000000000003,monthly rebuild,12,102.66999816894531,filled,sell
+INCY,sell,2023-04-03,open,0.0014288580918970627,monthly rebuild,2,72.08999633789062,filled,sell
+JKHY,sell,2023-04-03,open,0.0009830944533537685,monthly rebuild,1,150.17999267578125,filled,sell
+KDP,sell,2023-04-03,open,0.0,exit,135,35.33000183105469,filled,sell
+LIN,sell,2023-04-03,open,0.0,exit,49,353.45001220703125,filled,sell
+LYV,sell,2023-04-03,open,0.001436895264402451,monthly rebuild,2,69.83000183105469,filled,sell
+MA,sell,2023-04-03,open,0.03132101707971006,monthly rebuild,1,362.6099853515625,filled,sell
+MO,sell,2023-04-03,open,0.007071596269364485,monthly rebuild,9,44.720001220703125,filled,sell
+MRK,sell,2023-04-03,open,0.02400468995640096,monthly rebuild,5,105.94999694824219,filled,sell
+NDAQ,sell,2023-04-03,open,0.0023854704890856563,monthly rebuild,2,54.369998931884766,filled,sell
+NKE,sell,2023-04-03,open,0.017534504950770337,monthly rebuild,2,122.5,filled,sell
+NSC,sell,2023-04-03,open,0.004291765529215503,monthly rebuild,2,210.69000244140625,filled,sell
+NUE,sell,2023-04-03,open,0.0036083626614722792,monthly rebuild,2,153.6300048828125,filled,sell
+P,sell,2023-04-03,open,0.0006815121776466659,monthly rebuild,5,25.450000762939453,filled,sell
+PFE,sell,2023-04-03,open,0.020761649029955948,monthly rebuild,12,40.689998626708984,filled,sell
+PGR,sell,2023-04-03,open,0.007455041099784062,monthly rebuild,1,142.74000549316406,filled,sell
+PTC,sell,2023-04-03,open,0.0013448799963204916,monthly rebuild,1,127.26000213623047,filled,sell
+SBUX,sell,2023-04-03,open,0.010655829049000897,monthly rebuild,3,104.05999755859375,filled,sell
+STLD,sell,2023-04-03,open,0.0017354597235045538,monthly rebuild,2,113.06999969482422,filled,sell
+TROW,sell,2023-04-03,open,0.0022757829029071528,monthly rebuild,1,112.30999755859375,filled,sell
+UNP,sell,2023-04-03,open,0.010939756371509601,monthly rebuild,4,200.9199981689453,filled,sell
+ZBH,sell,2023-04-03,open,0.0,exit,20,128.82000732421875,filled,sell
+A,buy,2023-04-03,open,0.0036346217347037117,monthly rebuild,29,137.4199981689453,filled,buy
+ABBV,buy,2023-04-03,open,0.025151162568710184,monthly rebuild,1,158.25,filled,buy
+ADBE,buy,2023-04-03,open,0.01570038605751962,monthly rebuild,6,380.8800048828125,filled,buy
+ADI,buy,2023-04-03,open,0.008855123149683838,monthly rebuild,2,196.47000122070312,filled,buy
+AMAT,buy,2023-04-03,open,0.00921386358169222,monthly rebuild,2,121.62999725341797,filled,buy
+AMD,buy,2023-04-03,open,0.014023460143763626,monthly rebuild,29,96.69999694824219,filled,buy
+AMGN,buy,2023-04-03,open,0.011458492588558137,monthly rebuild,1,242.0,filled,buy
+CDNS,buy,2023-04-03,open,0.0050847598196887105,monthly rebuild,1,209.0,filled,buy
+CRM,buy,2023-04-03,open,0.017892166080452066,monthly rebuild,16,198.22000122070312,filled,buy
+CRWD,buy,2023-04-03,open,0.0007100986116955186,monthly rebuild,3,33.875,filled,buy
+CSCO,buy,2023-04-03,open,0.019072039566435987,monthly rebuild,15,52.060001373291016,filled,buy
+CTAS,buy,2023-04-03,open,0.0010442616266843094,monthly rebuild,1,114.92749786376953,filled,buy
+DRI,buy,2023-04-03,open,0.0017063606836322498,monthly rebuild,1,154.6999969482422,filled,buy
+FTNT,buy,2023-04-03,open,0.004610086367176957,monthly rebuild,5,65.81999969482422,filled,buy
+HRL,buy,2023-04-03,open,0.0019469826295812425,monthly rebuild,53,40.0,filled,buy
+HSY,buy,2023-04-03,open,0.00462842296590248,monthly rebuild,1,254.0,filled,buy
+INTU,buy,2023-04-03,open,0.01115663940471422,monthly rebuild,1,443.010009765625,filled,buy
+KEYS,buy,2023-04-03,open,0.002579948178768213,monthly rebuild,17,159.91000366210938,filled,buy
+LLY,buy,2023-04-03,open,0.02757471639242084,monthly rebuild,6,343.239990234375,filled,buy
+MCD,buy,2023-04-03,open,0.01839782253161992,monthly rebuild,2,280.989990234375,filled,buy
+META,buy,2023-04-03,open,0.05082975636698523,monthly rebuild,38,208.83999633789062,filled,buy
+MRNA,buy,2023-04-03,open,0.005248257636086554,monthly rebuild,1,153.5,filled,buy
+ORCL,buy,2023-04-03,open,0.02226858927327483,monthly rebuild,4,92.37999725341797,filled,buy
+PG,buy,2023-04-03,open,0.03351053199087252,monthly rebuild,13,148.42999267578125,filled,buy
+QCOM,buy,2023-04-03,open,0.012671628702814366,monthly rebuild,2,126.98999786376953,filled,buy
+REGN,buy,2023-04-03,open,0.008277763831679871,monthly rebuild,1,818.7999877929688,filled,buy
+TXN,buy,2023-04-03,open,0.015288575244016587,monthly rebuild,5,185.3300018310547,filled,buy
+VRSK,buy,2023-04-03,open,0.0026344969051680565,monthly rebuild,1,190.24000549316406,filled,buy
+VRTX,buy,2023-04-03,open,0.007187528570779885,monthly rebuild,0,315.0,rejected,no cash
+WM,buy,2023-04-03,open,0.005907636463006896,monthly rebuild,1,162.80999755859375,partial,partial buy

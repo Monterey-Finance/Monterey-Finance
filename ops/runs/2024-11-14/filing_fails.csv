@@ -1,0 +1,3 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+CME,,10-Q,2022-12-31,2024-11-08,Q3,0.0,137974400000.0,0.0,359989000.0,71947523481.01448,0.0,1.9177088150422397,1.9177088150422397,False,cash ratio exceeds threshold
+MCD,,10-Q,2023-09-30,2024-11-07,Q3,0.0,3496000000.0,0.0,731.6,204127.15502349735,0.0,17126.579751711968,17126.579751711968,False,cash ratio exceeds threshold

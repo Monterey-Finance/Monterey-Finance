@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+CRWD,1535527,10-Q,2024-10-31,2024-11-27,Q3,743610000.0,4260324000.0,813922000.0,245536000.0,13740703432.763527,0.05411731674718529,0.3100513755243144,0.36928575198711416,False,cash ratio exceeds threshold

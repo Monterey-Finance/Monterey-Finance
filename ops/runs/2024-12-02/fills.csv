@@ -1,0 +1,21 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2024-12-02,open,0.10000000000000003,monthly rebuild,2,237.27000427246094,filled,sell
+AMAT,sell,2024-12-02,open,0.007458440070341868,monthly rebuild,1,175.47999572753906,filled,sell
+AMZN,sell,2024-12-02,open,0.09742294049439322,monthly rebuild,3,209.9600067138672,filled,sell
+AVGO,sell,2024-12-02,open,0.039510331955552494,monthly rebuild,4,162.9499969482422,filled,sell
+NVDA,sell,2024-12-02,open,0.10000000000000003,monthly rebuild,16,138.8300018310547,filled,sell
+ORCL,sell,2024-12-02,open,0.02317244386775117,monthly rebuild,1,185.2899932861328,filled,sell
+RL,sell,2024-12-02,open,0.0006370653409093403,monthly rebuild,1,231.39999389648438,filled,sell
+ABBV,buy,2024-12-02,open,0.017989194828561064,monthly rebuild,1,182.27999877929688,filled,buy
+ADBE,buy,2024-12-02,open,0.010599867248275706,monthly rebuild,1,512.8499755859375,filled,buy
+BIIB,buy,2024-12-02,open,0.0012665995105594714,monthly rebuild,1,160.16000366210938,filled,buy
+CMG,buy,2024-12-02,open,0.0038196046993579135,monthly rebuild,2,61.560001373291016,filled,buy
+CRM,buy,2024-12-02,open,0.014125294739493198,monthly rebuild,1,332.0,filled,buy
+CSCO,buy,2024-12-02,open,0.010934575778005695,monthly rebuild,3,59.25,filled,buy
+GOOG,buy,2024-12-02,open,0.10000000000000003,monthly rebuild,8,170.32000732421875,filled,buy
+MSFT,buy,2024-12-02,open,0.10000000000000003,monthly rebuild,2,421.57000732421875,filled,buy
+PG,buy,2024-12-02,open,0.020343617970019358,monthly rebuild,1,179.1199951171875,filled,buy
+SPGI,buy,2024-12-02,open,0.007026086024070708,monthly rebuild,1,494.24786376953125,filled,buy
+VRTX,buy,2024-12-02,open,0.006118909471385517,monthly rebuild,0,467.4800109863281,rejected,no cash
+WDAY,buy,2024-12-02,open,0.0031219746893658227,monthly rebuild,1,246.4499969482422,partial,partial buy
+ZTS,buy,2024-12-02,open,0.004042361069413164,monthly rebuild,0,175.77999877929688,rejected,no cash

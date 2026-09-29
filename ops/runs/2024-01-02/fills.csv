@@ -1,0 +1,15 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ABBV,sell,2024-01-02,open,0.023185769613121222,monthly rebuild,1,154.89999389648438,filled,sell
+CBOE,sell,2024-01-02,open,0.0017681979701051093,monthly rebuild,1,178.36000061035156,filled,sell
+CSCO,sell,2024-01-02,open,0.01808659087156765,monthly rebuild,2,50.4900016784668,filled,sell
+GOOG,sell,2024-01-02,open,0.10000000000000002,monthly rebuild,1,139.60000610351562,filled,sell
+MSFT,sell,2024-01-02,open,0.10000000000000002,monthly rebuild,2,373.8599853515625,filled,sell
+PG,sell,2024-01-02,open,0.03506085866760201,monthly rebuild,2,146.36000061035156,filled,sell
+UNH,sell,2024-01-02,open,0.047029108579343254,monthly rebuild,1,526.8400268554688,filled,sell
+AAPL,buy,2024-01-02,open,0.10000000000000002,monthly rebuild,2,187.14999389648438,filled,buy
+AMCR,buy,2024-01-02,open,0.006432624195558972,monthly rebuild,3,48.20000076293945,filled,buy
+COIN,buy,2024-01-02,open,0.002720836239855827,monthly rebuild,2,173.02000427246094,filled,buy
+CRM,buy,2024-01-02,open,0.022720643695926922,monthly rebuild,1,260.5400085449219,filled,buy
+META,buy,2024-01-02,open,0.07943991751462012,monthly rebuild,2,351.32000732421875,filled,buy
+ORCL,buy,2024-01-02,open,0.029265705421455575,monthly rebuild,2,104.5199966430664,filled,buy
+QCOM,buy,2024-01-02,open,0.01321802828253186,monthly rebuild,1,142.19000244140625,filled,buy

@@ -44,7 +44,7 @@ jobs:
       R2_ENDPOINT: https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
       R2_BUCKET: monterey-fund
       R2_PREFIX: halalquant
-      HALALQUANT_DATA_DIR: ${{ runner.temp }}/halalquant
+      HALALQUANT_DATA_DIR: /tmp/halalquant
     steps:
       - uses: actions/checkout@v4
 
@@ -66,10 +66,10 @@ jobs:
 
       - name: Run session
         env:
-          MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'today' }}
-          AS_OF: ${{ github.event_name == 'workflow_dispatch' && inputs.as_of || 'today' }}
-          REPLAY_START: ${{ inputs.replay_start }}
-          REPLAY_END: ${{ inputs.replay_end }}
+          MODE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mode || 'today' }}
+          AS_OF: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.as_of || 'today' }}
+          REPLAY_START: ${{ github.event.inputs.replay_start }}
+          REPLAY_END: ${{ github.event.inputs.replay_end }}
         run: |
           set -euo pipefail
           if [ ! -f ops/state/nav.csv ] || [ ! -f ops/state/account.json ]; then

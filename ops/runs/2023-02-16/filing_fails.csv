@@ -1,0 +1,4 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+CEG,,10-K,2021-12-31,2023-02-16,FY,6657000000.0,504000000.0,1669000000.0,0.0,,,,,False,missing market cap
+CEG,,10-K,2020-12-31,2023-02-16,FY,0.0,226000000.0,0.0,0.0,,,,,False,missing market cap
+EXPE,,10-K,2021-12-31,2023-02-10,FY,7715000000.0,4111000000.0,1264000000.0,150125000.0,21787900385.073254,0.3540956156236833,0.19786211263171727,0.25587596333143675,False,debt ratio exceeds threshold

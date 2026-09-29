@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+BMY,,10-Q,2021-12-31,2022-10-26,Q3,44553000000.0,13979000000.0,7979000000.0,2148000000.0,142889605273.29218,0.31180014749699575,0.11873501902080734,0.17457533004090764,False,debt ratio exceeds threshold

@@ -1,0 +1,3 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+GILD,882095,10-Q,2020-09-30,2020-11-04,Q3,29290000000.0,12886000000.0,3913000000.0,1253000000.0,85029252637.70769,0.3444696865065805,0.2819617867529965,0.32798124333545636,False,debt ratio exceeds threshold
+TPR,1116132,10-Q,2020-09-26,2020-11-04,,0.0,2672900000.0,0.0,276200000.0,6935980530.653132,0.0,0.3853672870313412,0.3853672870313412,False,cash ratio exceeds threshold

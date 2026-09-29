@@ -1,0 +1,2 @@
+as_of,nav,cash,invested,daily_return,n_positions,sma_on,halted,purification_today,purification_cumulative,fill_basis
+2020-01-03,992573.3271292403,7.501541013897208,992565.8255882263,-0.007421054873012367,91,True,False,0.0,5.66000092488453,queued_next_open

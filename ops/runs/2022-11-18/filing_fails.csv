@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+GEN,849399,10-Q,2022-09-30,2022-11-09,Q2,9883000000.0,1095000000.0,152000000.0,661000000.0,15938939597.712622,0.6200537958885481,0.06869967686916525,0.07823607037063843,False,debt ratio exceeds threshold

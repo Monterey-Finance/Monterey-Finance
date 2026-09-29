@@ -1,0 +1,14 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2023-09-05,open,0.1,rebalance,3,188.27999877929688,filled,sell
+ABBV,sell,2023-09-05,open,0.024506741645478662,rebalance,1,148.5,filled,sell
+CSCO,sell,2023-09-05,open,0.022194383225063494,rebalance,3,57.81999969482422,filled,sell
+DVN,sell,2023-09-05,open,0.0030740052876459785,rebalance,3,53.400001525878906,filled,sell
+MA,sell,2023-09-05,open,0.036872739119595925,rebalance,1,413.3500061035156,filled,sell
+QCOM,sell,2023-09-05,open,0.012024360036678231,rebalance,1,114.91000366210938,filled,sell
+ADSK,buy,2023-09-05,open,0.004493056650974179,rebalance,1,218.08999633789062,filled,buy
+BX,buy,2023-09-05,open,0.0071140141246638705,rebalance,1,108.4000015258789,filled,buy
+GOOG,buy,2023-09-05,open,0.1,rebalance,7,136.44000244140625,filled,buy
+PG,buy,2023-09-05,open,0.03609777562567287,rebalance,1,153.8000030517578,filled,buy
+PTC,buy,2023-09-05,open,0.001645323338687232,rebalance,1,146.72000122070312,filled,buy
+TYL,buy,2023-09-05,open,0.0018063331147271642,rebalance,0,396.2699890136719,rejected,no cash
+UNH,buy,2023-09-05,open,0.041599047143095806,rebalance,0,478.0,rejected,no cash

@@ -72,6 +72,32 @@ jobs:
           REPLAY_END: ${{ github.event.inputs.replay_end }}
         run: |
           set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ]; then
+            set +e
+            python - <<'PY'
+          import sys
+          from datetime import date, timedelta
+
+          import pandas as pd
+
+          frame = pd.read_csv("ops/state/nav.csv")
+          if frame.empty or "as_of" not in frame.columns:
+              print("Scheduled run skipped. NAV has no sessions yet.")
+              sys.exit(2)
+          last = pd.Timestamp(frame["as_of"].iloc[-1]).date()
+          if last < date.today() - timedelta(days=5):
+              print(f"Scheduled run skipped. Last NAV is {last}, still inside the history replay.")
+              sys.exit(2)
+          PY
+            status=$?
+            set -e
+            if [ "$status" -eq 2 ]; then
+              exit 0
+            fi
+            if [ "$status" -ne 0 ]; then
+              exit "$status"
+            fi
+          fi
           if [ ! -f ops/state/nav.csv ] || [ ! -f ops/state/account.json ]; then
             echo "ops/state/nav.csv and account.json must already be in the repo."
             echo "Otherwise this job would open a new paper account."

@@ -1,2 +1,0 @@
-{"id": "7ad68f2d72e14eb6aa5f16fd78acc965", "ts": "2026-09-29T08:54:00.986876+00:00", "type": "run_completed", "actor": "session", "recorded_not_legal_signoff": true, "as_of": "2026-09-28", "fill_basis": "queued_next_open", "halted": false, "reason": ""}
-{"id": "4241595d77874da7b05c036604b06b57", "ts": "2026-09-29T08:54:00.986984+00:00", "type": "order_batch_approved", "actor": "session", "recorded_not_legal_signoff": true, "as_of": "2026-09-28", "batch_id": "2026-09-28-ceb27c11", "n_orders": 33}

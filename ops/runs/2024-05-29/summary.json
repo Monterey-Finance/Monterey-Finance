@@ -1,0 +1,51 @@
+{
+  "as_of": "2024-05-29",
+  "book_version": "1b-fcf-sma-v1",
+  "sma_on": true,
+  "sma_reason": "SPY above 200-day SMA",
+  "cash_weight": 2.220446049250313e-16,
+  "n_holdings": 100,
+  "name_cap": 0.1,
+  "top5": [
+    {
+      "symbol": "AAPL",
+      "target_weight": 0.1
+    },
+    {
+      "symbol": "GOOG",
+      "target_weight": 0.1
+    },
+    {
+      "symbol": "MSFT",
+      "target_weight": 0.1
+    },
+    {
+      "symbol": "META",
+      "target_weight": 0.09618300314997207
+    },
+    {
+      "symbol": "XOM",
+      "target_weight": 0.039721921961180316
+    }
+  ],
+  "paths": {
+    "intended_book": "/home/runner/work/Monterey-Finance/Monterey-Finance/ops/runs/2024-05-29/intended_book.csv",
+    "invested_book": "/home/runner/work/Monterey-Finance/Monterey-Finance/ops/runs/2024-05-29/invested_book.csv"
+  },
+  "n_filing_fails": 0,
+  "refreshed": false,
+  "traded": true,
+  "fill_basis": "next_open",
+  "reconcile_reason": "account matches the target book",
+  "max_weight_gap": 0.0009399161145941665,
+  "n_fills": 38,
+  "n_pending": 25,
+  "halted": false,
+  "halt_reason": "",
+  "purification_today": 0.0,
+  "batch_id": "2024-05-29-27a0ee03",
+  "batch_status": "executing",
+  "nav": 1355445.0056943123,
+  "cash": 13.518903655211034,
+  "daily_return": -0.007106843670884433
+}

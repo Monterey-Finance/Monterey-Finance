@@ -1,0 +1,71 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+A,sell,2025-07-01,open,0.0,exit,21,117.44000244140625,filled,sell
+AAPL,sell,2025-07-01,open,0.1,monthly rebuild,9,206.6699981689453,filled,sell
+ABBV,sell,2025-07-01,open,0.015508801514498186,monthly rebuild,10,185.00999450683594,filled,sell
+ADBE,sell,2025-07-01,open,0.00778921915221939,monthly rebuild,5,385.1000061035156,filled,sell
+ADSK,sell,2025-07-01,open,0.0031528433406541666,monthly rebuild,1,308.4100036621094,filled,sell
+AMCR,sell,2025-07-01,open,0.003122045780391866,monthly rebuild,5,46.099998474121094,filled,sell
+AME,sell,2025-07-01,open,0.0019756142376571558,monthly rebuild,1,180.17999267578125,filled,sell
+BIIB,sell,2025-07-01,open,0.0008681180404263307,monthly rebuild,1,124.94000244140625,filled,sell
+CIEN,sell,2025-07-01,open,0.0,exit,12,80.5,filled,sell
+CME,sell,2025-07-01,open,0.004681410719997638,monthly rebuild,3,277.6400146484375,filled,sell
+CRM,sell,2025-07-01,open,0.012471845247435462,monthly rebuild,2,272.0799865722656,filled,sell
+EXPD,sell,2025-07-01,open,0.0007365789690892535,monthly rebuild,1,113.83999633789062,filled,sell
+EXR,sell,2025-07-01,open,0.0014753747867909865,monthly rebuild,1,147.3800048828125,filled,sell
+FIS,sell,2025-07-01,open,0.0020382716252011017,monthly rebuild,2,81.25,filled,sell
+FTNT,sell,2025-07-01,open,0.0038343009607112425,monthly rebuild,2,105.36000061035156,filled,sell
+GILD,sell,2025-07-01,open,0.0065083840645698745,monthly rebuild,5,111.5,filled,sell
+GL,sell,2025-07-01,open,0.0005697357275059237,monthly rebuild,1,123.77999877929688,filled,sell
+GRMN,sell,2025-07-01,open,0.001896532707803364,monthly rebuild,1,207.24000549316406,filled,sell
+ICE,sell,2025-07-01,open,0.004965542685537205,monthly rebuild,2,183.3000030517578,filled,sell
+INTU,sell,2025-07-01,open,0.010408437291633486,monthly rebuild,1,788.7000122070312,filled,sell
+ISRG,sell,2025-07-01,open,0.009183016592828115,monthly rebuild,2,542.5800170898438,filled,sell
+ITW,sell,2025-07-01,open,0.003415809829663184,monthly rebuild,1,246.07000732421875,filled,sell
+JKHY,sell,2025-07-01,open,0.0006203600225890699,monthly rebuild,1,180.0399932861328,filled,sell
+JNJ,sell,2025-07-01,open,0.01745692569665325,monthly rebuild,13,153.0,filled,sell
+LOW,sell,2025-07-01,open,0.005858364159032946,monthly rebuild,3,219.52000427246094,filled,sell
+MA,sell,2025-07-01,open,0.024217310389638418,monthly rebuild,8,559.3200073242188,filled,sell
+MCD,sell,2025-07-01,open,0.009850342327665393,monthly rebuild,7,292.5,filled,sell
+MNST,sell,2025-07-01,open,0.001440057455827708,monthly rebuild,5,31.415000915527344,filled,sell
+MO,sell,2025-07-01,open,0.004671930462323185,monthly rebuild,11,58.91999816894531,filled,sell
+PANW,sell,2025-07-01,open,0.0031368753297302434,monthly rebuild,1,203.97000122070312,filled,sell
+PAYX,sell,2025-07-01,open,0.002470455725835347,monthly rebuild,4,145.69000244140625,filled,sell
+PG,sell,2025-07-01,open,0.01856910528160954,monthly rebuild,22,159.8800048828125,filled,sell
+PGR,sell,2025-07-01,open,0.0073948422165038665,monthly rebuild,6,266.8599853515625,filled,sell
+PLTR,sell,2025-07-01,open,0.015166988129346186,monthly rebuild,11,135.27000427246094,filled,sell
+ROL,sell,2025-07-01,open,0.001289209496120804,monthly rebuild,2,56.470001220703125,filled,sell
+SPGI,sell,2025-07-01,open,0.007214032440057209,monthly rebuild,1,496.8495788574219,filled,sell
+TMUS,sell,2025-07-01,open,0.012777063203374154,monthly rebuild,8,238.41000366210938,filled,sell
+VRTX,sell,2025-07-01,open,0.005394156985390243,monthly rebuild,1,445.5,filled,sell
+WDAY,sell,2025-07-01,open,0.003058726346017436,monthly rebuild,2,238.58999633789062,filled,sell
+YUM,sell,2025-07-01,open,0.001970282230855607,monthly rebuild,1,148.27999877929688,filled,sell
+ZTS,sell,2025-07-01,open,0.0032798134361819577,monthly rebuild,5,154.94000244140625,filled,sell
+ADI,buy,2025-07-01,open,0.0055693198825812,monthly rebuild,2,236.5399932861328,filled,buy
+ANET,buy,2025-07-01,open,0.006061845916494781,monthly rebuild,7,102.30999755859375,filled,buy
+APH,buy,2025-07-01,open,0.002947807918668859,monthly rebuild,3,49.29999923706055,filled,buy
+AVGO,buy,2025-07-01,open,0.061125542879630505,monthly rebuild,19,274.3999938964844,filled,buy
+BLK,buy,2025-07-01,open,0.007665741886618687,monthly rebuild,1,1046.5799560546875,filled,buy
+BX,buy,2025-07-01,open,0.00516214799783714,monthly rebuild,2,148.94000244140625,filled,buy
+CMG,buy,2025-07-01,open,0.0036025331408178164,monthly rebuild,3,56.16999816894531,filled,buy
+CRWD,buy,2025-07-01,open,0.001491487125765869,monthly rebuild,1,127.34249877929688,filled,buy
+CSCO,buy,2025-07-01,open,0.013108209810124626,monthly rebuild,10,69.37999725341797,filled,buy
+DASH,buy,2025-07-01,open,0.0050626193620819,monthly rebuild,3,247.6199951171875,filled,buy
+DDOG,buy,2025-07-01,open,0.0022996551670027713,monthly rebuild,1,133.66000366210938,filled,buy
+EL,buy,2025-07-01,open,0.001374572557983446,monthly rebuild,3,80.75,filled,buy
+GOOG,buy,2025-07-01,open,0.1,monthly rebuild,12,176.80499267578125,filled,buy
+MCHP,buy,2025-07-01,open,0.0017874257844643726,monthly rebuild,40,69.45999908447266,filled,buy
+META,buy,2025-07-01,open,0.09013612105136044,monthly rebuild,13,736.8800048828125,filled,buy
+MPWR,buy,2025-07-01,open,0.001651048290359523,monthly rebuild,1,729.22998046875,filled,buy
+MRVL,buy,2025-07-01,open,0.003195482809003532,monthly rebuild,12,76.7300033569336,filled,buy
+MSFT,buy,2025-07-01,open,0.1,monthly rebuild,2,496.4700012207031,filled,buy
+NEM,buy,2025-07-01,open,0.0030958802038891452,monthly rebuild,2,58.91999816894531,filled,buy
+NKE,buy,2025-07-01,open,0.005123880451555205,monthly rebuild,13,71.98999786376953,filled,buy
+NVDA,buy,2025-07-01,open,0.1,monthly rebuild,7,156.2899932861328,filled,buy
+NXPI,buy,2025-07-01,open,0.0026271941861426384,monthly rebuild,1,216.58999633789062,filled,buy
+ON,buy,2025-07-01,open,0.001032622578068084,monthly rebuild,5,51.810001373291016,filled,buy
+ORCL,buy,2025-07-01,open,0.02893622951310317,monthly rebuild,36,219.3000030517578,filled,buy
+P,buy,2025-07-01,open,0.0008865362453971042,monthly rebuild,6,57.279998779296875,partial,partial buy
+QCOM,buy,2025-07-01,open,0.008260173032082055,monthly rebuild,0,158.22000122070312,rejected,no cash
+RDDT,buy,2025-07-01,open,0.001428954996549039,monthly rebuild,0,151.82000732421875,rejected,no cash
+STX,buy,2025-07-01,open,0.0014303504487987357,monthly rebuild,0,143.63999938964844,rejected,no cash
+UBER,buy,2025-07-01,open,0.009202444489201001,monthly rebuild,0,92.8499984741211,rejected,no cash

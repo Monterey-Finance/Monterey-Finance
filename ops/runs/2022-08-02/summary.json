@@ -1,0 +1,28 @@
+{
+  "as_of": "2022-08-02",
+  "book_version": "1b-fcf-sma-v1",
+  "sma_on": false,
+  "sma_reason": "SPY at or below 200-day SMA \u2014 cash",
+  "cash_weight": 1.0,
+  "n_holdings": 0,
+  "name_cap": 0.1,
+  "top5": [],
+  "paths": {
+    "intended_book": "/home/runner/work/Monterey-Finance/Monterey-Finance/ops/runs/2022-08-02/intended_book.csv",
+    "invested_book": "/home/runner/work/Monterey-Finance/Monterey-Finance/ops/runs/2022-08-02/invested_book.csv"
+  },
+  "n_filing_fails": 1,
+  "refreshed": false,
+  "traded": true,
+  "fill_basis": "no_orders",
+  "reconcile_reason": "account matches the target book",
+  "max_weight_gap": 0.0,
+  "n_fills": 0,
+  "n_pending": 0,
+  "halted": false,
+  "halt_reason": "",
+  "purification_today": 0.0,
+  "nav": 1118163.800510052,
+  "cash": 1118163.800510052,
+  "daily_return": 0.0
+}

@@ -1,0 +1,35 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ABBV,sell,2023-05-01,open,0.025151162568710184,monthly rebuild,2,150.83999633789062,filled,sell
+ABNB,sell,2023-05-01,open,0.0075084284531146935,monthly rebuild,2,119.26000213623047,filled,sell
+ADBE,sell,2023-05-01,open,0.01570038605751962,monthly rebuild,1,376.510009765625,filled,sell
+CRM,sell,2023-05-01,open,0.017892166080452066,monthly rebuild,1,197.75999450683594,filled,sell
+DHR,sell,2023-05-01,open,0.014444097864517792,monthly rebuild,1,212.04786682128906,filled,sell
+FFIV,sell,2023-05-01,open,0.0007774040502597464,monthly rebuild,1,133.66000366210938,filled,sell
+FIS,sell,2023-05-01,open,0.0029127043652809686,monthly rebuild,2,57.970001220703125,filled,sell
+INTU,sell,2023-05-01,open,0.01115663940471422,monthly rebuild,1,441.7900085449219,filled,sell
+MA,sell,2023-05-01,open,0.03132101707971006,monthly rebuild,1,380.489990234375,filled,sell
+MRNA,sell,2023-05-01,open,0.005248257636086554,monthly rebuild,1,132.0,filled,sell
+PAYX,sell,2023-05-01,open,0.0036666691366844047,monthly rebuild,1,109.5199966430664,filled,sell
+QCOM,sell,2023-05-01,open,0.012671628702814366,monthly rebuild,2,117.20999908447266,filled,sell
+RMD,sell,2023-05-01,open,0.0028458822189526022,monthly rebuild,1,239.3000030517578,filled,sell
+AAPL,buy,2023-05-01,open,0.10000000000000003,monthly rebuild,1,169.27999877929688,filled,buy
+BMY,buy,2023-05-01,open,0.013202170877176213,monthly rebuild,4,67.27999877929688,filled,buy
+CCI,buy,2023-05-01,open,0.005143912362162054,monthly rebuild,1,122.69000244140625,filled,buy
+DDOG,buy,2023-05-01,open,0.002034185818313582,monthly rebuild,2,66.77999877929688,filled,buy
+DRI,buy,2023-05-01,open,0.0017063606836322498,monthly rebuild,1,150.8800048828125,filled,buy
+GILD,buy,2023-05-01,open,0.009183480292676509,monthly rebuild,3,82.47000122070312,filled,buy
+GOOG,buy,2023-05-01,open,0.10000000000000003,monthly rebuild,11,107.72000122070312,filled,buy
+META,buy,2023-05-01,open,0.05082975636698523,monthly rebuild,1,238.6199951171875,filled,buy
+MRK,buy,2023-05-01,open,0.02400468995640096,monthly rebuild,2,115.80000305175781,filled,buy
+MSFT,buy,2023-05-01,open,0.10000000000000003,monthly rebuild,1,306.9700012207031,filled,buy
+ORCL,buy,2023-05-01,open,0.02226858927327483,monthly rebuild,1,94.80000305175781,partial,partial buy
+PFE,buy,2023-05-01,open,0.020761649029955948,monthly rebuild,1,39.0,partial,partial buy
+PG,buy,2023-05-01,open,0.03351053199087252,monthly rebuild,0,156.02999877929688,rejected,no cash
+RVTY,buy,2023-05-01,open,0.0014939046875212727,monthly rebuild,0,130.7100067138672,rejected,no cash
+SBUX,buy,2023-05-01,open,0.010655829049000897,monthly rebuild,0,114.25,rejected,no cash
+STLD,buy,2023-05-01,open,0.0017354597235045538,monthly rebuild,0,103.9000015258789,rejected,no cash
+SWKS,buy,2023-05-01,open,0.0016660895185736102,monthly rebuild,0,105.81999969482422,rejected,no cash
+TEL,buy,2023-05-01,open,0.0037134596233277736,monthly rebuild,0,122.41000366210938,rejected,no cash
+TXN,buy,2023-05-01,open,0.015288575244016587,monthly rebuild,0,168.2100067138672,rejected,no cash
+VRTX,buy,2023-05-01,open,0.007187528570779885,monthly rebuild,0,340.2200012207031,rejected,no cash
+WM,buy,2023-05-01,open,0.005907636463006896,monthly rebuild,0,165.80999755859375,rejected,no cash

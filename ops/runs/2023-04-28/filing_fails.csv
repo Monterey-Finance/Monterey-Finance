@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+AMGN,318154,10-Q,2023-03-31,2023-04-28,Q1,60761000000.0,31560000000.0,5736000000.0,534300000.0,127952446820.66782,0.47487173172358155,0.48943964383715366,0.5342687982810644,False,debt ratio exceeds threshold

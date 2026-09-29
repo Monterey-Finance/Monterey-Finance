@@ -1,0 +1,20 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ADI,sell,2024-09-05,open,0.0065448485284210255,rebalance,1,219.47999572753906,filled,sell
+DRI,sell,2024-09-05,open,0.0010555165354028274,rebalance,1,160.0,filled,sell
+KEYS,sell,2024-09-05,open,0.001513948292114082,rebalance,1,148.1300048828125,filled,sell
+MA,sell,2024-09-05,open,0.025231884623817886,rebalance,1,483.1400146484375,filled,sell
+META,sell,2024-09-05,open,0.07637488481248587,rebalance,1,511.7200012207031,filled,sell
+NDAQ,sell,2024-09-05,open,0.00233076955058924,rebalance,2,73.5,filled,sell
+NXPI,sell,2024-09-05,open,0.003723183067460216,rebalance,1,236.1699981689453,filled,sell
+ORCL,sell,2024-09-05,open,0.02184977729667312,rebalance,3,141.39999389648438,filled,sell
+PG,sell,2024-09-05,open,0.02380182695103181,rebalance,2,175.99000549316406,filled,sell
+QCOM,sell,2024-09-05,open,0.010981461046227423,rebalance,1,163.0800018310547,filled,sell
+VRTX,sell,2024-09-05,open,0.007181990593795371,rebalance,1,477.7300109863281,filled,sell
+AAPL,buy,2024-09-05,open,0.1,rebalance,5,221.6300048828125,filled,buy
+ADSK,buy,2024-09-05,open,0.0031475036327315797,rebalance,1,257.0199890136719,filled,buy
+AMZN,buy,2024-09-05,open,0.1,rebalance,13,175.0,filled,buy
+CRM,buy,2024-09-05,open,0.013812607347315924,rebalance,1,245.97999572753906,filled,buy
+DDOG,buy,2024-09-05,open,0.002328070574809009,rebalance,1,108.01000213623047,filled,buy
+GOOG,buy,2024-09-05,open,0.1,rebalance,4,157.77999877929688,filled,buy
+NVDA,buy,2024-09-05,open,0.1,rebalance,19,104.98999786376953,partial,partial buy
+PANW,buy,2024-09-05,open,0.003138549918090947,rebalance,0,171.6750030517578,rejected,no cash

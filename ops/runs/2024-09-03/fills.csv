@@ -1,0 +1,20 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ADI,sell,2024-09-03,open,0.008103370354197894,monthly rebuild,1,228.69000244140625,filled,sell
+AMAT,sell,2024-09-03,open,0.012400261838905267,monthly rebuild,1,193.0800018310547,filled,sell
+GOOG,sell,2024-09-03,open,0.09999999999999998,monthly rebuild,3,163.31500244140625,filled,sell
+GRMN,sell,2024-09-03,open,0.0023236330037478387,monthly rebuild,1,183.08999633789062,filled,sell
+MRVL,sell,2024-09-03,open,0.004089117792322964,monthly rebuild,8,74.58000183105469,filled,sell
+NVDA,sell,2024-09-03,open,0.020556696625543387,monthly rebuild,2,116.01000213623047,filled,sell
+ORCL,sell,2024-09-03,open,0.027114928339399137,monthly rebuild,2,140.4499969482422,filled,sell
+PANW,sell,2024-09-03,open,0.0035329240811671795,monthly rebuild,1,179.77499389648438,filled,sell
+PH,sell,2024-09-03,open,0.005141663071200287,monthly rebuild,1,592.8699951171875,filled,sell
+QCOM,sell,2024-09-03,open,0.01425250242058328,monthly rebuild,1,171.88999938964844,filled,sell
+SPGI,sell,2024-09-03,open,0.01013065696412744,monthly rebuild,1,487.2090759277344,filled,sell
+UNP,sell,2024-09-03,open,0.010617591085789515,monthly rebuild,1,255.8699951171875,filled,sell
+VTR,sell,2024-09-03,open,0.001553935682011416,monthly rebuild,2,61.7599983215332,filled,sell
+AAPL,buy,2024-09-03,open,0.09999999999999998,monthly rebuild,7,228.5500030517578,filled,buy
+CRM,buy,2024-09-03,open,0.01799156038250029,monthly rebuild,3,252.6199951171875,filled,buy
+CSCO,buy,2024-09-03,open,0.013903671917056576,monthly rebuild,2,50.310001373291016,filled,buy
+MSCI,buy,2024-09-03,open,0.0030055346639220057,monthly rebuild,1,581.530029296875,filled,buy
+TMUS,buy,2024-09-03,open,0.015010449433448815,monthly rebuild,3,199.61000061035156,filled,buy
+XOM,buy,2024-09-03,open,0.03300222200377399,monthly rebuild,3,115.83999633789062,partial,partial buy

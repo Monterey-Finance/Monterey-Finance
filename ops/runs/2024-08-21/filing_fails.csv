@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+TPR,,10-K,2024-06-29,2024-08-15,,7003400000.0,6142000000.0,228200000.0,230200000.0,8850557174.244915,0.7912948147919845,0.8139374570634975,0.8397211445203799,False,debt ratio exceeds threshold

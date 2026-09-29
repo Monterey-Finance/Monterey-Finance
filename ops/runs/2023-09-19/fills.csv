@@ -1,0 +1,16 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2023-09-19,open,0.1,rebalance,9,177.52000427246094,filled,sell
+ABBV,sell,2023-09-19,open,0.024506741645478662,rebalance,1,153.88999938964844,filled,sell
+AMAT,sell,2023-09-19,open,0.012032642188376795,rebalance,1,139.7100067138672,filled,sell
+GOOG,sell,2023-09-19,open,0.1,rebalance,1,138.25,filled,sell
+MA,sell,2023-09-19,open,0.036872739119595925,rebalance,1,416.9599914550781,filled,sell
+META,sell,2023-09-19,open,0.07277317616725008,rebalance,1,302.4800109863281,filled,sell
+PG,sell,2023-09-19,open,0.03609777562567287,rebalance,1,153.75,filled,sell
+PGR,sell,2023-09-19,open,0.007356224749664721,rebalance,1,141.3699951171875,filled,sell
+CME,buy,2023-09-19,open,0.006859490241318709,rebalance,1,207.0,filled,buy
+DHR,buy,2023-09-19,open,0.016329717123834065,rebalance,1,224.06028747558594,filled,buy
+MCD,buy,2023-09-19,open,0.019292677775535637,rebalance,1,276.44000244140625,filled,buy
+MSFT,buy,2023-09-19,open,0.1,rebalance,2,326.1700134277344,filled,buy
+ORCL,buy,2023-09-19,open,0.030754456330304727,rebalance,6,112.4800033569336,filled,buy
+QCOM,buy,2023-09-19,open,0.012024360036678231,rebalance,1,112.19999694824219,filled,buy
+ZTS,buy,2023-09-19,open,0.008265165819717608,rebalance,1,178.8699951171875,filled,buy

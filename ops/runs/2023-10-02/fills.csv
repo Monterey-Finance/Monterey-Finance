@@ -1,0 +1,20 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2023-10-02,open,0.1,monthly rebuild,4,171.22000122070312,filled,sell
+ABNB,sell,2023-10-02,open,0.00823721413108237,monthly rebuild,1,136.5500030517578,filled,sell
+ADBE,sell,2023-10-02,open,0.024016437681233724,monthly rebuild,1,508.239990234375,filled,sell
+AMAT,sell,2023-10-02,open,0.012032642188376795,monthly rebuild,1,138.86000061035156,filled,sell
+DDOG,sell,2023-10-02,open,0.002927189995348759,monthly rebuild,2,92.54000091552734,filled,sell
+MSFT,sell,2023-10-02,open,0.1,monthly rebuild,3,316.2799987792969,filled,sell
+NKE,sell,2023-10-02,open,0.015034044216572662,monthly rebuild,11,96.19999694824219,filled,sell
+TROW,sell,2023-10-02,open,0.0023999044896382687,monthly rebuild,1,104.47000122070312,filled,sell
+ABBV,buy,2023-10-02,open,0.024506741645478662,monthly rebuild,4,148.47000122070312,filled,buy
+BX,buy,2023-10-02,open,0.0071140141246638705,monthly rebuild,1,106.62000274658203,filled,buy
+CME,buy,2023-10-02,open,0.006859490241318709,monthly rebuild,1,199.6300048828125,filled,buy
+CPAY,buy,2023-10-02,open,0.0018921230498177301,monthly rebuild,1,254.94000244140625,filled,buy
+EW,buy,2023-10-02,open,0.004377146562325764,monthly rebuild,2,68.86000061035156,filled,buy
+GOOG,buy,2023-10-02,open,0.1,monthly rebuild,7,132.15499877929688,filled,buy
+MA,buy,2023-10-02,open,0.036872739119595925,monthly rebuild,1,393.6000061035156,filled,buy
+MCD,buy,2023-10-02,open,0.019292677775535637,monthly rebuild,1,262.0,filled,buy
+META,buy,2023-10-02,open,0.07277317616725008,monthly rebuild,3,302.739990234375,filled,buy
+PAYX,buy,2023-10-02,open,0.004149071708428136,monthly rebuild,1,114.83000183105469,filled,buy
+UNH,buy,2023-10-02,open,0.041599047143095806,monthly rebuild,1,505.5299987792969,filled,buy

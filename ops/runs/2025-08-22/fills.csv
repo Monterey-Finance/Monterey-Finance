@@ -1,0 +1,21 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ABBV,sell,2025-08-22,open,0.014759091912884074,rebalance,1,210.83999633789062,filled,sell
+ADI,sell,2025-08-22,open,0.004911960420377803,rebalance,1,249.17999267578125,filled,sell
+GOOG,sell,2025-08-22,open,0.1,rebalance,4,203.9600067138672,filled,sell
+MRK,sell,2025-08-22,open,0.00871249508661001,rebalance,4,87.5,filled,sell
+NEM,sell,2025-08-22,open,0.0030428779133058314,rebalance,2,69.18000030517578,filled,sell
+NVDA,sell,2025-08-22,open,0.1,rebalance,1,172.61000061035156,filled,sell
+REGN,sell,2025-08-22,open,0.0026727347733246465,rebalance,1,602.3499755859375,filled,sell
+XOM,sell,2025-08-22,open,0.02120241089609233,rebalance,3,109.5999984741211,filled,sell
+A,buy,2025-08-22,open,0.0014364428817263551,rebalance,1,118.2699966430664,filled,buy
+AAPL,buy,2025-08-22,open,0.1,rebalance,1,226.1699981689453,filled,buy
+AVGO,buy,2025-08-22,open,0.06086492545735134,rebalance,1,291.75,filled,buy
+GILD,buy,2025-08-22,open,0.006160253554010577,rebalance,2,116.9000015258789,filled,buy
+HD,buy,2025-08-22,open,0.0161131483004449,rebalance,1,400.8699951171875,filled,buy
+ICE,buy,2025-08-22,open,0.0046586131446923786,rebalance,1,179.75999450683594,filled,buy
+META,buy,2025-08-22,open,0.08758866450908262,rebalance,1,739.22998046875,filled,buy
+MTD,buy,2025-08-22,open,0.0011610166975853542,rebalance,1,1293.239990234375,filled,buy
+ORCL,buy,2025-08-22,open,0.03138852086758574,rebalance,1,234.05999755859375,filled,buy
+PH,buy,2025-08-22,open,0.004200330107794912,rebalance,0,738.1199951171875,rejected,no cash
+SPGI,buy,2025-08-22,open,0.007046238946912625,rebalance,0,524.900634765625,rejected,no cash
+STX,buy,2025-08-22,open,0.0014541577614585375,rebalance,0,155.1199951171875,rejected,no cash

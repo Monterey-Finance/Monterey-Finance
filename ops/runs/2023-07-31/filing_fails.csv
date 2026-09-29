@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+EBAY,,10-Q,2022-12-31,2023-07-27,Q2,8871000000.0,2154000000.0,90000000.0,539000000.0,28316166761.56895,0.31328392980224395,0.07606961839635142,0.07924801470817669,False,debt ratio exceeds threshold

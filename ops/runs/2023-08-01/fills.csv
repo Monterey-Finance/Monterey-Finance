@@ -1,0 +1,92 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2023-08-01,open,0.10000000000000002,monthly rebuild,3,196.24000549316406,filled,sell
+ADI,sell,2023-08-01,open,0.0074759355992829925,monthly rebuild,2,197.63999938964844,filled,sell
+ADSK,sell,2023-08-01,open,0.003421576900699004,monthly rebuild,1,211.1699981689453,filled,sell
+AMAT,sell,2023-08-01,open,0.009512099535571507,monthly rebuild,1,150.9199981689453,filled,sell
+AMCR,sell,2023-08-01,open,0.005811305782596758,monthly rebuild,6,50.95000076293945,filled,sell
+AME,sell,2023-08-01,open,0.0027403287602157413,monthly rebuild,2,157.5800018310547,filled,sell
+AON,sell,2023-08-01,open,0.0,exit,22,318.0,filled,sell
+BMY,sell,2023-08-01,open,0.009768107421259574,monthly rebuild,22,62.31999969482422,filled,sell
+CDNS,sell,2023-08-01,open,0.004752531981838933,monthly rebuild,2,231.42999267578125,filled,sell
+CHD,sell,2023-08-01,open,0.0,exit,25,95.80000305175781,filled,sell
+CSCO,sell,2023-08-01,open,0.015982189856339143,monthly rebuild,22,52.56999969482422,filled,sell
+CSGP,sell,2023-08-01,open,0.0025521721009407632,monthly rebuild,7,83.37999725341797,filled,sell
+CSX,sell,2023-08-01,open,0.004995334054101935,monthly rebuild,17,33.31999969482422,filled,sell
+CTAS,sell,2023-08-01,open,0.0009540996124018478,monthly rebuild,1,125.66000366210938,filled,sell
+DRI,sell,2023-08-01,open,0.001528559608040278,monthly rebuild,1,168.5,filled,sell
+EBAY,sell,2023-08-01,open,0.001772727390174474,monthly rebuild,4,44.150001525878906,filled,sell
+EL,sell,2023-08-01,open,0.004907988500686367,monthly rebuild,5,177.05999755859375,filled,sell
+EW,sell,2023-08-01,open,0.0,exit,67,81.5,filled,sell
+EXR,sell,2023-08-01,open,0.0014080123266884592,monthly rebuild,2,139.97999572753906,filled,sell
+FTNT,sell,2023-08-01,open,0.0045554108493088856,monthly rebuild,3,77.63999938964844,filled,sell
+FTV,sell,2023-08-01,open,0.0,exit,34,58.6134147644043,filled,sell
+GD,sell,2023-08-01,open,0.0,exit,26,223.36000061035156,filled,sell
+GILD,sell,2023-08-01,open,0.0071004295442500765,monthly rebuild,6,76.08999633789062,filled,sell
+GOOG,sell,2023-08-01,open,0.10000000000000002,monthly rebuild,2,130.85499572753906,filled,sell
+GRMN,sell,2023-08-01,open,0.0015148425120891779,monthly rebuild,1,105.45999908447266,filled,sell
+ICE,sell,2023-08-01,open,0.0047952458211525835,monthly rebuild,3,114.02999877929688,filled,sell
+JNJ,sell,2023-08-01,open,0.0,exit,242,166.3699951171875,filled,sell
+KVUE,sell,2023-08-01,open,0.0030366633434436366,monthly rebuild,23,23.510000228881836,filled,sell
+LIN,sell,2023-08-01,open,0.0,exit,47,389.8399963378906,filled,sell
+MA,sell,2023-08-01,open,0.027959418004268946,monthly rebuild,7,393.7799987792969,filled,sell
+MCD,sell,2023-08-01,open,0.015995575483472305,monthly rebuild,6,293.0,filled,sell
+MCHP,sell,2023-08-01,open,0.0038288688896180637,monthly rebuild,2,92.62000274658203,filled,sell
+MCO,sell,2023-08-01,open,0.004836823713555323,monthly rebuild,1,350.45001220703125,filled,sell
+MO,sell,2023-08-01,open,0.006061578515938638,monthly rebuild,10,45.68000030517578,filled,sell
+MPWR,sell,2023-08-01,open,0.0019821138889065952,monthly rebuild,1,512.010009765625,filled,sell
+MRK,sell,2023-08-01,open,0.020329584037536003,monthly rebuild,37,109.5999984741211,filled,sell
+MRNA,sell,2023-08-01,open,0.003376115143666603,monthly rebuild,3,117.0,filled,sell
+NKE,sell,2023-08-01,open,0.012948850707269834,monthly rebuild,16,110.0,filled,sell
+NUE,sell,2023-08-01,open,0.0032305170077357257,monthly rebuild,1,169.63999938964844,filled,sell
+NXPI,sell,2023-08-01,open,0.0,exit,23,221.41000366210938,filled,sell
+ORCL,sell,2023-08-01,open,0.023765433426505476,monthly rebuild,24,116.91999816894531,filled,sell
+PFE,sell,2023-08-01,open,0.015431569178354011,monthly rebuild,44,35.880001068115234,filled,sell
+PG,sell,2023-08-01,open,0.029654865595409963,monthly rebuild,8,155.8800048828125,filled,sell
+PGR,sell,2023-08-01,open,0.0055104442075133335,monthly rebuild,7,126.41999816894531,filled,sell
+PHM,sell,2023-08-01,open,0.0,exit,21,84.08999633789062,filled,sell
+REGN,sell,2023-08-01,open,0.006319943977164512,monthly rebuild,1,744.6599731445312,filled,sell
+RMD,sell,2023-08-01,open,0.002432580343369226,monthly rebuild,1,224.1199951171875,filled,sell
+ROL,sell,2023-08-01,open,0.0,exit,50,40.790000915527344,filled,sell
+SPGI,sell,2023-08-01,open,0.008874427868843045,monthly rebuild,3,373.1315002441406,filled,sell
+STLD,sell,2023-08-01,open,0.0013552419843838688,monthly rebuild,1,103.98999786376953,filled,sell
+TXN,sell,2023-08-01,open,0.0,exit,90,179.0,filled,sell
+TYL,sell,2023-08-01,open,0.0,exit,5,396.92999267578125,filled,sell
+UNH,sell,2023-08-01,open,0.035264769060550524,monthly rebuild,1,507.5,filled,sell
+UNP,sell,2023-08-01,open,0.0,exit,52,231.49000549316406,filled,sell
+VRSK,sell,2023-08-01,open,0.0024728719656053667,monthly rebuild,1,228.99000549316406,filled,sell
+VRSN,sell,2023-08-01,open,0.0016298860032520597,monthly rebuild,1,209.60000610351562,filled,sell
+VRTX,sell,2023-08-01,open,0.006779736411431989,monthly rebuild,1,351.4200134277344,filled,sell
+WM,sell,2023-08-01,open,0.0,exit,42,164.24000549316406,filled,sell
+ZBH,sell,2023-08-01,open,0.0021719697562417603,monthly rebuild,3,131.0800018310547,filled,sell
+ABBV,buy,2023-08-01,open,0.019850601165630838,monthly rebuild,8,150.0,filled,buy
+ABNB,buy,2023-08-01,open,0.007619353001952449,monthly rebuild,7,149.6199951171875,filled,buy
+ABT,buy,2023-08-01,open,0.01446624046044106,monthly rebuild,160,110.70999908447266,filled,buy
+ADBE,buy,2023-08-01,open,0.01861014850290279,monthly rebuild,1,545.780029296875,filled,buy
+AMD,buy,2023-08-01,open,0.013754323744339908,monthly rebuild,148,114.26000213623047,filled,buy
+BX,buy,2023-08-01,open,0.005561663600048711,monthly rebuild,3,104.4000015258789,filled,buy
+COIN,buy,2023-08-01,open,0.0017057229326213807,monthly rebuild,5,95.87999725341797,filled,buy
+DDOG,buy,2023-08-01,open,0.002784725088618375,monthly rebuild,2,115.0,filled,buy
+DHR,buy,2023-08-01,open,0.012472814444752213,monthly rebuild,2,226.12588500976562,filled,buy
+DVN,buy,2023-08-01,open,0.0026106894162324576,monthly rebuild,2,53.65999984741211,filled,buy
+FFIV,buy,2023-08-01,open,0.0007149530358049158,monthly rebuild,6,158.49000549316406,filled,buy
+HD,buy,2023-08-01,open,0.025120310635139222,monthly rebuild,93,331.760009765625,filled,buy
+IDXX,buy,2023-08-01,open,0.003440628859336928,monthly rebuild,1,534.5999755859375,filled,buy
+INTU,buy,2023-08-01,open,0.010779955487688698,monthly rebuild,1,510.55999755859375,filled,buy
+ITW,buy,2023-08-01,open,0.005979594401805235,monthly rebuild,28,255.47000122070312,filled,buy
+KEYS,buy,2023-08-01,open,0.0021545264243665934,monthly rebuild,16,161.0,filled,buy
+MAR,buy,2023-08-01,open,0.004689863841282069,monthly rebuild,29,199.5500030517578,filled,buy
+META,buy,2023-08-01,open,0.062183637135127035,monthly rebuild,16,317.5400085449219,filled,buy
+MNST,buy,2023-08-01,open,0.0022480546432467265,monthly rebuild,96,28.799999237060547,filled,buy
+MSFT,buy,2023-08-01,open,0.10000000000000002,monthly rebuild,2,335.19000244140625,filled,buy
+ODFL,buy,2023-08-01,open,0.001721366805306013,monthly rebuild,1,209.7449951171875,filled,buy
+PAYX,buy,2023-08-01,open,0.00337988823427453,monthly rebuild,2,125.23999786376953,filled,buy
+PLTR,buy,2023-08-01,open,0.0031395646329150846,monthly rebuild,17,19.459999084472656,filled,buy
+PYPL,buy,2023-08-01,open,0.0063567305562010675,monthly rebuild,4,76.19000244140625,filled,buy
+QCOM,buy,2023-08-01,open,0.011002091256354842,monthly rebuild,2,131.9199981689453,filled,buy
+RSG,buy,2023-08-01,open,0.0035809984748274327,monthly rebuild,29,153.4499969482422,filled,buy
+TROW,buy,2023-08-01,open,0.0020916859208959145,monthly rebuild,1,123.30000305175781,filled,buy
+ULTA,buy,2023-08-01,open,0.0016595903334300599,monthly rebuild,5,445.0,filled,buy
+UPS,buy,2023-08-01,open,0.012095301665067549,monthly rebuild,80,186.86000061035156,filled,buy
+WSM,buy,2023-08-01,open,0.0003326592058507657,monthly rebuild,6,69.01499938964844,filled,buy
+XOM,buy,2023-08-01,open,0.032397963070524546,monthly rebuild,372,106.94999694824219,filled,buy
+ZTS,buy,2023-08-01,open,0.006500252546569429,monthly rebuild,2,187.4600067138672,filled,buy

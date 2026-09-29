@@ -1,0 +1,21 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ADI,sell,2025-07-28,open,0.0055693198825812,rebalance,1,228.91000366210938,filled,sell
+DDOG,sell,2025-07-28,open,0.0022996551670027713,rebalance,1,150.89999389648438,filled,sell
+GILD,sell,2025-07-28,open,0.0065083840645698745,rebalance,2,113.38999938964844,filled,sell
+GOOG,sell,2025-07-28,open,0.1,rebalance,1,194.41000366210938,filled,sell
+GRMN,sell,2025-07-28,open,0.001896532707803364,rebalance,1,236.8300018310547,filled,sell
+MSFT,sell,2025-07-28,open,0.1,rebalance,1,514.0800170898438,filled,sell
+NEM,sell,2025-07-28,open,0.0030958802038891452,rebalance,4,64.81999969482422,filled,sell
+ORCL,sell,2025-07-28,open,0.02893622951310317,rebalance,1,246.0,filled,sell
+PLTR,sell,2025-07-28,open,0.015166988129346186,rebalance,4,159.8800048828125,filled,sell
+AAPL,buy,2025-07-28,open,0.1,rebalance,2,214.02999877929688,filled,buy
+ABBV,buy,2025-07-28,open,0.015508801514498186,rebalance,1,191.2100067138672,filled,buy
+FTNT,buy,2025-07-28,open,0.0038343009607112425,rebalance,1,104.9800033569336,filled,buy
+JNJ,buy,2025-07-28,open,0.01745692569665325,rebalance,2,167.86000061035156,filled,buy
+META,buy,2025-07-28,open,0.09013612105136044,rebalance,1,715.2000122070312,filled,buy
+NVDA,buy,2025-07-28,open,0.1,rebalance,6,174.02000427246094,filled,buy
+PG,buy,2025-07-28,open,0.01856910528160954,rebalance,0,157.6300048828125,rejected,no cash
+STX,buy,2025-07-28,open,0.0014303504487987357,rebalance,0,151.47999572753906,rejected,no cash
+TMUS,buy,2025-07-28,open,0.012777063203374154,rebalance,0,242.5800018310547,rejected,no cash
+UNP,buy,2025-07-28,open,0.006498149144642598,rebalance,0,225.22000122070312,rejected,no cash
+ZTS,buy,2025-07-28,open,0.0032798134361819577,rebalance,0,152.27000427246094,rejected,no cash

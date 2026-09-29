@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+CSX,277948,10-Q,2025-06-30,2025-07-23,Q2,18550000000.0,387000000.0,1409000000.0,1864277014.0,61570855454.10073,0.30127890644346306,0.0063828900394760635,0.02926709376879355,False,debt ratio exceeds threshold

@@ -1,0 +1,78 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ADI,sell,2020-08-03,open,0.005875250764439879,monthly rebuild,2,115.87000274658203,filled,sell
+BIIB,sell,2020-08-03,open,0.0061368523273772685,monthly rebuild,1,274.70001220703125,filled,sell
+COP,sell,2020-08-03,open,0.005567615417315408,monthly rebuild,14,37.27000045776367,filled,sell
+DGX,sell,2020-08-03,open,0.0,exit,16,127.7300033569336,filled,sell
+DRI,sell,2020-08-03,open,0.0,exit,16,76.22000122070312,filled,sell
+EXPE,sell,2020-08-03,open,0.0,exit,18,81.0999984741211,filled,sell
+FAST,sell,2020-08-03,open,0.0,exit,67,23.684999465942383,filled,sell
+GILD,sell,2020-08-03,open,0.012106442225085562,monthly rebuild,9,69.72000122070312,filled,sell
+IEX,sell,2020-08-03,open,0.0,exit,9,165.5800018310547,filled,sell
+INTC,sell,2020-08-03,open,0.02818600914298793,monthly rebuild,125,48.27000045776367,filled,sell
+JNJ,sell,2020-08-03,open,0.0,exit,327,146.38999938964844,filled,sell
+LMT,sell,2020-08-03,open,0.0,exit,35,376.8399963378906,filled,sell
+LUV,sell,2020-08-03,open,0.0,exit,71,30.75,filled,sell
+NKE,sell,2020-08-03,open,0.021571235566292007,monthly rebuild,3,98.02999877929688,filled,sell
+NXPI,sell,2020-08-03,open,0.0,exit,35,118.41000366210938,filled,sell
+PM,sell,2020-08-03,open,0.0,exit,180,76.52999877929688,filled,sell
+ADBE,buy,2020-08-03,open,0.02961310063431501,monthly rebuild,1,449.8399963378906,filled,buy
+AKAM,buy,2020-08-03,open,0.0025319538396481123,monthly rebuild,1,112.8499984741211,filled,buy
+AMAT,buy,2020-08-03,open,0.008186212165428045,monthly rebuild,9,64.79000091552734,filled,buy
+AMCR,buy,2020-08-03,open,0.008465104821137376,monthly rebuild,153,52.0,filled,buy
+AME,buy,2020-08-03,open,0.0029892819599343545,monthly rebuild,2,93.83000183105469,filled,buy
+AMGN,buy,2020-08-03,open,0.019921473402089634,monthly rebuild,4,244.85000610351562,filled,buy
+BR,buy,2020-08-03,open,0.0021320546770027633,monthly rebuild,1,135.27999877929688,filled,buy
+CDNS,buy,2020-08-03,open,0.0042291359298807524,monthly rebuild,4,109.75,filled,buy
+CHD,buy,2020-08-03,open,0.0033612501351063732,monthly rebuild,4,95.19000244140625,filled,buy
+CL,buy,2020-08-03,open,0.00919067974541086,monthly rebuild,6,76.69999694824219,filled,buy
+CPAY,buy,2020-08-03,open,0.003007579058553329,monthly rebuild,1,258.6499938964844,filled,buy
+CPRT,buy,2020-08-03,open,0.0007597148063954274,monthly rebuild,30,23.362499237060547,filled,buy
+CRM,buy,2020-08-03,open,0.024701195719852603,monthly rebuild,4,197.8000030517578,filled,buy
+CSCO,buy,2020-08-03,open,0.027794354902430277,monthly rebuild,6,47.13999938964844,filled,buy
+DG,buy,2020-08-03,open,0.0067051606926761004,monthly rebuild,1,190.6999969482422,filled,buy
+DHR,buy,2020-08-03,open,0.017791418093342084,monthly rebuild,92,181.7375946044922,filled,buy
+DLTR,buy,2020-08-03,open,0.0030745090477229953,monthly rebuild,31,94.01000213623047,filled,buy
+EL,buy,2020-08-03,open,0.010159510610512998,monthly rebuild,2,199.16000366210938,filled,buy
+EXPD,buy,2020-08-03,open,0.0019501481965279145,monthly rebuild,3,84.3499984741211,filled,buy
+FDS,buy,2020-08-03,open,0.0018227206846306242,monthly rebuild,5,349.9100036621094,filled,buy
+FICO,buy,2020-08-03,open,0.0017684070717697553,monthly rebuild,4,442.95001220703125,filled,buy
+FIS,buy,2020-08-03,open,0.012696990538469276,monthly rebuild,7,147.1199951171875,filled,buy
+GPN,buy,2020-08-03,open,0.0073909739049901075,monthly rebuild,2,181.5,filled,buy
+HD,buy,2020-08-03,open,0.03966497623442812,monthly rebuild,9,266.7300109863281,filled,buy
+ICE,buy,2020-08-03,open,0.007310234145354269,monthly rebuild,2,97.12000274658203,filled,buy
+ILMN,buy,2020-08-03,open,0.00763942389944409,monthly rebuild,1,374.6984558105469,filled,buy
+INTU,buy,2020-08-03,open,0.01106794301794054,monthly rebuild,2,309.8399963378906,filled,buy
+ISRG,buy,2020-08-03,open,0.0037117679656576844,monthly rebuild,3,228.5833282470703,filled,buy
+ITW,buy,2020-08-03,open,0.008114180544597803,monthly rebuild,3,185.83999633789062,filled,buy
+KEYS,buy,2020-08-03,open,0.0026213836733402656,monthly rebuild,24,99.2300033569336,filled,buy
+LHX,buy,2020-08-03,open,0.005042875248907837,monthly rebuild,1,170.0,filled,buy
+LOW,buy,2020-08-03,open,0.015610528319798811,monthly rebuild,11,149.89999389648438,filled,buy
+MA,buy,2020-08-03,open,0.04318219409230424,monthly rebuild,6,311.0,filled,buy
+MCD,buy,2020-08-03,open,0.020058047542850708,monthly rebuild,6,194.3300018310547,filled,buy
+MCO,buy,2020-08-03,open,0.007331296119151386,monthly rebuild,1,284.95001220703125,filled,buy
+MDT,buy,2020-08-03,open,0.017965407091526345,monthly rebuild,174,96.94000244140625,filled,buy
+META,buy,2020-08-03,open,0.1,monthly rebuild,12,252.64999389648438,filled,buy
+MSCI,buy,2020-08-03,open,0.004366076664485487,monthly rebuild,1,380.4700012207031,filled,buy
+MSFT,buy,2020-08-03,open,0.1,monthly rebuild,2,211.52000427246094,filled,buy
+NDSN,buy,2020-08-03,open,0.0015663539703499084,monthly rebuild,8,195.0,filled,buy
+NEM,buy,2020-08-03,open,0.007734793635935479,monthly rebuild,7,69.19999694824219,filled,buy
+NSC,buy,2020-08-03,open,0.006808461254000106,monthly rebuild,3,192.3800048828125,filled,buy
+NTAP,buy,2020-08-03,open,0.001347083786930145,monthly rebuild,28,44.16999816894531,filled,buy
+NVR,buy,2020-08-03,open,0.0021326051124315377,monthly rebuild,1,3935.0,filled,buy
+ORCL,buy,2020-08-03,open,0.023613594873514932,monthly rebuild,4,55.779998779296875,filled,buy
+PFE,buy,2020-08-03,open,0.028453536398338985,monthly rebuild,120,36.63187789916992,filled,buy
+PG,buy,2020-08-03,open,0.04555626135859702,monthly rebuild,33,130.47000122070312,filled,buy
+PGR,buy,2020-08-03,open,0.0073418284084477625,monthly rebuild,8,90.69999694824219,filled,buy
+PKG,buy,2020-08-03,open,0.0012585551259713796,monthly rebuild,12,96.79000091552734,filled,buy
+PYPL,buy,2020-08-03,open,0.031934193517030786,monthly rebuild,16,198.25,filled,buy
+RMD,buy,2020-08-03,open,0.00403936845865013,monthly rebuild,2,200.0,filled,buy
+ROL,buy,2020-08-03,open,0.0015897952761335136,monthly rebuild,6,35.20000076293945,filled,buy
+SBUX,buy,2020-08-03,open,0.012416728888746068,monthly rebuild,7,76.4800033569336,filled,buy
+SPGI,buy,2020-08-03,open,0.01112975965865282,monthly rebuild,2,333.73699951171875,filled,buy
+SWKS,buy,2020-08-03,open,0.0033777301151773002,monthly rebuild,3,146.92999267578125,filled,buy
+TROW,buy,2020-08-03,open,0.004510281422084567,monthly rebuild,2,138.33999633789062,filled,buy
+TXN,buy,2020-08-03,open,0.016417498415147322,monthly rebuild,1,128.14999389648438,filled,buy
+UNP,buy,2020-08-03,open,0.016336362350680905,monthly rebuild,2,173.86000061035156,partial,partial buy
+VEEV,buy,2020-08-03,open,0.005858376411135332,monthly rebuild,0,267.80999755859375,rejected,no cash
+VRSK,buy,2020-08-03,open,0.004257847264172592,monthly rebuild,0,188.85000610351562,rejected,no cash
+ZTS,buy,2020-08-03,open,0.01000104907678524,monthly rebuild,0,152.19000244140625,rejected,no cash

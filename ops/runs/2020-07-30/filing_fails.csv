@@ -1,0 +1,3 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+LUV,92380,10-Q,2020-06-30,2020-07-27,Q2,8905000000.0,12351000000.0,0.0,515000000.0,25721439067.149067,0.34620924500967354,0.5620603093885289,0.5620603093885289,False,debt ratio exceeds threshold
+NXPI,1413447,10-Q,2020-06-28,2020-07-28,Q2,9353000000.0,3266000000.0,481000000.0,279142000.0,27909571662.214367,0.3351180058654446,0.11702078554009858,0.13425501635601633,False,debt ratio exceeds threshold

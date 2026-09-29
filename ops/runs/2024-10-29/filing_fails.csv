@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+NDAQ,,10-Q,2023-12-31,2024-10-29,Q3,10454000000.0,453000000.0,929000000.0,575159336.0,33760844789.39479,0.3096486496476501,0.013417910683985602,0.0409349946253159,False,debt ratio exceeds threshold

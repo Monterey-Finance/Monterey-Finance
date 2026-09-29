@@ -1,0 +1,21 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2024-10-29,open,0.1,rebalance,4,233.10000610351562,filled,sell
+ABBV,sell,2024-10-29,open,0.017329374802310508,rebalance,1,190.49000549316406,filled,sell
+CMG,sell,2024-10-29,open,0.003944309795524933,rebalance,3,60.7599983215332,filled,sell
+CRM,sell,2024-10-29,open,0.013196073196259423,rebalance,1,294.0,filled,sell
+FFIV,sell,2024-10-29,open,0.0006359279050443836,rebalance,1,242.02999877929688,filled,sell
+GOOG,sell,2024-10-29,open,0.1,rebalance,5,169.38499450683594,filled,sell
+MCD,sell,2024-10-29,open,0.010823552098325542,rebalance,1,297.6000061035156,filled,sell
+META,sell,2024-10-29,open,0.07403067456978701,rebalance,2,580.1500244140625,filled,sell
+PG,sell,2024-10-29,open,0.0212138748295617,rebalance,1,168.86000061035156,filled,sell
+QCOM,sell,2024-10-29,open,0.009403338349993276,rebalance,1,172.1999969482422,filled,sell
+STLD,sell,2024-10-29,open,0.0009721807253816211,rebalance,1,135.6999969482422,filled,sell
+ADBE,buy,2024-10-29,open,0.011416856205805714,rebalance,1,481.9200134277344,filled,buy
+AMAT,buy,2024-10-29,open,0.00825353927922536,rebalance,1,185.33999633789062,filled,buy
+AVGO,buy,2024-10-29,open,0.0399245648348612,rebalance,3,172.44000244140625,filled,buy
+CF,buy,2024-10-29,open,0.0007771497634654706,rebalance,2,81.98999786376953,filled,buy
+CSCO,buy,2024-10-29,open,0.010566604370121096,rebalance,3,55.369998931884766,filled,buy
+MSFT,buy,2024-10-29,open,0.1,rebalance,3,428.0,filled,buy
+NVDA,buy,2024-10-29,open,0.1,rebalance,11,140.2899932861328,filled,buy
+ORCL,buy,2024-10-29,open,0.023396307738073253,rebalance,2,172.2899932861328,filled,buy
+ZTS,buy,2024-10-29,open,0.004393368801556913,rebalance,0,182.00999450683594,rejected,no cash

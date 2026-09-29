@@ -25,6 +25,11 @@ def test_live_book_loads_the_september_session():
     assert apple.screen == "PASS"
     assert apple.name_capped is True
     assert desk.cash_path[-1]["cash"] == pytest.approx(desk.cash, abs=0.01)
+    assert desk.sessions
+    assert desk.sessions[0]["as_of"] == "2026-09-25"
+    assert desk.sessions[0]["fill_basis"] == "close_bootstrap"
+    assert desk.sessions[0]["n_positions"] == 124
+    assert desk.sessions[0]["n_fills"] == 124
 
 
 def test_every_tab_is_filled():
@@ -40,6 +45,8 @@ async def _walk_tabs():
         assert book.size.height > 12
         assert app.query_one("#perf").size.height > 12
         assert "Performance" in app.query_one("#perf-panel").border_title
+        assert "Daily runs" in app.query_one("#runs-panel").border_title
+        assert app.query_one("#runs").size.height > 4
         await pilot.press("2")
         await pilot.pause()
         assert app.query_one("#weights-table").row_count >= 100

@@ -70,6 +70,7 @@ class Desk:
     contribution: dict = field(default_factory=dict)
     rules: list[tuple[str, str]] = field(default_factory=list)
     cash_path: list[dict] = field(default_factory=list)
+    sessions: list[dict] = field(default_factory=list)
     source: str = ""
 
     def holding(self, symbol: str) -> Holding | None:
@@ -142,6 +143,7 @@ def load_desk(state: Path | None = None, runs: Path | None = None) -> Desk:
     desk.health = _health(state_root)
     desk.rules = _rules(desk.book_version)
     desk.cash_path = _cash_path(desk)
+    desk.sessions = _sessions(runs_root, desk.nav_points, desk.fills)
     return desk
 
 
@@ -304,6 +306,64 @@ def _health(root: Path) -> dict:
         return health_report(root=root)
     except Exception as exc:
         return {"reason": str(exc), "n_sessions": 0, "sessions_required": 20}
+
+
+def _sessions(runs_root: Path, nav_points: list[dict], fills: list[dict] | None = None) -> list[dict]:
+    """One record per day the fund was marked or a run folder was written. Newest first."""
+    nav_by_day = {}
+    for point in nav_points:
+        day = str(point.get("as_of") or "")[:10]
+        if day:
+            nav_by_day[day] = point
+    summaries: dict[str, dict] = {}
+    if runs_root.exists():
+        for path in runs_root.iterdir():
+            if not path.is_dir() or not path.name[:4].isdigit():
+                continue
+            summary = _read_json(path / "summary.json")
+            day = str(summary.get("as_of") or path.name)[:10]
+            if day:
+                summaries[day] = summary
+    fill_counts: dict[str, int] = {}
+    for fill in fills or []:
+        if fill.get("status") not in {None, "filled", "partial"}:
+            continue
+        day = str(fill.get("as_of") or "")[:10]
+        if day:
+            fill_counts[day] = fill_counts.get(day, 0) + 1
+    days = sorted(set(nav_by_day) | set(summaries) | set(fill_counts), reverse=True)
+    rows = []
+    for day in days:
+        summary = summaries.get(day) or {}
+        nav_row = nav_by_day.get(day) or {}
+        ledger_basis = str(nav_row.get("fill_basis") or "")
+        summary_basis = str(summary.get("fill_basis") or "")
+        basis = ledger_basis or summary_basis
+        if summary_basis == "already_marked" and ledger_basis:
+            basis = ledger_basis
+        sma = summary.get("sma_on")
+        if sma is None:
+            sma = nav_row.get("sma_on")
+        rows.append(
+            {
+                "as_of": day,
+                "nav": _float(nav_row.get("nav"), summary.get("nav")),
+                "daily_return": _float(nav_row.get("daily_return"), summary.get("daily_return")),
+                "cash": _float(nav_row.get("cash"), summary.get("cash")),
+                "n_positions": int(_float(nav_row.get("n_positions"), summary.get("n_holdings")) or 0),
+                "n_fills": max(int(_float(summary.get("n_fills")) or 0), fill_counts.get(day, 0)),
+                "n_pending": int(_float(summary.get("n_pending")) or 0),
+                "sma_on": _bool(sma),
+                "sma_reason": str(summary.get("sma_reason") or ""),
+                "halted": bool(summary.get("halted")) or _bool(nav_row.get("halted")) is True,
+                "halt_reason": str(summary.get("halt_reason") or ""),
+                "fill_basis": basis,
+                "reconcile_reason": str(summary.get("reconcile_reason") or ""),
+                "purification_today": _float(summary.get("purification_today"), nav_row.get("purification_today")) or 0.0,
+                "n_filing_fails": int(_float(summary.get("n_filing_fails")) or 0),
+            }
+        )
+    return rows
 
 
 def _latest_run(root: Path) -> Path | None:

@@ -221,6 +221,92 @@ class Performance(Static):
         return Text("\n").join(lines)
 
 
+class SessionList(Static):
+    """One compact box per day produced by python -m ops run."""
+
+    def render(self) -> Text:
+        desk: Desk | None = getattr(self.app, "desk", None)
+        width = max((self.size.width or 48) - 2, 36)
+        if desk is None or not desk.sessions:
+            return _text("No day yet. Run python -m ops run --as-of today.", MUTED)
+        blocks: list[Text] = []
+        for index, session in enumerate(desk.sessions):
+            if index:
+                blocks.append(Text(""))
+            blocks.extend(_session_box(session, width))
+        return Text("\n").join(blocks)
+
+
+def _session_box(session: dict, width: int) -> list[Text]:
+    day = str(session.get("as_of") or "")
+    nav = session.get("nav")
+    nav_text = "—" if nav is None else f"{float(nav):,.2f}"
+    change = _tone_pct(session.get("daily_return"), signed=True)
+    halted = bool(session.get("halted"))
+    state = "Halted" if halted else "Clear"
+    state_style = RED if halted else GREEN
+    sma_on = session.get("sma_on")
+    sma = "SMA on" if sma_on else "SMA cash" if sma_on is False else "SMA"
+    sma_style = GREEN if sma_on else RED if sma_on is False else MUTED
+    inner = max(width - 2, 24)
+    title = f" {day} "
+    dash = max(inner - len(title), 0)
+    top = Text.assemble(("┌", MUTED), (title, INK), ("─" * dash, MUTED), ("┐", MUTED))
+    nav_line = Text.assemble(
+        ("│ ", MUTED),
+        ("NAV ", MUTED),
+        (nav_text, INK),
+        ("   Day ", MUTED),
+        change,
+        "   ",
+        (f"{int(session.get('n_positions') or 0)} names", INK),
+    )
+    nav_line.pad_right(max(width - nav_line.cell_len - 1, 0))
+    nav_line.append("│", style=MUTED)
+    ops = Text.assemble(
+        ("│ ", MUTED),
+        (_fill_label(str(session.get("fill_basis") or "")), BLUE),
+        "   ",
+        (sma, sma_style),
+        "   ",
+        (state, state_style),
+        "   ",
+        (f"{int(session.get('n_fills') or 0)} fills", INK),
+    )
+    if int(session.get("n_pending") or 0):
+        ops.append(f"   {int(session['n_pending'])} waiting", style=BLUE)
+    ops.append(f"   purify {_money(session.get('purification_today'))}", style=MUTED)
+    ops.pad_right(max(width - ops.cell_len - 1, 0))
+    ops.append("│", style=MUTED)
+    note = session.get("halt_reason") or session.get("sma_reason") or ""
+    if session.get("n_filing_fails"):
+        note = f"{int(session['n_filing_fails'])} filing fails. {note}".strip()
+    note = str(note)
+    if len(note) > inner - 1:
+        note = note[: inner - 2] + "…"
+    note_line = Text.assemble(("│ ", MUTED), (note or "—", MUTED if not halted else RED))
+    note_line.pad_right(max(width - note_line.cell_len - 1, 0))
+    note_line.append("│", style=MUTED)
+    bottom = Text("└" + "─" * inner + "┘", style=MUTED)
+    return [top, nav_line, ops, note_line, bottom]
+
+
+def _fill_label(basis: str) -> str:
+    labels = {
+        "close_bootstrap": "Bought at the close",
+        "next_open": "Filled at the open",
+        "queued_next_open": "Queued for the next open",
+        "already_marked": "Already marked",
+        "submitted_opg": "Sent for the open",
+        "draft": "Draft only",
+        "halted": "Halted",
+        "no_orders": "No orders",
+        "broker_sync": "Synced from the broker",
+        "rejected": "Rejected",
+    }
+    return labels.get(basis, basis.replace("_", " ") if basis else "No fill")
+
+
 class Tape(Static):
     """Two full-width status lines. Numbers use the width of the terminal."""
 
@@ -335,16 +421,30 @@ class DeskApp(App):
         background: {BG};
         padding: 0 1;
     }}
-    #perf-panel {{
+    #book-main {{
         width: 1fr;
+        height: 1fr;
+    }}
+    #perf-panel {{
+        height: auto;
+        max-height: 34;
+    }}
+    #runs-panel {{
+        height: 1fr;
+        min-height: 8;
     }}
     #holdings-panel {{
         width: 1fr;
     }}
     #perf {{
-        height: 1fr;
+        height: auto;
         width: 1fr;
         padding: 1 1 0 1;
+    }}
+    #runs {{
+        height: 1fr;
+        width: 1fr;
+        padding: 0 1;
     }}
     #health-table, #rules-table {{
         height: 1fr;
@@ -430,8 +530,11 @@ class DeskApp(App):
         with TabbedContent(id="tabs"):
             with TabPane("Book", id="book"):
                 with Horizontal():
-                    with Panel("Performance", id="perf-panel"):
-                        yield Performance(id="perf")
+                    with Vertical(id="book-main"):
+                        with Panel("Performance", id="perf-panel"):
+                            yield Performance(id="perf")
+                        with Panel("Daily runs", id="runs-panel"):
+                            yield SessionList(id="runs")
                     with Panel("Holdings", id="holdings-panel"):
                         yield DataTable(id="book-table", cursor_type="row", zebra_stripes=True)
             with TabPane("Weights", id="weights"):
@@ -520,6 +623,7 @@ class DeskApp(App):
             self._mute = False
         self.query_one("#tape", Tape).refresh()
         self.query_one("#perf", Performance).refresh()
+        self.query_one("#runs", SessionList).refresh()
 
     def _fill_book(self) -> None:
         table = self.query_one("#book-table", DataTable)

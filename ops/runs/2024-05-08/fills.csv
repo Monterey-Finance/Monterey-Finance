@@ -1,0 +1,23 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+A,sell,2024-05-08,open,0.003420627788052887,rebalance,1,141.1199951171875,filled,sell
+AAPL,sell,2024-05-08,open,0.1,rebalance,1,182.85000610351562,filled,sell
+GOOG,sell,2024-05-08,open,0.1,rebalance,13,170.75,filled,sell
+INTU,sell,2024-05-08,open,0.014943421500525328,rebalance,1,641.1500244140625,filled,sell
+KVUE,sell,2024-05-08,open,0.003069942349204215,rebalance,6,20.079999923706055,filled,sell
+META,sell,2024-05-08,open,0.09618300314997207,rebalance,1,463.5,filled,sell
+PG,sell,2024-05-08,open,0.03452893203868744,rebalance,1,165.97999572753906,filled,sell
+UNP,sell,2024-05-08,open,0.012324322151141287,rebalance,1,241.47000122070312,filled,sell
+VRSK,sell,2024-05-08,open,0.0026605924183344034,rebalance,1,247.10000610351562,filled,sell
+VRTX,sell,2024-05-08,open,0.008622193984459407,rebalance,1,413.3299865722656,filled,sell
+ABBV,buy,2024-05-08,open,0.024562071535611636,rebalance,1,162.13999938964844,filled,buy
+ABNB,buy,2024-05-08,open,0.008941449498324762,rebalance,1,157.10000610351562,filled,buy
+ADBE,buy,2024-05-08,open,0.01785864824654069,rebalance,1,489.9700012207031,filled,buy
+AMAT,buy,2024-05-08,open,0.014059336492203913,rebalance,1,205.91000366210938,filled,buy
+COIN,buy,2024-05-08,open,0.00441887522296688,rebalance,2,209.5,filled,buy
+DDOG,buy,2024-05-08,open,0.00374457761767082,rebalance,5,114.0999984741211,filled,buy
+MCHP,buy,2024-05-08,open,0.0042337768976947,rebalance,2,91.06999969482422,filled,buy
+MSFT,buy,2024-05-08,open,0.1,rebalance,4,408.1700134277344,filled,buy
+ORCL,buy,2024-05-08,open,0.02661576522670746,rebalance,2,117.70999908447266,filled,buy
+PLTR,buy,2024-05-08,open,0.004117246639648827,rebalance,38,21.579999923706055,partial,partial buy
+QCOM,buy,2024-05-08,open,0.015793783763096522,rebalance,0,176.72999572753906,rejected,no cash
+XOM,buy,2024-05-08,open,0.039721921961180316,rebalance,0,115.70999908447266,rejected,no cash

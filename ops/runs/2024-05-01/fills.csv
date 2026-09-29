@@ -1,0 +1,91 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+A,sell,2024-05-01,open,0.003420627788052887,monthly rebuild,1,136.72000122070312,filled,sell
+ABBV,sell,2024-05-01,open,0.024562071535611636,monthly rebuild,23,162.08999633789062,filled,sell
+ABNB,sell,2024-05-01,open,0.008941449498324762,monthly rebuild,1,157.5800018310547,filled,sell
+ADBE,sell,2024-05-01,open,0.01785864824654069,monthly rebuild,3,461.1199951171875,filled,sell
+ADSK,sell,2024-05-01,open,0.0039161228780124745,monthly rebuild,4,211.0,filled,sell
+AMCR,sell,2024-05-01,open,0.0056198248494461495,monthly rebuild,9,47.79999923706055,filled,sell
+AME,sell,2024-05-01,open,0.0034351546218702707,monthly rebuild,1,174.22000122070312,filled,sell
+BDX,sell,2024-05-01,open,0.004538587163278464,monthly rebuild,2,183.98585510253906,filled,sell
+BMY,sell,2024-05-01,open,0.0,exit,276,43.970001220703125,filled,sell
+BX,sell,2024-05-01,open,0.0071451250916426045,monthly rebuild,7,116.54000091552734,filled,sell
+CDNS,sell,2024-05-01,open,0.006389078002232044,monthly rebuild,3,275.3599853515625,filled,sell
+CHD,sell,2024-05-01,open,0.0,exit,26,107.54000091552734,filled,sell
+COIN,sell,2024-05-01,open,0.00441887522296688,monthly rebuild,6,199.0,filled,sell
+CPRT,sell,2024-05-01,open,0.004447058494459135,monthly rebuild,3,54.27000045776367,filled,sell
+CRM,sell,2024-05-01,open,0.02224352061210154,monthly rebuild,9,269.0199890136719,filled,sell
+CSCO,sell,2024-05-01,open,0.016270813787786765,monthly rebuild,17,46.70000076293945,filled,sell
+CSGP,sell,2024-05-01,open,0.0,exit,47,90.19999694824219,filled,sell
+CSX,sell,2024-05-01,open,0.005531706344661681,monthly rebuild,19,33.209999084472656,filled,sell
+DASH,sell,2024-05-01,open,0.0,exit,45,128.14999389648438,filled,sell
+DRI,sell,2024-05-01,open,0.001582438045141347,monthly rebuild,1,152.5,filled,sell
+EL,sell,2024-05-01,open,0.0,exit,41,140.41000366210938,filled,sell
+EMR,sell,2024-05-01,open,0.005248500692532857,monthly rebuild,2,107.52999877929688,filled,sell
+EW,sell,2024-05-01,open,0.0,exit,73,84.0999984741211,filled,sell
+EXPD,sell,2024-05-01,open,0.0013640215580926088,monthly rebuild,1,111.5,filled,sell
+FAST,sell,2024-05-01,open,0.0016566062124375247,monthly rebuild,8,33.970001220703125,filled,sell
+FFIV,sell,2024-05-01,open,0.0008279100973961489,monthly rebuild,1,164.5500030517578,filled,sell
+FTNT,sell,2024-05-01,open,0.004095370265155603,monthly rebuild,5,63.5099983215332,filled,sell
+GILD,sell,2024-05-01,open,0.006919815417256293,monthly rebuild,14,65.31999969482422,filled,sell
+GL,sell,2024-05-01,open,0.0006631946196761682,monthly rebuild,6,75.5,filled,sell
+GRMN,sell,2024-05-01,open,0.00235995156297284,monthly rebuild,1,153.25,filled,sell
+HRL,sell,2024-05-01,open,0.0,exit,59,35.34000015258789,filled,sell
+IDXX,sell,2024-05-01,open,0.0,exit,10,473.0,filled,sell
+J,sell,2024-05-01,open,0.0,exit,14,118.99385070800781,filled,sell
+KEYS,sell,2024-05-01,open,0.0022178245249153115,monthly rebuild,1,147.1999969482422,filled,sell
+KVUE,sell,2024-05-01,open,0.003069942349204215,monthly rebuild,26,18.889999389648438,filled,sell
+LEN,sell,2024-05-01,open,0.0,exit,34,146.63116455078125,filled,sell
+MA,sell,2024-05-01,open,0.036357091351763175,monthly rebuild,5,445.79998779296875,filled,sell
+MCO,sell,2024-05-01,open,0.005804109466516217,monthly rebuild,1,369.8599853515625,filled,sell
+META,sell,2024-05-01,open,0.09618300314997207,monthly rebuild,14,428.6000061035156,filled,sell
+MNST,sell,2024-05-01,open,0.002371021498854502,monthly rebuild,11,26.514999389648438,filled,sell
+MSCI,sell,2024-05-01,open,0.0031432295260160076,monthly rebuild,1,465.5400085449219,filled,sell
+NDSN,sell,2024-05-01,open,0.0012657600145822645,monthly rebuild,1,257.92999267578125,filled,sell
+ORCL,sell,2024-05-01,open,0.02661576522670746,monthly rebuild,21,113.91000366210938,filled,sell
+P,sell,2024-05-01,open,0.0,exit,36,50.33000183105469,filled,sell
+PGR,sell,2024-05-01,open,0.0,exit,64,209.16000366210938,filled,sell
+PTC,sell,2024-05-01,open,0.001805295925029411,monthly rebuild,1,177.19000244140625,filled,sell
+SBUX,sell,2024-05-01,open,0.008557993785810493,monthly rebuild,5,75.81999969482422,filled,sell
+STE,sell,2024-05-01,open,0.0,exit,12,204.61000061035156,filled,sell
+STLD,sell,2024-05-01,open,0.0017735442966895984,monthly rebuild,1,131.32000732421875,filled,sell
+TECH,sell,2024-05-01,open,0.0008487628755877075,monthly rebuild,2,70.54000091552734,filled,sell
+TEL,sell,2024-05-01,open,0.0,exit,35,140.25999450683594,filled,sell
+TPR,sell,2024-05-01,open,0.0007732320826917855,monthly rebuild,3,39.79999923706055,filled,sell
+TRMB,sell,2024-05-01,open,0.0012612565819408892,monthly rebuild,3,60.09000015258789,filled,sell
+TROW,sell,2024-05-01,open,0.0020980549550405434,monthly rebuild,2,109.56999969482422,filled,sell
+UNH,sell,2024-05-01,open,0.0,exit,102,479.260009765625,filled,sell
+UNP,sell,2024-05-01,open,0.012324322151141287,monthly rebuild,1,235.82000732421875,filled,sell
+VRSK,sell,2024-05-01,open,0.0026605924183344034,monthly rebuild,1,225.0,filled,sell
+VRSN,sell,2024-05-01,open,0.0014450451414920482,monthly rebuild,1,171.02000427246094,filled,sell
+VRTX,sell,2024-05-01,open,0.008622193984459407,monthly rebuild,2,392.80999755859375,filled,sell
+AAPL,buy,2024-05-01,open,0.1,monthly rebuild,2,169.5800018310547,filled,buy
+ADI,buy,2024-05-01,open,0.008473887954887918,monthly rebuild,2,197.05999755859375,filled,buy
+AMAT,buy,2024-05-01,open,0.014059336492203913,monthly rebuild,1,196.0800018310547,filled,buy
+AOS,buy,2024-05-01,open,0.00104641206270996,monthly rebuild,16,82.83000183105469,filled,buy
+APP,buy,2024-05-01,open,0.0020430697511159687,monthly rebuild,2,70.7300033569336,filled,buy
+BIIB,buy,2024-05-01,open,0.002669678175925912,monthly rebuild,16,215.55999755859375,filled,buy
+CL,buy,2024-05-01,open,0.006423715747435312,monthly rebuild,91,91.5,filled,buy
+DDOG,buy,2024-05-01,open,0.00374457761767082,monthly rebuild,2,127.0199966430664,filled,buy
+DVN,buy,2024-05-01,open,0.002798750630968739,monthly rebuild,5,50.959999084472656,filled,buy
+DXCM,buy,2024-05-01,open,0.004298026315578707,monthly rebuild,44,126.20999908447266,filled,buy
+EQT,buy,2024-05-01,open,0.0015194721830597848,monthly rebuild,49,39.79999923706055,filled,buy
+FTV,buy,2024-05-01,open,0.0017006797370649979,monthly rebuild,39,56.92539596557617,filled,buy
+GOOG,buy,2024-05-01,open,0.1,monthly rebuild,3,166.17999267578125,filled,buy
+GWW,buy,2024-05-01,open,0.0038768631395890074,monthly rebuild,5,922.0800170898438,filled,buy
+HLT,buy,2024-05-01,open,0.004218338678134526,monthly rebuild,28,196.69000244140625,filled,buy
+IEX,buy,2024-05-01,open,0.0014252809631145752,monthly rebuild,8,220.5800018310547,filled,buy
+MCHP,buy,2024-05-01,open,0.0042337768976947,monthly rebuild,3,90.43000030517578,filled,buy
+MDLZ,buy,2024-05-01,open,0.008303068784255853,monthly rebuild,150,71.76000213623047,filled,buy
+MSFT,buy,2024-05-01,open,0.1,monthly rebuild,6,392.6099853515625,filled,buy
+NXPI,buy,2024-05-01,open,0.005650848890424717,monthly rebuild,29,253.35000610351562,filled,buy
+PANW,buy,2024-05-01,open,0.0038194535686040003,monthly rebuild,1,144.44000244140625,filled,buy
+PG,buy,2024-05-01,open,0.03452893203868744,monthly rebuild,1,163.27999877929688,filled,buy
+PYPL,buy,2024-05-01,open,0.006091930345312059,monthly rebuild,116,67.0,filled,buy
+QCOM,buy,2024-05-01,open,0.015793783763096522,monthly rebuild,1,164.50999450683594,filled,buy
+RMD,buy,2024-05-01,open,0.0026805862588862063,monthly rebuild,1,212.64999389648438,filled,buy
+ROL,buy,2024-05-01,open,0.0018379180173672541,monthly rebuild,53,44.54999923706055,filled,buy
+TDY,buy,2024-05-01,open,0.0015408790401290873,monthly rebuild,5,380.8900146484375,filled,buy
+TMUS,buy,2024-05-01,open,0.01646219479187624,monthly rebuild,130,164.5,filled,buy
+TYL,buy,2024-05-01,open,0.0018928910087849535,monthly rebuild,5,460.6400146484375,filled,buy
+WM,buy,2024-05-01,open,0.007110549317880695,monthly rebuild,44,207.6300048828125,filled,buy
+XOM,buy,2024-05-01,open,0.039721921961180316,monthly rebuild,430,118.27999877929688,partial,partial buy

@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+COHR,,10-K,2022-06-30,2022-08-29,,1897214000.0,2582371000.0,700331000.0,116513000.0,7510388599.869593,0.25261196205385994,0.3438398646968599,0.4370881687875644,False,cash ratio exceeds threshold

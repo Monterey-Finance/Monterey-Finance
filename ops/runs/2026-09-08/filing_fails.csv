@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+DELL,1571996,10-Q,2026-07-31,2026-09-08,Q2,34466000000.0,11569000000.0,22918000000.0,640000000.0,111401465672.1713,0.3093855165373268,0.10458569759114475,0.3103101004229923,False,debt ratio exceeds threshold

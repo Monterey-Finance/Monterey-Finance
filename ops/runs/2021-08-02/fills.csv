@@ -1,0 +1,32 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2021-08-02,open,0.10000000000000003,monthly rebuild,2,146.36000061035156,filled,sell
+AMAT,sell,2021-08-02,open,0.011457316932847062,monthly rebuild,2,141.0399932861328,filled,sell
+AMD,sell,2021-08-02,open,0.010046539729819922,monthly rebuild,4,105.93000030517578,filled,sell
+CDNS,sell,2021-08-02,open,0.0033515376167933854,monthly rebuild,1,147.82000732421875,filled,sell
+CSCO,sell,2021-08-02,open,0.019768341637286295,monthly rebuild,3,55.599998474121094,filled,sell
+EW,sell,2021-08-02,open,0.005669184577903489,monthly rebuild,1,112.41999816894531,filled,sell
+EXPD,sell,2021-08-02,open,0.0018813198130601867,monthly rebuild,1,127.94000244140625,filled,sell
+HD,sell,2021-08-02,open,0.029896918847521887,monthly rebuild,1,330.0,filled,sell
+LIN,sell,2021-08-02,open,0.0132391908703007,monthly rebuild,2,308.7300109863281,filled,sell
+MRNA,sell,2021-08-02,open,0.008294900264166512,monthly rebuild,1,360.0,filled,sell
+NSC,sell,2021-08-02,open,0.005846711638587671,monthly rebuild,1,259.0799865722656,filled,sell
+NXPI,sell,2021-08-02,open,0.005129821730786834,monthly rebuild,1,210.1999969482422,filled,sell
+PG,sell,2021-08-02,open,0.031189329975479886,monthly rebuild,6,141.77000427246094,filled,sell
+PTC,sell,2021-08-02,open,0.0014531230411437997,monthly rebuild,1,135.67999267578125,filled,sell
+RVTY,sell,2021-08-02,open,0.0015232991805189287,monthly rebuild,1,183.36000061035156,filled,sell
+TXN,sell,2021-08-02,open,0.015828027871989135,monthly rebuild,1,192.39999389648438,filled,sell
+WM,sell,2021-08-02,open,0.005206194529224856,monthly rebuild,1,148.6999969482422,filled,sell
+APP,buy,2021-08-02,open,0.0014717429288708449,monthly rebuild,2,62.02000045776367,filled,buy
+BX,buy,2021-08-02,open,0.005962490374898264,monthly rebuild,1,116.0999984741211,filled,buy
+CL,buy,2021-08-02,open,0.006058258348026727,monthly rebuild,4,79.48999786376953,filled,buy
+CME,buy,2021-08-02,open,0.006717931200806074,monthly rebuild,1,212.13999938964844,filled,buy
+CRM,buy,2021-08-02,open,0.0202131453031801,monthly rebuild,1,242.30999755859375,filled,buy
+EBAY,buy,2021-08-02,open,0.004209029635875937,monthly rebuild,5,68.80999755859375,filled,buy
+GRMN,buy,2021-08-02,open,0.0024465333663115916,monthly rebuild,1,156.97999572753906,filled,buy
+ICE,buy,2021-08-02,open,0.0058829479642767924,monthly rebuild,1,120.25,filled,buy
+LOW,buy,2021-08-02,open,0.012208899385172514,monthly rebuild,1,193.80999755859375,filled,buy
+META,buy,2021-08-02,open,0.0882159369478021,monthly rebuild,2,358.1000061035156,filled,buy
+MSFT,buy,2021-08-02,open,0.10000000000000003,monthly rebuild,2,286.3599853515625,filled,buy
+PYPL,buy,2021-08-02,open,0.030124009680056532,monthly rebuild,6,276.885009765625,filled,buy
+QCOM,buy,2021-08-02,open,0.014205391839233432,monthly rebuild,0,150.0,rejected,no cash
+SWKS,buy,2021-08-02,open,0.0027868805221190978,monthly rebuild,0,184.92999267578125,rejected,no cash

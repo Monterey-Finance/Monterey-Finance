@@ -38,8 +38,8 @@ async def _walk_tabs():
         book = app.query_one("#book-table")
         assert book.row_count >= 100
         assert book.size.height > 12
-        assert app.query_one("#facts").row_count >= 10
-        assert app.query_one("#bars").row_count >= 100
+        assert app.query_one("#perf").size.height > 12
+        assert "Performance" in app.query_one("#perf-panel").border_title
         await pilot.press("2")
         await pilot.pause()
         assert app.query_one("#weights-table").row_count >= 100

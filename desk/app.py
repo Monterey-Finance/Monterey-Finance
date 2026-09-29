@@ -94,6 +94,133 @@ def _meter(value: float | None, line: float, width: int = 14) -> Text:
     return Text(f"{'█' * filled}{'░' * (width - filled)}  {value * 100:.1f}", style=style)
 
 
+class Panel(Vertical):
+    """A bordered section. The title sits on the top edge."""
+
+    def __init__(self, title: str, **kwargs) -> None:
+        classes = f"{kwargs.pop('classes', '')} panel".strip()
+        super().__init__(classes=classes, **kwargs)
+        self.border_title = title
+
+
+class Performance(Static):
+    """Fund figures for the Book tab. Holdings stay in the table beside this."""
+
+    def render(self) -> Text:
+        desk: Desk | None = getattr(self.app, "desk", None)
+        if desk is None or desk.nav is None:
+            return _text("NAV prints after the first session.", MUTED)
+        since = None
+        if desk.starting_cash:
+            since = desk.nav / desk.starting_cash - 1.0
+        report = desk.health or {}
+        needed = int(report.get("sessions_required") or 20)
+        have = int(report.get("n_sessions") or len(desk.nav_points))
+        short = max(needed - have, 0)
+
+        def metric(value, kind: str) -> Text:
+            if value is None:
+                note = f"—   {short} sessions short" if short else "—"
+                return _text(note, MUTED)
+            if kind == "pct":
+                return _tone_pct(float(value), signed=True)
+            return _text(f"{float(value):.2f}", INK)
+
+        day_style = GREEN if (desk.daily_return or 0) > 0 else RED if (desk.daily_return or 0) < 0 else MUTED
+        sma = "On" if desk.sma_on else "Cash" if desk.sma_on is False else "—"
+        sma_style = GREEN if desk.sma_on else RED if desk.sma_on is False else MUTED
+        invested_pct = desk.invested / max(desk.invested + desk.cash, 1.0)
+        left = [
+            ("Day", _tone_pct(desk.daily_return, signed=True)),
+            ("Since start", _tone_pct(since, signed=True)),
+            ("Sessions", _text(str(have), INK)),
+            ("Max drawdown", metric(report.get("max_drawdown"), "pct")),
+            ("Sharpe", metric(report.get("sharpe"), "num")),
+            ("Sortino", metric(report.get("sortino"), "num")),
+            ("Beta SPUS", metric(report.get("beta_spus"), "num")),
+            ("Beta SPY", metric(report.get("beta_spy"), "num")),
+            ("Tracking error", metric(report.get("tracking_error_spus"), "num")),
+            ("Alpha", metric(report.get("alpha_spus"), "num")),
+            ("VaR 95", metric(report.get("var_95"), "num")),
+            ("CVaR 95", metric(report.get("cvar_95"), "num")),
+        ]
+        right = [
+            ("Cash", _text(_money(desk.cash), INK)),
+            ("Invested", _text(_money(desk.invested), INK)),
+            ("Invested %", _text(_pct(invested_pct, digits=1), GREEN)),
+            ("Names", _text(str(desk.n_positions), INK)),
+            ("SMA", _text(sma, sma_style)),
+            ("Kill switch", _text("Halted" if desk.halted else "Clear", RED if desk.halted else GREEN)),
+            ("Purify today", _text(_money(desk.purification_today), INK)),
+            ("Purify life", _text(_money(desk.purification_cumulative), INK)),
+            ("Name cap", _text(f"{desk.name_cap:.0%}", BLUE)),
+            ("Cash weight", _text(_pct(desk.cash_weight, digits=1), MUTED)),
+            ("Last fill", _text(desk.fill_basis or "—", BLUE)),
+            ("Book", _text(desk.book_version or "1b", MUTED)),
+        ]
+        lines = [
+            Text.assemble(("NAV", MUTED)),
+            Text(f"{desk.nav:,.2f}", style=INK),
+            Text.assemble(("Day ", MUTED), (_pct(desk.daily_return, signed=True), day_style), ("    Since start ", MUTED), (_pct(since, signed=True), GREEN if (since or 0) > 0 else RED if (since or 0) < 0 else MUTED)),
+            Text(""),
+            Text.assemble(("RETURN", GREEN), (" " * 22), ("BOOK", BLUE)),
+        ]
+        for (left_label, left_value), (right_label, right_value) in zip(left, right):
+            lines.append(
+                Text.assemble(
+                    (f"{left_label:<16}", MUTED),
+                    left_value,
+                    " " * 4,
+                    (f"{right_label:<14}", MUTED),
+                    right_value,
+                )
+            )
+        reason = desk.halt_reason or desk.sma_reason or desk.reconcile_reason
+        if reason:
+            lines.append(Text(""))
+            lines.append(Text(reason, style=RED if desk.halted else MUTED))
+        holding = desk.holding(getattr(self.app, "_symbol", "")) if getattr(self.app, "_symbol", "") else None
+        if holding is not None:
+            lines.extend(
+                [
+                    Text(""),
+                    Text.assemble(("HOLDING", MUTED), "  ", (holding.symbol, INK), "  ", _screen(holding.screen)),
+                    Text.assemble(
+                        ("Shares ", MUTED),
+                        (_shares(holding.shares), INK),
+                        ("    Value ", MUTED),
+                        (_money(holding.market_value), INK),
+                        ("    Last ", MUTED),
+                        (_px(holding.price), MUTED),
+                    ),
+                    Text.assemble(
+                        ("Target ", MUTED),
+                        (_pct(holding.target_weight), INK),
+                        ("    Actual ", MUTED),
+                        _tone_pct(holding.actual_weight),
+                        ("    Drift ", MUTED),
+                        _tone_pct(holding.drift, signed=True),
+                        "    ",
+                        (_text("CAP", BLUE) if holding.name_capped else _text("under cap", MUTED)),
+                    ),
+                    Text.assemble(("Debt 30  ", MUTED), _meter(holding.debt_ratio, 0.30, 18)),
+                    Text.assemble(("Cash 30  ", MUTED), _meter(holding.cash_ratio, 0.30, 18)),
+                    Text.assemble(("Recv 70  ", MUTED), _meter(holding.receivables_ratio, 0.70, 18)),
+                    Text.assemble(
+                        ("FCF ", MUTED),
+                        (_pct(holding.fcf_margin, digits=1), INK),
+                        ("    Market cap ", MUTED),
+                        (_cap(holding.market_cap), MUTED),
+                    ),
+                ]
+            )
+        window = report.get("window")
+        if window:
+            lines.append(Text(""))
+            lines.append(Text(f"Risk window  {window}", style=MUTED))
+        return Text("\n").join(lines)
+
+
 class Tape(Static):
     """Two full-width status lines. Numbers use the width of the terminal."""
 
@@ -198,14 +325,29 @@ class DeskApp(App):
         height: 1fr;
         background: {BG};
     }}
-    #book-table {{
-        width: 3fr;
+    .panel {{
+        border: solid #3a414c;
+        border-title-color: {MUTED};
+        border-title-background: {BG};
+        border-title-align: left;
+        height: 1fr;
+        width: 1fr;
+        background: {BG};
+        padding: 0 1;
     }}
-    #side {{
-        width: 2fr;
+    #perf-panel {{
+        width: 1fr;
+    }}
+    #holdings-panel {{
+        width: 1fr;
+    }}
+    #perf {{
+        height: 1fr;
+        width: 1fr;
+        padding: 1 1 0 1;
     }}
     #health-table, #rules-table {{
-        height: 14;
+        height: 1fr;
         max-height: 14;
     }}
     #status-table, #limits-table {{
@@ -288,29 +430,39 @@ class DeskApp(App):
         with TabbedContent(id="tabs"):
             with TabPane("Book", id="book"):
                 with Horizontal():
-                    yield DataTable(id="book-table", cursor_type="row", zebra_stripes=True)
-                    with Vertical(id="side"):
-                        yield DataTable(id="facts", show_cursor=False, zebra_stripes=True)
-                        yield DataTable(id="bars", cursor_type="row", zebra_stripes=True)
+                    with Panel("Performance", id="perf-panel"):
+                        yield Performance(id="perf")
+                    with Panel("Holdings", id="holdings-panel"):
+                        yield DataTable(id="book-table", cursor_type="row", zebra_stripes=True)
             with TabPane("Weights", id="weights"):
-                yield DataTable(id="weights-table", cursor_type="row", zebra_stripes=True)
+                with Panel("Target weights"):
+                    yield DataTable(id="weights-table", cursor_type="row", zebra_stripes=True)
             with TabPane("Orders", id="orders"):
                 with Vertical():
-                    yield DataTable(id="orders-table", cursor_type="row", zebra_stripes=True)
-                    yield DataTable(id="fills-table", cursor_type="row", zebra_stripes=True)
+                    with Panel("Gap to the book"):
+                        yield DataTable(id="orders-table", cursor_type="row", zebra_stripes=True)
+                    with Panel("Fills"):
+                        yield DataTable(id="fills-table", cursor_type="row", zebra_stripes=True)
             with TabPane("Ledger", id="ledger"):
                 with Horizontal():
-                    yield DataTable(id="activity-table", cursor_type="row", zebra_stripes=True)
-                    yield DataTable(id="ratio-table", cursor_type="row", zebra_stripes=True)
-                    yield DataTable(id="cash-table", cursor_type="row", zebra_stripes=True)
+                    with Panel("Activity"):
+                        yield DataTable(id="activity-table", cursor_type="row", zebra_stripes=True)
+                    with Panel("Halal lines"):
+                        yield DataTable(id="ratio-table", cursor_type="row", zebra_stripes=True)
+                    with Panel("Cash path"):
+                        yield DataTable(id="cash-table", cursor_type="row", zebra_stripes=True)
             with TabPane("System", id="system"):
                 with Horizontal(id="grid"):
                     with Vertical():
-                        yield DataTable(id="health-table", show_cursor=False, zebra_stripes=True)
-                        yield DataTable(id="status-table", show_cursor=False, zebra_stripes=True)
+                        with Panel("Risk"):
+                            yield DataTable(id="health-table", show_cursor=False, zebra_stripes=True)
+                        with Panel("Session"):
+                            yield DataTable(id="status-table", show_cursor=False, zebra_stripes=True)
                     with Vertical():
-                        yield DataTable(id="rules-table", show_cursor=False, zebra_stripes=True)
-                        yield DataTable(id="limits-table", cursor_type="row", zebra_stripes=True)
+                        with Panel("Rules"):
+                            yield DataTable(id="rules-table", show_cursor=False, zebra_stripes=True)
+                        with Panel("Distance to the line"):
+                            yield DataTable(id="limits-table", cursor_type="row", zebra_stripes=True)
         with Horizontal(id="foot"):
             yield Input(placeholder="find symbol", id="find")
             yield Static("1 book   2 weights   3 orders   4 ledger   5 system    / find    r reload    q quit", id="keys")
@@ -342,12 +494,12 @@ class DeskApp(App):
         self._fill()
 
     def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
-        if self._mute or event.data_table.id not in {"book-table", "weights-table", "bars"}:
+        if self._mute or event.data_table.id not in {"book-table", "weights-table"}:
             return
         symbol = str(event.row_key.value)
         if symbol and symbol != self._symbol:
             self._symbol = symbol
-            self._fill_facts()
+            self.query_one("#perf", Performance).refresh()
 
     def _rows(self) -> list[Holding]:
         assert self.desk is not None
@@ -364,11 +516,10 @@ class DeskApp(App):
             rows = self._rows()
             if rows and (not self._symbol or self.desk.holding(self._symbol) is None or not self.desk.matches(self._symbol, self._query)):
                 self._symbol = rows[0].symbol
-            self._fill_facts()
-            self._fill_bars()
         finally:
             self._mute = False
         self.query_one("#tape", Tape).refresh()
+        self.query_one("#perf", Performance).refresh()
 
     def _fill_book(self) -> None:
         table = self.query_one("#book-table", DataTable)
@@ -378,12 +529,11 @@ class DeskApp(App):
                 ("SYM", 8),
                 ("WGT", 8),
                 ("ACT", 8),
-                ("VALUE", 14),
-                ("SH", 8),
-                ("PX", 10),
-                ("DRIFT", 8),
-                ("SCREEN", 8),
-                ("CAP", 5),
+                ("VALUE", 12),
+                ("SH", 6),
+                ("DRIFT", 7),
+                ("SCREEN", 7),
+                ("CAP", 4),
             ],
         )
         for row in self._rows():
@@ -393,7 +543,6 @@ class DeskApp(App):
                 _tone_pct(row.actual_weight),
                 _text(_money(row.market_value), INK),
                 _text(_shares(row.shares), INK),
-                _text(_px(row.price), MUTED),
                 _tone_pct(row.drift, signed=True),
                 _screen(row.screen),
                 _text("CAP", BLUE) if row.name_capped else _text("·", MUTED),
@@ -657,52 +806,6 @@ class DeskApp(App):
                 _meter(row.receivables_ratio, 0.70, 8),
                 key=row.symbol,
             )
-
-    def _fill_facts(self) -> None:
-        desk = self.desk
-        assert desk is not None
-        table = self.query_one("#facts", DataTable)
-        _columns(table, [("FIELD", 14), ("VALUE", 28)])
-        row = desk.holding(self._symbol) if self._symbol else None
-        if row is None:
-            table.add_row(_text("name", MUTED), _text("no holding", MUTED))
-            return
-        nav = desk.nav or 0.0
-        dollars = None if row.drift is None else row.drift * nav
-        pairs = [
-            ("symbol", row.symbol, INK),
-            ("shares", _shares(row.shares), INK),
-            ("last fill", _px(row.price), MUTED),
-            ("value", _money(row.market_value), INK),
-            ("target", _pct(row.target_weight), INK),
-            ("actual", _pct(row.actual_weight), INK),
-            ("drift", _pct(row.drift, signed=True), GREEN if (row.drift or 0) > 0 else RED if (row.drift or 0) < 0 else MUTED),
-            ("$ drift", _money(dollars, signed=True), BLUE),
-            ("cap", "clipped at 10%" if row.name_capped else f"room {_pct(desk.name_cap - row.target_weight)}", BLUE if row.name_capped else MUTED),
-            ("fcf margin", _pct(row.fcf_margin, digits=1), INK),
-            ("market cap", _cap(row.market_cap), MUTED),
-            ("screen", row.screen, GREEN if row.screen == "PASS" else RED if row.screen == "REVIEW" else MUTED),
-        ]
-        for label, value, style in pairs:
-            table.add_row(_text(label, MUTED), _text(value, style))
-        table.add_row(_text("debt 30", MUTED), _meter(row.debt_ratio, 0.30))
-        table.add_row(_text("cash 30", MUTED), _meter(row.cash_ratio, 0.30))
-        table.add_row(_text("recv 70", MUTED), _meter(row.receivables_ratio, 0.70))
-
-    def _fill_bars(self) -> None:
-        desk = self.desk
-        assert desk is not None
-        table = self.query_one("#bars", DataTable)
-        _columns(table, [("#", 4), ("SYM", 8), ("WGT", 8), ("BAR", 20)])
-        for index, row in enumerate(self._rows(), start=1):
-            table.add_row(
-                _text(str(index), MUTED),
-                _text(row.symbol, BLUE if row.symbol == self._symbol else INK),
-                _text(_pct(row.target_weight)),
-                _bar(row.target_weight, desk.name_cap, 16),
-                key=row.symbol,
-            )
-
 
 def _columns(table: DataTable, columns: list[tuple[str, int | None]]) -> None:
     table.clear(columns=True)

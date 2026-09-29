@@ -1,0 +1,16 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ABBV,sell,2023-11-27,open,0.02449356288750809,rebalance,1,138.6999969482422,filled,sell
+BMY,sell,2023-11-27,open,0.010419096779353067,rebalance,3,49.61000061035156,filled,sell
+COIN,sell,2023-11-27,open,0.0017726834257913364,rebalance,1,112.58000183105469,filled,sell
+CSCO,sell,2023-11-27,open,0.0207642072540866,rebalance,3,48.33000183105469,filled,sell
+MA,sell,2023-11-27,open,0.034766731779992156,rebalance,1,411.0,filled,sell
+MCD,sell,2023-11-27,open,0.018716724489653055,rebalance,1,282.6600036621094,filled,sell
+MDT,sell,2023-11-27,open,0.009196723494120741,rebalance,2,78.7699966430664,filled,sell
+PANW,sell,2023-11-27,open,0.00366982876252368,rebalance,1,133.0,filled,sell
+PG,sell,2023-11-27,open,0.036506690181210076,rebalance,1,151.52000427246094,filled,sell
+PGR,sell,2023-11-27,open,0.009060472990036133,rebalance,1,163.8699951171875,filled,sell
+UNH,sell,2023-11-27,open,0.0486349094897042,rebalance,1,547.0999755859375,filled,sell
+AAPL,buy,2023-11-27,open,0.1,rebalance,4,189.9199981689453,filled,buy
+GOOG,buy,2023-11-27,open,0.1,rebalance,11,137.57000732421875,filled,buy
+META,buy,2023-11-27,open,0.07794432847399006,rebalance,3,336.17999267578125,filled,buy
+PLTR,buy,2023-11-27,open,0.003117140572067638,rebalance,7,19.1299991607666,filled,buy

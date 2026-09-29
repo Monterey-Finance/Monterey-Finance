@@ -1,0 +1,15 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+CBOE,sell,2023-11-24,open,0.0016940818704257407,rebalance,1,179.69000244140625,filled,sell
+DHR,sell,2023-11-24,open,0.013899282709692297,rebalance,1,220.97999572753906,filled,sell
+EBAY,sell,2023-11-24,open,0.0020483575124951576,rebalance,3,41.66999816894531,filled,sell
+EL,sell,2023-11-24,open,0.00455615972862598,rebalance,1,123.58000183105469,filled,sell
+GOOG,sell,2023-11-24,open,0.1,rebalance,3,139.5399932861328,filled,sell
+META,sell,2023-11-24,open,0.07794432847399006,rebalance,2,340.1300048828125,filled,sell
+MSFT,sell,2023-11-24,open,0.1,rebalance,2,377.3299865722656,filled,sell
+NKE,sell,2023-11-24,open,0.015804141667497093,rebalance,1,107.5,filled,sell
+AAPL,buy,2023-11-24,open,0.1,rebalance,2,190.8699951171875,filled,buy
+ABBV,buy,2023-11-24,open,0.02449356288750809,rebalance,2,140.0,filled,buy
+ADSK,buy,2023-11-24,open,0.0041624745216319,rebalance,2,202.66000366210938,filled,buy
+CRM,buy,2023-11-24,open,0.019398393020439046,rebalance,1,224.36000061035156,filled,buy
+MDT,buy,2023-11-24,open,0.009196723494120741,rebalance,2,78.23999786376953,filled,buy
+ORCL,buy,2023-11-24,open,0.027744239469708287,rebalance,2,116.48999786376953,filled,buy

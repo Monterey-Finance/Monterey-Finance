@@ -1,0 +1,34 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ADSK,sell,2020-06-01,open,0.00649269600055396,monthly rebuild,1,210.0,filled,sell
+AMAT,sell,2020-06-01,open,0.00721462246027037,monthly rebuild,2,55.630001068115234,filled,sell
+AMCR,sell,2020-06-01,open,0.008396258191220468,monthly rebuild,2,50.75,filled,sell
+AMGN,sell,2020-06-01,open,0.022372979526282043,monthly rebuild,1,228.88999938964844,filled,sell
+BIIB,sell,2020-06-01,open,0.008125495554971494,monthly rebuild,1,305.7200012207031,filled,sell
+CBOE,sell,2020-06-01,open,0.0017390916314557834,monthly rebuild,1,106.61000061035156,filled,sell
+CDNS,sell,2020-06-01,open,0.003581967739054466,monthly rebuild,2,90.80000305175781,filled,sell
+CSCO,sell,2020-06-01,open,0.02848360208932334,monthly rebuild,21,47.150001525878906,filled,sell
+EL,sell,2020-06-01,open,0.010332717612803112,monthly rebuild,1,199.16000366210938,filled,sell
+GILD,sell,2020-06-01,open,0.01681736726116501,monthly rebuild,5,75.47000122070312,filled,sell
+INTC,sell,2020-06-01,open,0.04016079752286676,monthly rebuild,6,62.4900016784668,filled,sell
+JNJ,sell,2020-06-01,open,0.06337616282180925,monthly rebuild,1,147.2899932861328,filled,sell
+KEYS,sell,2020-06-01,open,0.0029229346791634432,monthly rebuild,1,107.93000030517578,filled,sell
+MSFT,sell,2020-06-01,open,0.1,monthly rebuild,1,182.5399932861328,filled,sell
+PYPL,sell,2020-06-01,open,0.02281645350065473,monthly rebuild,4,154.89999389648438,filled,sell
+TXN,sell,2020-06-01,open,0.017309187914104348,monthly rebuild,2,117.7699966430664,filled,sell
+VEEV,sell,2020-06-01,open,0.004776319111689157,monthly rebuild,1,216.67999267578125,filled,sell
+VRSN,sell,2020-06-01,open,0.003833058411507345,monthly rebuild,1,218.02999877929688,filled,sell
+ALGN,buy,2020-06-01,open,0.0026648895503339773,monthly rebuild,1,247.33999633789062,filled,buy
+CRM,buy,2020-06-01,open,0.022870592707858135,monthly rebuild,5,173.10000610351562,filled,buy
+ILMN,buy,2020-06-01,open,0.007214408718080351,monthly rebuild,1,351.3034973144531,filled,buy
+LMT,buy,2020-06-01,open,0.01738736431778302,monthly rebuild,1,388.94000244140625,filled,buy
+MA,buy,2020-06-01,open,0.04391892548046783,monthly rebuild,2,300.79998779296875,filled,buy
+MCD,buy,2020-06-01,open,0.02268766997418763,monthly rebuild,2,186.7100067138672,filled,buy
+META,buy,2020-06-01,open,0.09284600814954815,monthly rebuild,4,224.58999633789062,filled,buy
+MMM,buy,2020-06-01,open,0.011554334526012948,monthly rebuild,1,130.39297485351562,filled,buy
+NEM,buy,2020-06-01,open,0.007600240479693614,monthly rebuild,3,58.95000076293945,filled,buy
+NKE,buy,2020-06-01,open,0.022312475301507047,monthly rebuild,2,98.4000015258789,filled,buy
+ORCL,buy,2020-06-01,open,0.026478872934247256,monthly rebuild,2,53.279998779296875,filled,buy
+PG,buy,2020-06-01,open,0.046642378222666384,monthly rebuild,4,116.0,filled,buy
+PM,buy,2020-06-01,open,0.018380244689025438,monthly rebuild,2,73.3499984741211,filled,buy
+SBUX,buy,2020-06-01,open,0.014326819758605797,monthly rebuild,1,77.66000366210938,partial,partial buy
+UNP,buy,2020-06-01,open,0.01714675473400345,monthly rebuild,0,169.36000061035156,rejected,no cash

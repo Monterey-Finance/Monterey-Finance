@@ -1,0 +1,27 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ABBV,sell,2024-09-24,open,0.019515288949133618,rebalance,1,192.9499969482422,filled,sell
+ADBE,sell,2024-09-24,open,0.01447712485223874,rebalance,1,527.719970703125,filled,sell
+AMCR,sell,2024-09-24,open,0.004626728574583567,rebalance,3,55.5,filled,sell
+AMZN,sell,2024-09-24,open,0.1,rebalance,9,194.27000427246094,filled,sell
+CME,sell,2024-09-24,open,0.004358019103316527,rebalance,1,215.86000061035156,filled,sell
+GL,sell,2024-09-24,open,0.0006027514076214716,rebalance,1,107.44000244140625,filled,sell
+LOW,sell,2024-09-24,open,0.007922983215507239,rebalance,1,265.3299865722656,filled,sell
+MA,sell,2024-09-24,open,0.025231884623817886,rebalance,1,492.67999267578125,filled,sell
+MCD,sell,2024-09-24,open,0.01162325147703161,rebalance,1,299.05999755859375,filled,sell
+META,sell,2024-09-24,open,0.07637488481248587,rebalance,1,566.6799926757812,filled,sell
+NVDA,sell,2024-09-24,open,0.1,rebalance,3,116.5199966430664,filled,sell
+PANW,sell,2024-09-24,open,0.003138549918090947,rebalance,1,172.52000427246094,filled,sell
+PLTR,sell,2024-09-24,open,0.0039545490729730555,rebalance,5,37.970001220703125,filled,sell
+TMUS,sell,2024-09-24,open,0.013014932449799968,rebalance,1,201.0,filled,sell
+AAPL,buy,2024-09-24,open,0.1,rebalance,5,228.64999389648438,filled,buy
+AKAM,buy,2024-09-24,open,0.000868416195567896,rebalance,1,100.98999786376953,filled,buy
+CRM,buy,2024-09-24,open,0.013812607347315924,rebalance,1,269.8299865722656,filled,buy
+CSX,buy,2024-09-24,open,0.003729474243271801,rebalance,5,34.02000045776367,filled,buy
+GOOG,buy,2024-09-24,open,0.1,rebalance,9,164.25,filled,buy
+MCO,buy,2024-09-24,open,0.004985541298470289,rebalance,1,477.3999938964844,filled,buy
+MRVL,buy,2024-09-24,open,0.0037047960085795223,rebalance,3,72.41000366210938,filled,buy
+MSFT,buy,2024-09-24,open,0.1,rebalance,1,433.0,filled,buy
+ORCL,buy,2024-09-24,open,0.02184977729667312,rebalance,3,165.74000549316406,filled,buy
+PG,buy,2024-09-24,open,0.02380182695103181,rebalance,1,172.8800048828125,filled,buy
+QCOM,buy,2024-09-24,open,0.010981461046227423,rebalance,1,167.4199981689453,filled,buy
+REGN,buy,2024-09-24,open,0.007674048101020657,rebalance,0,1076.3299560546875,rejected,no cash

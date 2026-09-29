@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+GEN,849399,10-Q,2020-01-03,2020-02-07,Q3,3719000000.0,12649000000.0,171000000.0,614000000.0,13991900343.976484,0.26579663294993594,0.9125279401733751,0.9247492965149828,False,cash ratio exceeds threshold

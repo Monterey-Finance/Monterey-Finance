@@ -1,0 +1,51 @@
+{
+  "as_of": "2020-02-14",
+  "book_version": "1b-fcf-sma-v1",
+  "sma_on": true,
+  "sma_reason": "SPY above 200-day SMA",
+  "cash_weight": 1.1102230246251565e-16,
+  "n_holdings": 93,
+  "name_cap": 0.1,
+  "top5": [
+    {
+      "symbol": "MSFT",
+      "target_weight": 0.09999999999999998
+    },
+    {
+      "symbol": "META",
+      "target_weight": 0.08720748414907191
+    },
+    {
+      "symbol": "JNJ",
+      "target_weight": 0.0596910486734337
+    },
+    {
+      "symbol": "MA",
+      "target_weight": 0.04834881569483332
+    },
+    {
+      "symbol": "PG",
+      "target_weight": 0.046830324994941386
+    }
+  ],
+  "paths": {
+    "intended_book": "/home/runner/work/Monterey-Finance/Monterey-Finance/ops/runs/2020-02-14/intended_book.csv",
+    "invested_book": "/home/runner/work/Monterey-Finance/Monterey-Finance/ops/runs/2020-02-14/invested_book.csv"
+  },
+  "n_filing_fails": 1,
+  "refreshed": false,
+  "traded": true,
+  "fill_basis": "next_open",
+  "reconcile_reason": "account matches the target book",
+  "max_weight_gap": 0.0004426878718222782,
+  "n_fills": 29,
+  "n_pending": 28,
+  "halted": false,
+  "halt_reason": "",
+  "purification_today": 0.02874977594550995,
+  "batch_id": "2020-02-14-e773dc63",
+  "batch_status": "executing",
+  "nav": 1055529.3058146904,
+  "cash": 39.67350000832172,
+  "daily_return": 0.004916197598014094
+}

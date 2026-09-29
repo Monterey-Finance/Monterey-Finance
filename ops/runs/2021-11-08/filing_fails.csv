@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+PWR,1050915,10-Q,2021-09-30,2021-11-04,Q3,2964929000.0,1696210000.0,3002172000.0,139111888.0,9218378987.97123,0.32163236116337174,0.18400306628891377,0.5096755086909281,False,debt ratio exceeds threshold

@@ -1,0 +1,16 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2025-12-26,open,0.1,rebalance,2,274.1600036621094,filled,sell
+JNJ,sell,2025-12-26,open,0.022826908787919504,rebalance,1,207.52999877929688,filled,sell
+LRCX,sell,2025-12-26,open,0.008990542067512918,rebalance,1,178.42999267578125,filled,sell
+META,sell,2025-12-26,open,0.07570091232566664,rebalance,1,668.0599975585938,filled,sell
+NKE,sell,2025-12-26,open,0.004367259055834594,rebalance,5,60.0,filled,sell
+ORCL,sell,2025-12-26,open,0.02606175942748046,rebalance,2,198.05999755859375,filled,sell
+PG,sell,2025-12-26,open,0.016518285541703148,rebalance,1,144.30999755859375,filled,sell
+ANET,buy,2025-12-26,open,0.007474677567020239,rebalance,1,131.0,filled,buy
+DASH,buy,2025-12-26,open,0.003981091295275544,rebalance,1,232.52000427246094,filled,buy
+DDOG,buy,2025-12-26,open,0.0026311495142328683,rebalance,1,138.0,filled,buy
+GOOG,buy,2025-12-26,open,0.1,rebalance,1,315.9200134277344,filled,buy
+NEM,buy,2025-12-26,open,0.00453348579209572,rebalance,1,105.63999938964844,filled,buy
+NVDA,buy,2025-12-26,open,0.1,rebalance,6,189.9199981689453,filled,buy
+PANW,buy,2025-12-26,open,0.005768338656734051,rebalance,1,187.33999633789062,filled,buy
+PLTR,buy,2025-12-26,open,0.01823647595914029,rebalance,1,195.01499938964844,filled,buy

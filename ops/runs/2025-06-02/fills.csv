@@ -1,0 +1,27 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AAPL,sell,2025-06-02,open,0.1,monthly rebuild,3,200.27999877929688,filled,sell
+ALL,sell,2025-06-02,open,0.002874089838504419,monthly rebuild,1,208.42999267578125,filled,sell
+CRWD,sell,2025-06-02,open,0.0014345743493651595,monthly rebuild,1,117.75,filled,sell
+DASH,sell,2025-06-02,open,0.00453687908339344,monthly rebuild,1,209.22000122070312,filled,sell
+DDOG,sell,2025-06-02,open,0.002002947062168421,monthly rebuild,1,117.43000030517578,filled,sell
+GE,sell,2025-06-02,open,0.01174926300869446,monthly rebuild,1,245.85000610351562,filled,sell
+JNJ,sell,2025-06-02,open,0.02071181825974099,monthly rebuild,2,154.47999572753906,filled,sell
+MA,sell,2025-06-02,open,0.027774261987592804,monthly rebuild,1,580.5,filled,sell
+MO,sell,2025-06-02,open,0.005464823677143483,monthly rebuild,2,60.36000061035156,filled,sell
+MSFT,sell,2025-06-02,open,0.1,monthly rebuild,1,457.1400146484375,filled,sell
+ORCL,sell,2025-06-02,open,0.021563220165657277,monthly rebuild,3,164.1699981689453,filled,sell
+PANW,sell,2025-06-02,open,0.003322237282700741,monthly rebuild,1,192.13999938964844,filled,sell
+PG,sell,2025-06-02,open,0.021968783654500137,monthly rebuild,1,169.02000427246094,filled,sell
+PGR,sell,2025-06-02,open,0.009051881817585249,monthly rebuild,2,283.2200012207031,filled,sell
+PLTR,sell,2025-06-02,open,0.015143464840822438,monthly rebuild,14,131.43499755859375,filled,sell
+RDDT,sell,2025-06-02,open,0.0009270476462088848,monthly rebuild,1,109.16000366210938,filled,sell
+TMUS,sell,2025-06-02,open,0.015354435932732778,monthly rebuild,1,239.57000732421875,filled,sell
+AMAT,buy,2025-06-02,open,0.0066937352271842455,monthly rebuild,1,155.7899932861328,filled,buy
+EMR,buy,2025-06-02,open,0.003240267183369661,monthly rebuild,1,119.01000213623047,filled,buy
+GILD,buy,2025-06-02,open,0.007257138770301893,monthly rebuild,1,109.23999786376953,filled,buy
+NVDA,buy,2025-06-02,open,0.1,monthly rebuild,32,135.49000549316406,filled,buy
+ODFL,buy,2025-06-02,open,0.0017847142029624428,monthly rebuild,1,161.9499969482422,filled,buy
+QCOM,buy,2025-06-02,open,0.008927643717523633,monthly rebuild,2,144.8000030517578,filled,buy
+REGN,buy,2025-06-02,open,0.0036399235588977646,monthly rebuild,2,491.0899963378906,filled,buy
+UNP,buy,2025-06-02,open,0.0070619613595369534,monthly rebuild,1,218.77999877929688,filled,buy
+VRT,buy,2025-06-02,open,0.0017783494518182022,monthly rebuild,1,108.0,filled,buy

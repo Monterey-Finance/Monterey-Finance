@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+COIN,,10-K,2021-12-31,2024-02-15,FY,0.0,7123478000.0,0.0,219965000.0,18969908688.330063,0.0,0.37551461723072144,0.37551461723072144,False,cash ratio exceeds threshold

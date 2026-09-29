@@ -1,0 +1,22 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+AMD,sell,2021-06-01,open,0.009740162530414173,monthly rebuild,4,81.01000213623047,filled,sell
+BX,sell,2021-06-01,open,0.006060119605450303,monthly rebuild,2,93.8499984741211,filled,sell
+CRM,sell,2021-06-01,open,0.020789330231890515,monthly rebuild,5,238.0,filled,sell
+EL,sell,2021-06-01,open,0.011308212342951126,monthly rebuild,1,308.0,filled,sell
+ICE,sell,2021-06-01,open,0.0065090119974578675,monthly rebuild,1,113.86000061035156,filled,sell
+LLY,sell,2021-06-01,open,0.016378854294135384,monthly rebuild,1,200.32000732421875,filled,sell
+REGN,sell,2021-06-01,open,0.005441072279721921,monthly rebuild,1,505.760009765625,filled,sell
+TECH,sell,2021-06-01,open,0.0004036361239867762,monthly rebuild,1,104.56500244140625,filled,sell
+TROW,sell,2021-06-01,open,0.004069294753990209,monthly rebuild,1,193.75999450683594,filled,sell
+VEEV,sell,2021-06-01,open,0.004458997895747657,monthly rebuild,1,287.7300109863281,filled,sell
+AAPL,buy,2021-06-01,open,0.10000000000000002,monthly rebuild,7,125.08000183105469,filled,buy
+INTC,buy,2021-06-01,open,0.022816761366890405,monthly rebuild,6,57.61000061035156,filled,buy
+LMT,buy,2021-06-01,open,0.010465849562178295,monthly rebuild,1,384.2300109863281,filled,buy
+MA,buy,2021-06-01,open,0.03745031118482253,monthly rebuild,1,364.4800109863281,filled,buy
+MCD,buy,2021-06-01,open,0.01739288743205497,monthly rebuild,1,235.97999572753906,filled,buy
+META,buy,2021-06-01,open,0.09201900448003206,monthly rebuild,3,330.1499938964844,partial,partial buy
+MMM,buy,2021-06-01,open,0.009384723325466958,monthly rebuild,1,171.38795471191406,filled,buy
+ORCL,buy,2021-06-01,open,0.021550323863892655,monthly rebuild,0,79.58000183105469,rejected,no cash
+PG,buy,2021-06-01,open,0.034409304555495485,monthly rebuild,0,135.7899932861328,rejected,no cash
+PYPL,buy,2021-06-01,open,0.03019275061151693,monthly rebuild,0,261.0799865722656,rejected,no cash
+VRSN,buy,2021-06-01,open,0.0024230326804967816,monthly rebuild,0,220.6300048828125,rejected,no cash

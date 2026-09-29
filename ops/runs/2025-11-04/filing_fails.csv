@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+ICE,,10-Q,2023-12-31,2025-10-30,Q3,0.0,80750000000.0,0.0,570000000.0,87261436421.74269,0.0,0.925380137105785,0.925380137105785,False,cash ratio exceeds threshold

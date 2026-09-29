@@ -1,0 +1,24 @@
+symbol,side,as_of,price_field,target_weight,reason,shares,price,status,detail
+ABBV,sell,2024-04-01,open,0.026161856954342814,monthly rebuild,2,181.8800048828125,filled,sell
+ADBE,sell,2024-04-01,open,0.02136684175238997,monthly rebuild,1,504.989990234375,filled,sell
+ADI,sell,2024-04-01,open,0.007972948212666054,monthly rebuild,1,197.39999389648438,filled,sell
+AMCR,sell,2024-04-01,open,0.005604131874239539,monthly rebuild,3,47.75,filled,sell
+BMY,sell,2024-04-01,open,0.008839045795466658,monthly rebuild,4,54.16999816894531,filled,sell
+COIN,sell,2024-04-01,open,0.004340282259557153,monthly rebuild,1,261.8699951171875,filled,sell
+CPRT,sell,2024-04-01,open,0.004282439255908469,monthly rebuild,2,58.130001068115234,filled,sell
+CSCO,sell,2024-04-01,open,0.016484176132769392,monthly rebuild,3,49.959999084472656,filled,sell
+DHR,sell,2024-04-01,open,0.015683627798059117,monthly rebuild,1,249.72000122070312,filled,sell
+DVN,sell,2024-04-01,open,0.0023708459106411835,monthly rebuild,3,50.91999816894531,filled,sell
+EL,sell,2024-04-01,open,0.0044943928983202305,monthly rebuild,2,154.17999267578125,filled,sell
+GILD,sell,2024-04-01,open,0.007529689922612471,monthly rebuild,2,73.22000122070312,filled,sell
+GOOG,sell,2024-04-01,open,0.10000000000000002,monthly rebuild,3,151.8300018310547,filled,sell
+HSY,sell,2024-04-01,open,0.0032193089324784245,monthly rebuild,1,196.5800018310547,filled,sell
+MA,sell,2024-04-01,open,0.0376434189078465,monthly rebuild,1,480.6600036621094,filled,sell
+ORCL,sell,2024-04-01,open,0.025722663065067985,monthly rebuild,1,125.54000091552734,filled,sell
+QCOM,sell,2024-04-01,open,0.014785807763013505,monthly rebuild,1,168.27000427246094,filled,sell
+STLD,sell,2024-04-01,open,0.0017947912887001558,monthly rebuild,1,149.0,filled,sell
+AAPL,buy,2024-04-01,open,0.10000000000000002,monthly rebuild,8,171.19000244140625,filled,buy
+ABNB,buy,2024-04-01,open,0.008737347615959968,monthly rebuild,1,166.42999267578125,filled,buy
+META,buy,2024-04-01,open,0.10000000000000002,monthly rebuild,4,487.20001220703125,filled,buy
+PG,buy,2024-04-01,open,0.033089569504752295,monthly rebuild,1,161.77999877929688,filled,buy
+PLTR,buy,2024-04-01,open,0.004624867268028199,monthly rebuild,22,22.979999542236328,filled,buy

@@ -1,0 +1,2 @@
+as_of,nav,cash,invested,daily_return,n_positions,sma_on,halted,purification_today,purification_cumulative,fill_basis
+2026-09-25,1000000.0,1040.648811340332,998959.3511886597,0.0,124,True,False,0.0,0.0,close_bootstrap

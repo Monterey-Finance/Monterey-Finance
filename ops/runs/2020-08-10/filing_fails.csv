@@ -1,0 +1,2 @@
+symbol,cik,form,report_date,filed_date,fiscal_period,total_debt,cash_and_equiv,receivables,shares_outstanding,market_cap_24m,debt_ratio,cash_ratio,receivables_ratio,is_compliant,reason
+PFE,,10-Q,2020-06-28,2020-08-06,Q2,63613000000.0,1801000000.0,9128000000.0,5619000000.0,210081827335.23633,0.3028010599816903,0.10850057946052927,0.15195031576463172,False,debt ratio exceeds threshold

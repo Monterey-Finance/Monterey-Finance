@@ -24,6 +24,10 @@ Deliverables: a documented Halal universe, a candidate multi-strategy book with 
 
 Details and paper backlog live in [`Research/README.md`](Research/README.md).
 
+<div align="center">
+<img width="1698" height="1117" alt="Screenshot 2026-09-30 at 11 49 10 am" src="https://github.com/user-attachments/assets/f66806a6-80d3-466b-9e9e-b58959b69b3d" />
+</div>
+
 ### Phase 2: Fund operations (future)
 
 Live portfolio management, brokerage, investor ops, and regulatory setup. Only after Phase 1 produces a book we would trust with capital.

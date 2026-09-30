@@ -33,19 +33,17 @@
     "invested_book": "/home/runner/work/Monterey-Finance/Monterey-Finance/ops/runs/2026-09-28/invested_book.csv"
   },
   "n_filing_fails": 0,
-  "refreshed": false,
+  "refreshed": true,
   "traded": true,
-  "fill_basis": "next_open",
-  "reconcile_reason": "account matches the target book",
-  "max_weight_gap": 0.0025689818049507707,
-  "n_fills": 46,
+  "fill_basis": "already_marked",
+  "reconcile_reason": "NAV for this session is already on the ledger",
+  "max_weight_gap": null,
+  "n_fills": 0,
   "n_pending": 48,
   "halted": false,
   "halt_reason": "",
   "purification_today": 0.0,
-  "batch_id": "2026-09-28-2554bf11",
-  "batch_status": "executing",
   "nav": 2106327.242157959,
   "cash": 171.62202932731816,
-  "daily_return": -0.00833802889728319
+  "daily_return": -0.0083380288972831
 }

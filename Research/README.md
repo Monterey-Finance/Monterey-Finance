@@ -39,26 +39,19 @@ Beating SPUS is interesting. It is **not** the mandate.
 4. Write up with the structure below (factor papers) or a shorter ops note (1B studies).
 5. Decide: follow-up, revise, or kill.
 
-Frozen live rules for papers **01, 02, 04, 05, 06** live in [`sleeves/`](sleeves/). New 1B notebooks should load that package instead of copying selector cells:
+Papers **01–15** still open through [`sleeves/`](sleeves/) (a shim over `monterey.legacy.sleeves`). **New work uses one simulator and scores against the v2 baseline**, not the old paper NAV.
 
 ```python
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path("../..").resolve()))  # Research/
+from monterey.research import boot, run_book
+from monterey.sprints import run_sprint, score_against_baseline
 
-from sleeves import FrozenRules, Lab
-
-rules = FrozenRules().with_book(
-    sleeve_weights={"fcf_quality": 1.0},
-    name_cap=0.10,
-    throttle="spy_sma",
-    breach_exit="next_open",
-    purify_schedule="ex_date",
-    cost_bps=10,
-)
-lab = Lab.from_frames(metrics, prices, rules=rules)
-returns, log = lab.book().run()
+rd = boot("paper-21", start="2019-12-01", end="2026-09-30")
+ledgers, table = run_sprint("21", rd)
+# or: run_book("fcf-sma-v2-baseline", rd, overlay={...}, id="cash-sukuk")
+score_against_baseline(table)  # fcf-sma-v2-baseline / 6ca86844209e
 ```
+
+Vary **one layer** per paper. Kill rules stay in [`book-construction-status.md`](book-construction-status.md). The score is **Calmar and max drawdown**, not beating SPUS.
 
 ```text
 Research/
@@ -102,12 +95,14 @@ Papers **07–15** locked the working book: FCF quality engine, 10% name cap, wh
 | **13** | Sleeve overlap / diversification audit | Done |
 | **14** | CVaR position sizing | Done |
 | **15** | AAOIFI boundary monitoring | Done |
+| **16–20** | Honest throttle, PIT effect, execution, FCF layers, sector lid | Sprint notebooks vs v2 |
+| **21–27** | Halal cash, NAV brake, SPUS throttle, FCF floor, sector budget, exit completeness, activity honesty | Queued — see below |
 
 ---
 
 ## Research backlog
 
-Fifteen strategy concepts, grouped by the factor or structural mechanic they isolate inside a Halal-screened universe.
+Papers **01–15** are the frozen factor and book-construction set. **16–27** are layers on the v2 engine.
 
 ### Quality & Balance Sheet Dynamics
 
@@ -360,6 +355,72 @@ This is an internal exploratory note. A holding is flagged if month-end debt/MC 
 
 [Open the study](papers/13-15-diagnostics/code.ipynb)
 
+---
+
+## October 2026 — next layers (v2 book)
+
+The live paper book is **`fcf-sma-v2-baseline`** (hash `6ca86844209e`): point-in-time S&P 500, sector + AAOIFI screens, FCF top half, 10% name cap, SPY 200-day cash switch, next-open fills, dividends credited, 10 bp charged. Honest 2020–2026 path: **+106% total, 11.4% CAGR, −24.8% max drawdown**, Calmar **0.46 vs SPUS 0.60**. Full figures: [`diagnostics/v2-baseline.md`](diagnostics/v2-baseline.md) (gitignored).
+
+What is still broken, in one page: the switch is expensive (18 cuts; fund −26% on off days, missed +45% of SPUS on the way back in; 352 sessions in **zero-yield cash**). Always invested would have been +169% / −31% DD — the brake traded return for drawdown about one-for-one. On fully invested days the FCF list still lags SPUS. IT is **66%** of the last session; top-five names ~48%. Daily re-target prints ~30 tiny fills a day. **122** filing breaches; **13** names were still held five sessions later. Purification is a few hundred dollars because this is a buyback book, not a dividend book.
+
+Sprints **16–20** (notebooks already in `papers/`) take the first cuts: honest throttle, PIT vs today’s list, drift-band execution, tighter FCF layers, sector / name lid. Score them against v2. Do not score them against archived v1.
+
+The seven ideas below are the **next** layers. Each one maps to a hole above. Same write-up shape as papers 01–15: mechanics, white-paper question, then a short note in plain English. None of these is a live rule until it beats v2 on Calmar / max drawdown without failing the frozen kill rules.
+
+### Overlay, cash, and the crash path
+
+**21. Halal cash while the switch is off**
+
+- **Mechanics:** When the overlay is not fully invested, put idle NAV in a Shariah money-market / short sukuk proxy instead of broker cash at 0%. Keep the equity list unchanged. Test a few Halal cash yields (roughly 2–5%) and a tradable proxy if we have one.
+- **White Paper Focus:** Whether a Halal cash sleeve recovers compounding on the 352 “off” days without putting 2020 / 2022 equity risk back on the book.
+
+The v2 switch did its job on paper 09’s old engine and then failed the honest test: cash saved some drawdown and gave up a bull-market. Paper 09 also showed that a “defensive *stock* list” while SPY is weak still falls ~26%. This study is not that sleeve. It is **productive Halal liquidity** — the same cash the Shariah board would rather see in sukuk than sitting idle at a broker. If a 4% cash yield on those 352 days lifts Calmar and leaves max drawdown alone, the overlay stays. If it does not, we still owe investors a reason we hold 0%.
+
+**22. Book drawdown brake (path, not SPY)**
+
+- **Mechanics:** Ignore the market average. If *this* book’s NAV falls `X%` from its own peak, cut equity to 50% or to cash until NAV recovers `Y%` of that loss (or N sessions). Ladder `X` in {8, 12, 15, 20}.
+- **White Paper Focus:** A mandate-shaped overlay: can a NAV trailing stop beat the SPY 200-day on max drawdown without missing 2023 as badly as the SMA did?
+
+v2 still lost **−20.8% in 2022** with the SMA on, and **−19% inside 2020**. The switch is looking at SPY, not at our path. The product promise is steady growth of *this* NAV. A brake that fires when the book itself is bleeding is the overlay that matches the Calmar score. Kill it if it chops 2023–24 to pieces or if it duplicates SMA so closely that two overlays are one rule in a costume.
+
+**23. Throttle on SPUS, not SPY**
+
+- **Mechanics:** Same 200-day (and optional 12-month) on/off rule, but the trend series is **SPUS** — the Halal large-cap ETF we already report against. Keep next-open fills. Compare SPY-SMA, SPUS-SMA, and “either / both must be on”.
+- **White Paper Focus:** Whether a Shariah book should take risk cues from a conventional index, and whether SPUS timing cuts 2022 whipsaws.
+
+We screen out banks, alcohol, weapons, then turn the whole book off because **SPY** is below its average. That is a process smell. SPUS fell −23% in 2022 and −31% peak-to-trough; the paths are not the same as SPY. If SPUS-SMA is quieter (fewer than 18 flips) and Calmar rises, the live overlay should follow the Halal benchmark. If it is worse, write that down — then “we use SPY because it is the cleaner crash signal” is an honest rule, not an accident.
+
+### Brain and construction
+
+**24. Hard FCF floor, not “top half”**
+
+- **Mechanics:** Replace `keep_quantile=0.5` with a **fixed FCF-margin floor** (try 6%, 8%, 10%). Keep min 20 names; if the floor leaves fewer, hold the rest in Halal cash (idea 21), do not relax the floor. Do not restack conversion / stability / yield — that is paper 19.
+- **White Paper Focus:** Whether a cash-conversion hurdle stops the loose tail that makes this book a slower SPUS clone.
+
+On the 1,340 fully invested days, v2 made **+186%** while SPUS made **+229%**. The live cutoff is the median FCF margin — in the old diagnostics that was about **4%**. That is not a quality engine; it is “half the Halal S&P 500, cap-weighted,” which is why IT and the mega-caps dominate. A floor is a different layer from paper 19’s ranked stack: it is a yes/no Shariah-friendly quality line. If the book goes empty in 2022, the floor is too proud. If Calmar does not move, the lag was never the tail — it was the switch and the mega-caps.
+
+**25. Fill the Halal real economy, do not only cap tech**
+
+- **Mechanics:** Keep the 10% name cap. **Do not** truncate IT (paper 20 does that). Instead set *minimum* weights on AAOIFI-pass sectors we already own but starve: health care, industrials, staples, maybe materials. Pull weight from names already in the FCF list, not from banned sectors. Try floors like 10% / 10% / 5%.
+- **White Paper Focus:** Whether a Halal sector budget steadies the path by owning more of the allowed real economy, rather than by chopping the winners.
+
+Last session: **IT 66%**, communication 9%, health 8%, industrials 6%, staples 2%. Effective names have fallen toward ~18. Paper 20 asks “what if we lid IT?” This paper asks the other construction: **what if we insist on holding the Halal industries the screen already permits?** A board that cares about riba-free real activity should not be 2% consumer staples by accident. Kill it if the floors force weak FCF names and 2023 dies. Keep it only if max drawdown or Calmar actually improves versus v2.
+
+### Screen, exits, and Halal honesty
+
+**26. Forced-exit completeness**
+
+- **Mechanics:** Today the rule is “fail a 10-Q → sell next open.” Diagnostics still show **13 of 122** breach names held five sessions later. Add a completeness layer: retry the residual as a marketable order the following opens; if a halt or lot-size blocks the sale, flatten at the next print and log time-in-breach. Never carry a failed name because the OMS rounded to zero.
+- **White Paper Focus:** Shariah time-in-breach versus extra slippage — how fast we can actually leave a name that is no longer Halal.
+
+Paper 10 chose next-open because same-day is optimistic (after-hours EDGAR) and month-end left ~150 name-days of known fail. v2 still leaks. That is not a new screen. It is the **execution of the screen**. The write-up should count name-days out of compliance, extra cost, and whether any of those 13 names moved NAV. If retries cost nothing and cut breach-days, this becomes a live ops rule with no debate. If they gap against us, we still do not keep a failed name for convenience.
+
+**27. Activity-screen honesty (fintech vs riba)**
+
+- **Mechanics:** Take every name that passed v2’s sector + AAOIFI test and tag it with a reason: core operating business, exchange / data / payments, insurance-adjacent, interest-income share from the filing. Build a **tighter board list** (drop grey financials) and a **documented allow list** (Visa-class payments, exchanges). Re-run v2 with each list.
+- **White Paper Focus:** How much of the “Halal” book is grey-area finance, and what a stricter AAOIFI reading does to steady growth.
+
+v1 held banks, insurers, tobacco, and defense because ops never applied the sector screen. v2 applies it — excluded-sector sessions are **zero** — and still shows **~5% financials** on the last day (exchanges, processors, and similar). That may be correct. It may not. This paper does not hunt return. It writes down *why* a name is allowed, then measures the NAV gap if the board says no. Purification stays tiny (**$383** on v2) because mega-caps return cash via buybacks, not dividends; if the tighter list also changes the dividend mix, report that. A Halal fund that cannot explain its financials is not done, even if Calmar is fine.
 
 ---
 
@@ -386,6 +447,10 @@ Working architecture from 07–15: **FCF quality list + 10% name cap + whole-NAV
 9. **Warning band (15)** — 28/28/68 is an ops list. It does not replace next-open sells after a failed filing.
 
 A topic in 1B is complete when the folder has a reproducible notebook, figures, and a short write-up that answers: *would we run this?*
+
+### Phase 1C — v2 layers (October 2026)
+
+The 07–15 architecture is still the live spec, now run honestly on `fcf-sma-v2-baseline`. Papers **16–20** test the first overlay / universe / execution / brain / cap family. Papers **21–27** (above) are the follow-on: Halal cash, a NAV-path brake, SPUS as the trend series, a hard FCF floor, a real-economy sector budget, breach-exit completeness, and an activity-screen audit. Promote a winner with `python -m ops rules propose …` only after it beats v2 on Calmar / max drawdown.
 
 ## What stays out of this folder
 

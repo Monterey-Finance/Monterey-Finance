@@ -35,17 +35,15 @@
   "n_filing_fails": 0,
   "refreshed": true,
   "traded": true,
-  "fill_basis": "next_open",
-  "reconcile_reason": "account matches the target book",
-  "max_weight_gap": 0.0027175033353882827,
-  "n_fills": 48,
+  "fill_basis": "already_marked",
+  "reconcile_reason": "NAV for this session is already on the ledger",
+  "max_weight_gap": null,
+  "n_fills": 0,
   "n_pending": 38,
   "halted": false,
   "halt_reason": "",
   "purification_today": 0.0,
-  "batch_id": "2026-09-29-e613b1ba",
-  "batch_status": "executing",
   "nav": 2106101.3360910644,
   "cash": 355.7421541442127,
-  "daily_return": -0.00010725117273946427
+  "daily_return": -0.0001072511727394
 }

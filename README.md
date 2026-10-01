@@ -3,54 +3,104 @@
 
 # Monterey Finance
 
-Monterey Finance builds a **Halal equity book that aims to grow steadily** — clear Sharia screens, controlled risk, and compounding over time. Phase 1 stays on historical data only. No live capital is deployed until the research book is good enough to run.
+Monterey Finance runs a **paper Halal equity book**. The mandate is steady growth: AAOIFI screens, a 10% name cap, a SPY 200-day cash throttle, and a NAV that comes from fills — not from a research chart. No live capital until the book is good enough to operate.
 
 </div>
 
-## Product goal
+## Birds-eye view
 
-**Grow steadily.** We are not chasing the highest possible return versus SPUS or the S&P 500. Success means a Halal portfolio that compounds with acceptable drawdowns, real purification accounting, and rules we could actually operate.
+One package, `monterey/`, is the fund. A YAML **BookSpec** names each layer (universe → screen → brain → construction → overlay → execution → accounting). **One simulator** steps every session the same way for live, replay, and notebooks. Every run writes the same parquet **ledger**. Ops, the desk, and research only read ledgers.
 
-## Project phases
+```text
+halalquant v0.4.0     PIT S&P 500, sectors, prices, dividends, filings
+        │
+monterey.data         ResearchData snapshot (gitignored, hash in the manifest)
+        │
+BookSpec (books/*.yaml)
+        │
+layers                members → sector+AAOIFI screen → brain → weights/caps
+                      → SMA overlay → next-open fills → dividends/costs/purify
+        │
+monterey.sim          one daily engine (signal at the close, fill at the next open)
+        │
+ledgers/<book>/<spec_hash>/
+        │
+        ├── ops          live/replay shadow fund
+        ├── desk         Bloomberg-style TUI (ledger picker, Diagnostics, Compare)
+        └── notebooks    October sprints 16–20, scored against v2 baseline
+```
 
-### Phase 1: Research (active)
+There is no second backtest engine. `Research/sleeves` is a shim over `monterey.legacy.sleeves` so papers 01–15 still open.
 
-Phase 1 has two parts:
+## Live book (v2 baseline)
 
-1. **Factor discovery (mostly done)** — test single strategies inside an AAOIFI-screened universe; keep, revise, or kill each idea.
-2. **Fund book design (next)** — combine the sleeves that worked, set risk and concentration rules, and define Halal ops (breach exits, purification, costs).
+**`fcf-sma-v2-baseline`** (hash `6ca86844209e`), $1M paper, 2020-01-02 → 2026-09-30.
 
-Deliverables: a documented Halal universe, a candidate multi-strategy book with clear rules, backtests vs Halal and all-stock benchmarks, and a written go / no-go for Phase 2.
+| Layer | Rule |
+| --- | --- |
+| Universe | S&P 500, **point-in-time** (leavers included) |
+| Screen | Excluded activities + AAOIFI 30 / 30 / 70; filing fails sell **next open** |
+| Brain | FCF quality, top half by FCF / sales, min 20 names |
+| Weights | Cap-weighted, 10% name cap, dual-class collapsed |
+| Overlay | Whole NAV in cash when SPY is below its 200-day SMA |
+| Execution | Signal at the close, fill at the **next open**; first session fills at close |
+| Accounting | Dividends credited on the ex-date, **10 bp** charged on every fill, impure slice donated from credited cash |
 
-Details and paper backlog live in [`Research/README.md`](Research/README.md).
+Headline on that window: **+106% total, 11.4% CAGR, −24.8% max drawdown** (SPUS +212% / −31% DD). Calmar 0.46 vs SPUS 0.60. The switch cut 18 times; off-day fund return −26%, missed +45% of SPUS on switch-on days. IT is 66% of the last session. Full write-up: [`Research/diagnostics/v2-baseline.md`](Research/diagnostics/v2-baseline.md) (gitignored).
 
-<div align="center">
-<img width="1698" height="1117" alt="Screenshot 2026-09-30 at 11 49 10 am" src="https://github.com/user-attachments/assets/f66806a6-80d3-466b-9e9e-b58959b69b3d" />
-</div>
+The archived v1 path (`1b-fcf-sma-v1` / `ledgers/fcf-sma-v1/`) is the old survivorship book: today’s list, no sector screen, dividends not credited, costs not charged. **Do not score new work against it.**
 
-### Phase 2: Fund operations (future)
+## How research works now
 
-Live portfolio management, brokerage, investor ops, and regulatory setup. Only after Phase 1 produces a book we would trust with capital.
+Fix the base, re-baseline, then research. A sprint varies **one spec family** against v2.
 
-## What we already learned
+```python
+from monterey.research import boot, run_book, compare
+from monterey.sprints import run_sprint, score_against_baseline
 
-- **Quality and momentum-style sleeves** (cash generation, ROIC, regime filters, selective earnings surprise) can work in this Halal universe.
-- **Deep value and high-dividend hunts** lagged badly in our sample — they fight the Halal mega-cap growth core. Those lines are paused, not the next priority.
-- A lot of single-strategy “alpha” was sector and mega-cap tilt. The next work is **how we combine and constrain the book**, not hunting a fifteenth factor.
+rd = boot("paper-16", start="2019-12-01", end="2026-09-30")
+ledgers, table = run_sprint("16", rd)   # or run_book("fcf-sma-v2-baseline", rd, overlay={"confirm_days": 2}, id="confirm-2")
+table
+```
 
-## Compliance principles
+`boot` loads halalquant once, freezes `data/snapshots/<hash>/`, and prints the snapshot hash for figure captions. Kill rules stay frozen in [`Research/book-construction-status.md`](Research/book-construction-status.md). Mandate metric is **Calmar / max drawdown**, not beating SPUS.
 
-Sharia compliance is a hard constraint. Banned businesses and AAOIFI-style financial ratios are applied point-in-time. If a held name fails, there is a defined exit. Impure income that may need purification is reported, not ignored.
+October sprints (notebooks under `Research/papers/16–20`):
 
-## Out of scope (Phase 1)
+| # | Question |
+| --- | --- |
+| 16 | Honest throttle: confirm days, hysteresis, partial off, vol target, always-on |
+| 17 | Point-in-time universe vs today’s list (how much of v1 was survivorship) |
+| 18 | Execution: drift band and min trade vs daily re-target |
+| 19 | FCF layers: conversion, then stability, then yield |
+| 20 | Sector cap and tighter name cap vs the IT-heavy book |
 
-Live execution, brokerage integration, investor onboarding, fund administration, and real-time trading terminals. Those belong to Phase 2.
+A winner becomes a spec proposal (`python -m ops rules propose …`) and, after audit confirm, the live v3 book.
 
-## Success criteria for Phase 1
+## How the systems run
 
-Phase 1 is done when we have:
+```bash
+pip install -e ".[dev]"                 # pins halalquant v0.4.0
 
-1. A reproducible Halal universe for a defined market and window  
-2. A **combined** strategy book (not only isolated factor notebooks) with risk and compliance rules  
-3. Documented backtests, including turnover, costs, and purification drag  
-4. A clear recommendation: proceed to Phase 2, revise the book, or stop  
+python -m monterey run fcf-sma-v2-baseline --start 2020-01-02 --end 2026-09-30
+python -m monterey v2-baseline          # same run + diagnostics markdown
+python -m ops run --as-of today         # one live session
+python -m ops replay --start 2020-01-02 --end 2026-09-30
+python -m desk                          # TUI; [ ] cycle ledgers; 6 diagnostics, 7 compare
+```
+
+Weekday GitHub Action: refresh cache → replay/catch up the live spec → commit `spec.yaml`, `nav.parquet`, `diagnostics.json` → bulk parquet to R2.
+
+Ledger layout: `ledgers/<book_id>/<spec_hash>/` (`nav`, `positions`, `orders`, `fills`, `cashflows`, `events`, plus `spec.yaml` and `diagnostics.json`). Git keeps spec + NAV + diagnostics; the rest is R2.
+
+## Phases
+
+**Phase 1 (research)** — factor papers 01–15 are frozen. October 2026 is book design on the v2 engine.
+
+**Phase 2 (shadow fund, paper)** — the loop above. Operator/investor product UIs are still planned; the desk is the operator terminal today. See [`Backend & Operations/README.md`](Backend%20%26%20Operations/README.md).
+
+Live capital, a legal vehicle, and a marketed track record stay out of scope.
+
+## Compliance
+
+Banned activities and AAOIFI ratios are point-in-time. A failed 10-Q / 10-K sells at the next open. Impure dividend cash leaves NAV on the ex-date (paper ledger, not a charity wire).

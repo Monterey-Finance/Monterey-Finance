@@ -1,0 +1,43 @@
+id: fcf-sma-v1
+label: 1b-fcf-sma-v1 (as it ran, 2020-01-02 to 2026-09-30)
+description: >
+  The shadow book exactly as ops ran it: today's S&P 500 list for every date,
+  no sector screen, filing breaches reported but not sold, dividends not
+  credited, costs not charged, purification taken anyway. Frozen. Used only
+  as the parity target for the simulator. Do not trade this spec.
+universe:
+  index: sp500
+  pit: false
+screen:
+  sectors: false
+  debt: 0.30
+  cash: 0.30
+  receivables: 0.70
+  breach_exit: report_only
+signal:
+  brain: fcf_quality
+  params:
+    keep_quantile: 0.5
+    min_holdings: 20
+construction:
+  weight: cap
+  name_cap: 0.10
+  sector_cap: null
+  collapse_share_classes: true
+overlay:
+  kind: spy_sma
+  ticker: SPY
+  window: 200
+execution:
+  signal_lag: next_open
+  rebalance: daily_to_target
+  drift_band: 0.0
+  min_trade: 100.0
+  first_fill: close
+accounting:
+  capital: 1000000.0
+  dividends: false
+  cost_bps: 0.0
+  purify: ex_date
+  purify_uncredited: true
+benchmarks: [SPUS, SPY]

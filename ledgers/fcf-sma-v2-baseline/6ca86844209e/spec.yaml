@@ -1,0 +1,53 @@
+id: fcf-sma-v2-baseline
+label: FCF + SMA, gaps fixed
+description: 'Same research rules as v1 (FCF top half, cap weight, 10% name cap, SPY
+  200-day switch to cash, daily re-target) with the foundation fixed: point-in-time
+  S&P 500 membership, sector screen, filing breaches sold at the next open, dividends
+  credited, 10 bp charged on every fill, and purification taken from credited dividends.
+  Every October sprint is scored against this book.
+
+  '
+universe:
+  index: sp500
+  pit: true
+screen:
+  sectors: true
+  debt: 0.3
+  cash: 0.3
+  receivables: 0.7
+  breach_exit: next_open
+  watch_band: 0.02
+signal:
+  brain: fcf_quality
+  params:
+    keep_quantile: 0.5
+    min_holdings: 20
+construction:
+  weight: cap
+  name_cap: 0.1
+  sector_cap: null
+  collapse_share_classes: true
+overlay:
+  kind: spy_sma
+  ticker: SPY
+  window: 200
+  confirm_days: 0
+  band: 0.0
+  off_exposure: 0.0
+  vol_target: null
+  vol_lookback: 20
+execution:
+  signal_lag: next_open
+  rebalance: daily_to_target
+  drift_band: 0.0
+  min_trade: 100.0
+  first_fill: close
+accounting:
+  capital: 1000000.0
+  dividends: true
+  cost_bps: 10.0
+  purify: ex_date
+  purify_uncredited: false
+benchmarks:
+- SPUS
+- SPY

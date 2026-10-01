@@ -1,0 +1,12 @@
+{
+  "book": "fcf-sma-v1",
+  "spec_hash": "b4ea8f76159c",
+  "written_at": "2026-10-01T10:37:23+00:00",
+  "mode": "archive",
+  "source": "ops/state/nav.csv",
+  "note": "v1 paper path; positions live in ops/runs",
+  "start": "2020-01-02",
+  "end": "2026-09-30",
+  "sessions": 1695,
+  "last_nav": 2105059.0472917785
+}

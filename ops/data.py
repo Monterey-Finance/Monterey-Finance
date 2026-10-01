@@ -32,6 +32,8 @@ def cache_symbols() -> list[str]:
     store = LocalCache(provider=None, filings=None)
     members = store.read_universe()
     if members is not None and not members.empty and "symbol" in members.columns:
+        if "sector_allowed" in members.columns:
+            members = members.loc[members["sector_allowed"].astype(bool)]
         return sorted({str(s) for s in members["symbol"].dropna().unique()})
     try:
         frame = list_universe("sp500")

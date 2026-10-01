@@ -307,6 +307,71 @@ def _fill_label(basis: str) -> str:
     return labels.get(basis, basis.replace("_", " ") if basis else "No fill")
 
 
+class DiagnosticsView(Static):
+    """Attribution, switch cost, concentration, and compliance from diagnostics.json."""
+
+    def render(self) -> Text:
+        desk: Desk | None = getattr(self.app, "desk", None)
+        diag = getattr(desk, "diagnostics", None) or {}
+        if not diag:
+            return _text("No diagnostics.json on this ledger yet.", MUTED)
+        lines: list[Text] = []
+        perf = diag.get("performance") or {}
+        lines.append(_text(f"{diag.get('book')}  {diag.get('spec_hash')}", INK))
+        lines.append(Text.assemble(
+            ("CAGR ", MUTED), _tone_pct(perf.get("cagr"), signed=True),
+            ("   MaxDD ", MUTED), _tone_pct(perf.get("max_drawdown"), signed=True),
+            ("   Calmar ", MUTED), _text(f"{perf.get('calmar'):.2f}" if perf.get("calmar") is not None else "—"),
+        ))
+        parts = diag.get("components") or {}
+        if parts:
+            lines.append(Text.assemble(
+                ("Price ", MUTED), _tone_pct(parts.get("price"), signed=True),
+                ("  Div ", MUTED), _tone_pct(parts.get("dividends"), signed=True),
+                ("  Cost ", MUTED), _tone_pct(parts.get("costs"), signed=True),
+                ("  Purify ", MUTED), _tone_pct(parts.get("purification"), signed=True),
+            ))
+        switch = ((diag.get("benchmarks") or {}).get("SPUS") or {}).get("switch") or {}
+        if switch:
+            lines.append(Text.assemble(
+                ("Switch cuts ", MUTED), _text(str(switch.get("cuts"))),
+                ("  off-day ", MUTED), _tone_pct(switch.get("off_day_loss"), signed=True),
+                ("  on-day missed ", MUTED), _tone_pct(switch.get("on_day_missed"), signed=True),
+            ))
+        excl = ((diag.get("compliance") or {}).get("excluded_exposure") or {})
+        lines.append(Text.assemble(
+            ("Excluded-sector sessions ", MUTED),
+            _text(str(excl.get("sessions", 0)), RED if excl.get("sessions") else GREEN),
+            ("  names ", MUTED),
+            _text(", ".join(excl.get("names") or []) or "none"),
+        ))
+        sectors = diag.get("sectors") or {}
+        if sectors:
+            top = list(sectors.items())[:6]
+            lines.append(_text("  ".join(f"{name} {value*100:.0f}%" for name, value in top), MUTED))
+        return Text("\n").join(lines)
+
+
+class CompareView(Static):
+    """Overlay two ledger NAV paths and a few headline figures."""
+
+    def render(self) -> Text:
+        desk: Desk | None = getattr(self.app, "desk", None)
+        other: Desk | None = getattr(self.app, "compare", None)
+        if desk is None or desk.nav is None:
+            return _text("Load a ledger to compare.", MUTED)
+        if other is None or other.nav is None:
+            return _text("No second ledger. Archive v1 or run an experiment.", MUTED)
+        lines = [
+            Text.assemble((_text(getattr(desk, "ledger_name", "A") or "A", GREEN)), (" vs ", MUTED), (_text(getattr(other, "ledger_name", "B") or "B", BLUE))),
+            Text.assemble(("NAV  ", MUTED), _text(_money(desk.nav), GREEN), ("   ", MUTED), _text(_money(other.nav), BLUE)),
+            Text.assemble(("Since start  ", MUTED), _tone_pct((desk.nav / (desk.starting_cash or desk.nav)) - 1 if desk.starting_cash else None, signed=True), ("   ", MUTED), _tone_pct((other.nav / (other.starting_cash or other.nav)) - 1 if other.starting_cash else None, signed=True)),
+            Text.assemble(("Max DD  ", MUTED), _tone_pct((desk.health or {}).get("max_drawdown"), signed=True), ("   ", MUTED), _tone_pct((other.health or {}).get("max_drawdown"), signed=True)),
+            Text.assemble(("Sharpe  ", MUTED), _text(f"{(desk.health or {}).get('sharpe') or 0:.2f}"), ("   ", MUTED), _text(f"{(other.health or {}).get('sharpe') or 0:.2f}", BLUE)),
+        ]
+        return Text("\n").join(lines)
+
+
 class Tape(Static):
     """Two full-width status lines. Numbers use the width of the terminal."""
 
@@ -511,6 +576,10 @@ class DeskApp(App):
         Binding("3", "show('orders')", "Orders", show=False),
         Binding("4", "show('ledger')", "Ledger", show=False),
         Binding("5", "show('system')", "System", show=False),
+        Binding("6", "show('diagnostics')", "Diagnostics", show=False),
+        Binding("7", "show('compare')", "Compare", show=False),
+        Binding("left_square_bracket", "prev_ledger", "Prev ledger", show=False),
+        Binding("right_square_bracket", "next_ledger", "Next ledger", show=False),
         Binding("slash", "focus_find", "Find", show=False),
         Binding("r", "reload", "Reload"),
         Binding("q", "quit", "Quit"),
@@ -521,6 +590,9 @@ class DeskApp(App):
         self._state = state
         self._runs = runs
         self.desk = desk
+        self.compare = None
+        self._ledgers: list = []
+        self._ledger_i = 0
         self._query = ""
         self._symbol = ""
         self._mute = False
@@ -566,13 +638,20 @@ class DeskApp(App):
                             yield DataTable(id="rules-table", show_cursor=False, zebra_stripes=True)
                         with Panel("Distance to the line"):
                             yield DataTable(id="limits-table", cursor_type="row", zebra_stripes=True)
+            with TabPane("Diagnostics", id="diagnostics"):
+                with Panel("Diagnostics"):
+                    yield DiagnosticsView(id="diag-view")
+            with TabPane("Compare", id="compare"):
+                with Panel("Compare ledgers"):
+                    yield CompareView(id="compare-view")
         with Horizontal(id="foot"):
             yield Input(placeholder="find symbol", id="find")
-            yield Static("1 book   2 weights   3 orders   4 ledger   5 system    / find    r reload    q quit", id="keys")
+            yield Static("1 book  2 weights  3 orders  4 ledger  5 system  6 diag  7 compare   [ ] ledger   / find   r reload   q quit", id="keys")
 
     def on_mount(self) -> None:
         if self.desk is None:
             self.desk = load_desk(self._state, self._runs)
+        self._refresh_ledger_list()
         for table in self.query(DataTable):
             table.cell_padding = 1
             table.fixed_columns = 1
@@ -586,7 +665,37 @@ class DeskApp(App):
         self.query_one("#find", Input).focus()
 
     def action_reload(self) -> None:
-        self.desk = load_desk(self._state, self._runs)
+        self.desk = load_desk(self._state, self._runs, ledger=getattr(self.desk, "source", None) if self.desk and str(self.desk.source).endswith(tuple("0123456789abcdef")) else None)
+        self._refresh_ledger_list()
+        self._fill()
+        self.query_one("#tape", Tape).refresh()
+
+    def action_next_ledger(self) -> None:
+        self._shift_ledger(1)
+
+    def action_prev_ledger(self) -> None:
+        self._shift_ledger(-1)
+
+    def _refresh_ledger_list(self) -> None:
+        try:
+            from monterey.ledger import list_ledgers
+
+            self._ledgers = list_ledgers()
+        except Exception:
+            self._ledgers = []
+        if len(self._ledgers) >= 2:
+            try:
+                self.compare = load_desk(ledger=self._ledgers[1]["path"])
+            except Exception:
+                self.compare = None
+
+    def _shift_ledger(self, delta: int) -> None:
+        if not self._ledgers:
+            self._refresh_ledger_list()
+        if not self._ledgers:
+            return
+        self._ledger_i = (self._ledger_i + delta) % len(self._ledgers)
+        self.desk = load_desk(ledger=self._ledgers[self._ledger_i]["path"])
         self._fill()
         self.query_one("#tape", Tape).refresh()
 
@@ -624,6 +733,11 @@ class DeskApp(App):
         self.query_one("#tape", Tape).refresh()
         self.query_one("#perf", Performance).refresh()
         self.query_one("#runs", SessionList).refresh()
+        try:
+            self.query_one("#diag-view", DiagnosticsView).refresh()
+            self.query_one("#compare-view", CompareView).refresh()
+        except Exception:
+            pass
 
     def _fill_book(self) -> None:
         table = self.query_one("#book-table", DataTable)

@@ -72,6 +72,8 @@ class Desk:
     cash_path: list[dict] = field(default_factory=list)
     sessions: list[dict] = field(default_factory=list)
     source: str = ""
+    diagnostics: dict = field(default_factory=dict)
+    ledger_name: str = ""
 
     def holding(self, symbol: str) -> Holding | None:
         for row in self.holdings:
@@ -85,7 +87,165 @@ class Desk:
         return query.upper() in symbol.upper()
 
 
-def load_desk(state: Path | None = None, runs: Path | None = None) -> Desk:
+def load_desk(state: Path | None = None, runs: Path | None = None, ledger=None) -> Desk:
+    if ledger is not None:
+        return load_desk_from_ledger(ledger)
+    try:
+        from monterey.ledger import list_ledgers
+
+        live = [row for row in list_ledgers() if row.get("mode") == "live"]
+        if live:
+            return load_desk_from_ledger(live[0]["path"])
+    except Exception:
+        pass
+    return _load_ops_desk(state, runs)
+
+
+def load_desk_from_ledger(ledger) -> Desk:
+    """Build the desk snapshot from a monterey ledger folder or Ledger object."""
+    from monterey.diagnostics.performance import stats
+    from monterey.ledger import Ledger
+
+    if not isinstance(ledger, Ledger):
+        ledger = Ledger.read(ledger)
+    spec = ledger.spec
+    nav = ledger.nav
+    latest = {} if nav.empty else nav.iloc[-1].to_dict()
+    desk = Desk(source=str(ledger.path or spec.id))
+    desk.as_of = str(pd.Timestamp(latest.get("date")).date()) if latest else ""
+    desk.nav = _float(latest.get("nav"))
+    desk.cash = _float(latest.get("cash")) or 0.0
+    desk.invested = _float(latest.get("invested")) or 0.0
+    desk.daily_return = _float(latest.get("daily_return"))
+    desk.n_positions = int(_float(latest.get("n_positions")) or 0)
+    desk.sma_on = bool(latest.get("regime_on")) if latest.get("regime_on") is not None else None
+    desk.sma_reason = ""
+    if desk.sma_on is True:
+        desk.sma_reason = "SPY above SMA"
+    elif desk.sma_on is False:
+        desk.sma_reason = "cash"
+    desk.book_version = f"{spec.id} {spec.hash()}"
+    desk.name_cap = float(spec.construction.get("name_cap") or 0.10)
+    desk.cash_weight = 1.0 - float(latest.get("exposure") or 0.0) if latest else None
+    desk.starting_cash = float(spec.accounting.get("capital") or 0.0)
+    desk.venue = "local"
+    desk.purification_today = _float(latest.get("purification")) or 0.0
+    if not nav.empty:
+        desk.purification_cumulative = float(pd.to_numeric(nav["purification"], errors="coerce").fillna(0).sum())
+    desk.nav_points = _records(nav.rename(columns={"date": "as_of", "regime_on": "sma_on"}) if not nav.empty else nav)
+    desk.fills = _records(ledger.fills.rename(columns={"date": "as_of"}) if not ledger.fills.empty else ledger.fills)
+    desk.pending = []
+    last_positions = pd.DataFrame()
+    if not ledger.positions.empty:
+        last_day = pd.to_datetime(ledger.positions["date"]).max()
+        last_positions = ledger.positions[pd.to_datetime(ledger.positions["date"]) == last_day]
+    desk.holdings = _holdings_from_positions(last_positions, desk.nav, desk.name_cap)
+    desk.activity = [
+        {
+            "as_of": row.get("date") or row.get("as_of"),
+            "type": "fill",
+            "symbol": row.get("symbol"),
+            "amount": (float(row.get("notional") or 0) * (-1 if row.get("side") == "buy" else 1)),
+            "detail": row.get("reason") or row.get("side"),
+        }
+        for row in desk.fills
+        if row.get("status") in {None, "filled", "partial"}
+    ]
+    desk.rules = list(spec.summary())
+    perf = stats(ledger.nav_series()) if not nav.empty else {}
+    diag = ledger.diagnostics()
+    rel = ((diag.get("benchmarks") or {}).get("SPUS") or {}).get("relative") or {}
+    spy = ((diag.get("benchmarks") or {}).get("SPY") or {}).get("relative") or {}
+    desk.health = {
+        "window": f"{perf.get('start')} to {perf.get('end')}" if perf else None,
+        "n_sessions": perf.get("sessions") or len(desk.nav_points),
+        "sessions_required": 20,
+        "max_drawdown": perf.get("max_drawdown"),
+        "sharpe": perf.get("sharpe"),
+        "sortino": perf.get("sortino"),
+        "var_95": perf.get("var_95"),
+        "cvar_95": perf.get("cvar_95"),
+        "beta_spus": rel.get("beta"),
+        "beta_spy": spy.get("beta"),
+        "tracking_error_spus": rel.get("tracking_error"),
+        "alpha_spus": rel.get("alpha"),
+        "confidence": 0.95,
+    }
+    desk.diagnostics = diag
+    desk.ledger_name = f"{spec.id}/{spec.hash()}"
+    desk.sessions = _sessions_from_nav(nav)
+    desk.fails = [
+        {"symbol": row.get("symbol"), "reason": row.get("detail")}
+        for row in _records(ledger.events)
+        if row.get("type") == "breach"
+    ]
+    desk.near = list((diag.get("compliance") or {}).get("watch_list") or [])
+    return desk
+
+
+def _holdings_from_positions(frame: pd.DataFrame, nav: float | None, name_cap: float) -> list[Holding]:
+    rows: list[Holding] = []
+    if frame is None or frame.empty:
+        return rows
+    for record in frame.to_dict("records"):
+        reason = str(record.get("screen_reason") or "")
+        screen = "PASS" if reason in {"", "passes", "None"} else "REVIEW"
+        if reason.startswith("excluded"):
+            screen = "REVIEW"
+        holding = Holding(
+            symbol=str(record.get("symbol") or ""),
+            target_weight=_float(record.get("target_weight")) or 0.0,
+            invested_weight=_float(record.get("invested_weight")) or 0.0,
+            shares=_float(record.get("shares")) or 0.0,
+            price=_float(record.get("price")),
+            market_value=_float(record.get("value")),
+            actual_weight=_float(record.get("weight")),
+            fcf_margin=_float(record.get("score")),
+            market_cap=_float(record.get("market_cap")),
+            debt_ratio=_float(record.get("debt_ratio")),
+            cash_ratio=_float(record.get("cash_ratio")),
+            receivables_ratio=_float(record.get("receivables_ratio")),
+        )
+        holding.screen = screen
+        if nav and holding.actual_weight is not None:
+            holding.drift = holding.target_weight - holding.actual_weight
+        if name_cap and holding.target_weight >= name_cap - 1e-9:
+            holding.name_capped = True
+        _nearest(holding)
+        if holding.shares > 0 or holding.target_weight > 0:
+            rows.append(holding)
+    rows.sort(key=lambda row: (-(row.actual_weight or row.target_weight), row.symbol))
+    return rows
+
+
+def _sessions_from_nav(nav: pd.DataFrame) -> list[dict]:
+    if nav is None or nav.empty:
+        return []
+    rows = []
+    for record in nav.sort_values("date", ascending=False).to_dict("records"):
+        rows.append(
+            {
+                "as_of": str(pd.Timestamp(record.get("date")).date()),
+                "nav": _float(record.get("nav")),
+                "daily_return": _float(record.get("daily_return")),
+                "cash": _float(record.get("cash")),
+                "n_positions": int(_float(record.get("n_positions")) or 0),
+                "n_fills": int(_float(record.get("n_fills")) or 0),
+                "n_pending": int(_float(record.get("n_orders")) or 0),
+                "sma_on": _bool(record.get("regime_on")),
+                "sma_reason": "",
+                "halted": False,
+                "halt_reason": "",
+                "fill_basis": "",
+                "reconcile_reason": "",
+                "purification_today": _float(record.get("purification")) or 0.0,
+                "n_filing_fails": 0,
+            }
+        )
+    return rows
+
+
+def _load_ops_desk(state: Path | None = None, runs: Path | None = None) -> Desk:
     state_root = state or STATE
     runs_root = runs or RUNS
     desk = Desk(source=str(state_root))

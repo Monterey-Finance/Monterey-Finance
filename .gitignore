@@ -1,2 +1,11 @@
 monterey_finance_storytelling_content_context.md
-Research/diagnostics/README.md
+Research/diagnostics/
+data/snapshots/
+ledgers/experiments/
+ledgers/**/positions.parquet
+ledgers/**/orders.parquet
+ledgers/**/fills.parquet
+ledgers/**/cashflows.parquet
+ledgers/**/events.parquet
+ops/state/batches.json
+*.egg-info/

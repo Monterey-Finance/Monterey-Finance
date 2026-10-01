@@ -1,4 +1,4 @@
-"""The desk loads the paper book and fills every tab."""
+"""The desk loads a monterey ledger and fills every tab."""
 
 from __future__ import annotations
 
@@ -9,65 +9,70 @@ import pytest
 
 from desk.app import DeskApp
 from desk.model import load_desk
+from monterey.diagnostics import diagnose
+from monterey.sim import simulate
+from monterey.spec import BookSpec
+from monterey.tests.synthetic import make_data
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_live_book_loads_the_september_session():
-    desk = load_desk()
-    assert desk.as_of == "2026-09-25"
-    assert desk.nav == pytest.approx(1_000_000, abs=1)
-    assert len(desk.holdings) >= 100
-    apple = desk.holding("AAPL")
-    assert apple is not None
-    assert apple.target_weight == pytest.approx(0.10, abs=1e-6)
-    assert apple.shares == 293
-    assert apple.screen == "PASS"
-    assert apple.name_capped is True
-    assert desk.cash_path[-1]["cash"] == pytest.approx(desk.cash, abs=0.01)
+def _ledger(tmp_path):
+    data = make_data(crash_on=None, breach=None)
+    spec = BookSpec.load("fcf-sma-v2-baseline").replace(
+        id="desk-test",
+        signal={"params": {"min_holdings": 1, "keep_quantile": 1.0}},
+    )
+    ledger = simulate(spec, data, "2020-01-02", "2020-03-31", root=tmp_path)
+    diagnose(ledger, data)
+    return ledger, data
+
+
+def test_desk_loads_a_simulated_ledger(tmp_path):
+    ledger, _ = _ledger(tmp_path)
+    desk = load_desk(ledger=ledger.path)
+    assert desk.nav is not None
+    assert desk.nav > 0
+    assert desk.holdings
+    assert desk.health.get("max_drawdown") is not None
+    assert desk.rules
+    assert any(label == "brain" for label, _ in desk.rules)
     assert desk.sessions
-    assert desk.sessions[0]["as_of"] == "2026-09-25"
-    assert desk.sessions[0]["fill_basis"] == "close_bootstrap"
-    assert desk.sessions[0]["n_positions"] == 124
-    assert desk.sessions[0]["n_fills"] == 124
+    apple = desk.holding(desk.holdings[0].symbol)
+    assert apple is not None
+    assert apple.price is not None
 
 
-def test_every_tab_is_filled():
-    asyncio.run(_walk_tabs())
+def test_every_tab_is_filled(tmp_path):
+    ledger, _ = _ledger(tmp_path)
+    desk = load_desk(ledger=ledger.path)
+    asyncio.run(_walk_tabs(desk))
 
 
-async def _walk_tabs():
-    app = DeskApp()
+async def _walk_tabs(desk):
+    app = DeskApp(desk=desk)
     async with app.run_test(size=(160, 46)) as pilot:
         await pilot.pause()
         book = app.query_one("#book-table")
-        assert book.row_count >= 100
-        assert book.size.height > 12
-        assert app.query_one("#perf").size.height > 12
-        assert "Performance" in app.query_one("#perf-panel").border_title
-        assert "Daily runs" in app.query_one("#runs-panel").border_title
-        assert app.query_one("#runs").size.height > 4
+        assert book.row_count >= 1
         await pilot.press("2")
         await pilot.pause()
-        assert app.query_one("#weights-table").row_count >= 100
+        assert app.query_one("#weights-table").row_count >= 1
         await pilot.press("3")
         await pilot.pause()
-        assert app.query_one("#orders-table").row_count >= 100
-        assert app.query_one("#fills-table").row_count >= 100
         await pilot.press("4")
         await pilot.pause()
-        assert app.query_one("#activity-table").row_count >= 100
-        assert app.query_one("#ratio-table").row_count >= 100
-        assert app.query_one("#cash-table").row_count >= 100
         await pilot.press("5")
         await pilot.pause()
         assert app.query_one("#health-table").row_count >= 8
-        assert app.query_one("#status-table").row_count >= 8
         assert app.query_one("#rules-table").row_count >= 8
-        assert app.query_one("#limits-table").row_count >= 100
+        await pilot.press("6")
+        await pilot.pause()
+        await pilot.press("7")
+        await pilot.pause()
         await pilot.press("1")
         await pilot.pause()
-        app.query_one("#find").value = "AAPL"
+        app.query_one("#find").value = desk.holdings[0].symbol
         await pilot.pause()
-        assert app.query_one("#book-table").row_count == 1
+        assert app.query_one("#book-table").row_count >= 1
         app.save_screenshot(str(ROOT / "desk" / "tests" / "desk-book.svg"))

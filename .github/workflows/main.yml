@@ -2,7 +2,6 @@ name: Shadow fund
 
 on:
   schedule:
-    # 22:30 UTC on weekdays, after the US close in both summer and winter.
     - cron: "30 22 * * 1-5"
   workflow_dispatch:
     inputs:
@@ -56,7 +55,7 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          pip install "halalquant[cache] @ git+https://github.com/regional-specter/halalquant.git@v0.3.0"
+          pip install -e ".[dev]"
 
       - name: Download market cache
         run: |
@@ -64,6 +63,11 @@ jobs:
           aws s3 sync "s3://${R2_BUCKET}/${R2_PREFIX}/" "$HALALQUANT_DATA_DIR/" \
             --endpoint-url "$R2_ENDPOINT"
           test -f "$HALALQUANT_DATA_DIR/cache.duckdb"
+
+      - name: Download ledgers
+        run: |
+          mkdir -p ledgers
+          aws s3 sync "s3://${R2_BUCKET}/ledgers/" ledgers/ --endpoint-url "$R2_ENDPOINT" || true
 
       - name: Run session
         id: session
@@ -74,132 +78,33 @@ jobs:
           REPLAY_END: ${{ github.event.inputs.replay_end }}
         run: |
           set -euo pipefail
-          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ]; then
-            set +e
-            python - <<'PY'
-          import sys
-          from datetime import date, timedelta
-
-          import pandas as pd
-
-          frame = pd.read_csv("ops/state/nav.csv")
-          if frame.empty or "as_of" not in frame.columns:
-              print("Scheduled run skipped. NAV has no sessions yet.")
-              sys.exit(2)
-          last = pd.Timestamp(frame["as_of"].iloc[-1]).date()
-          if last < date.today() - timedelta(days=5):
-              print(f"Scheduled run skipped. Last NAV is {last}, still inside the history replay.")
-              sys.exit(2)
-          PY
-            status=$?
-            set -e
-            if [ "$status" -eq 2 ]; then
-              exit 0
-            fi
-            if [ "$status" -ne 0 ]; then
-              exit "$status"
-            fi
-          fi
-          if [ ! -f ops/state/nav.csv ] || [ ! -f ops/state/account.json ]; then
-            echo "ops/state/nav.csv and account.json must already be in the repo."
-            echo "Otherwise this job would open a new paper account."
-            exit 1
-          fi
           python - <<'PY'
           import json
           import os
-          import subprocess
           import sys
-          from datetime import date, timedelta
+          from datetime import date
 
-          import pandas as pd
-
-          BUDGET_S = 3 * 60 * 60
-          SAVE_EVERY = 21
-
-          def last_nav():
-              frame = pd.read_csv("ops/state/nav.csv")
-              if frame.empty or "as_of" not in frame.columns:
-                  return None
-              return pd.Timestamp(frame["as_of"].iloc[-1]).date()
-
-          def run_day(day, refresh):
-              print(f"=== {day.isoformat()} ===", flush=True)
-              command = [sys.executable, "-m", "ops", "schedule", "--as-of", day.isoformat()]
-              if not refresh:
-                  command.append("--skip-refresh")
-              result = subprocess.run(command, check=False)
-              if result.returncode != 0:
-                  sys.exit(result.returncode)
-
-          def checkpoint(label):
-              subprocess.run(["git", "config", "user.name", "github-actions[bot]"], check=True)
-              subprocess.run(
-                  ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
-                  check=True,
-              )
-              subprocess.run(["git", "add", "-f", "ops/state", "ops/runs"], check=True)
-              subprocess.run(["git", "reset", "--", "ops/state/.gitignore"], check=True)
-              if subprocess.run(["git", "diff", "--staged", "--quiet"]).returncode == 0:
-                  print("No ledger changes.", flush=True)
-                  return
-              subprocess.run(["git", "commit", "-m", f"Mark paper NAV through {label}"], check=True)
-              ref = os.environ["GITHUB_REF_NAME"]
-              subprocess.run(["git", "pull", "--rebase", "origin", ref], check=True)
-              subprocess.run(["git", "push", "origin", f"HEAD:{ref}"], check=True)
-              print(f"Saved ledger through {label}.", flush=True)
-
-          def write_outputs(continue_replay, replay_end):
-              path = os.environ.get("GITHUB_OUTPUT")
-              if not path:
-                  return
-              with open(path, "a", encoding="utf-8") as handle:
-                  handle.write(f"continue={continue_replay}\n")
-                  handle.write(f"replay_end={replay_end}\n")
+          from ops.data import resolve_as_of
+          from ops.fund import replay_book, run_live_session
 
           mode = os.environ.get("MODE") or "today"
-          if mode != "replay":
-              requested = os.environ.get("AS_OF") or "today"
-              if requested == "today":
-                  previous = last_nav()
-                  start = previous + timedelta(days=1) if previous else date.today()
-                  end = date.today()
-                  if (end - start).days > 10:
-                      sys.exit(f"Refusing to catch up {start} through {end} from the nightly job.")
-              else:
-                  start = end = date.fromisoformat(requested)
-              day = start
-              while day <= end:
-                  run_day(day, refresh=True)
-                  day += timedelta(days=1)
-              write_outputs("false", "")
-              raise SystemExit(0)
-
-          end_text = os.environ.get("REPLAY_END") or ""
-          if not end_text:
-              sys.exit("replay needs replay_end")
-          end = date.fromisoformat(end_text)
-          previous = last_nav()
-          if previous is not None:
-              start = previous + timedelta(days=1)
-          else:
+          if mode == "replay":
+              end_text = os.environ.get("REPLAY_END") or ""
+              if not end_text:
+                  sys.exit("replay needs replay_end")
               start = date.fromisoformat(os.environ.get("REPLAY_START") or "2020-01-02")
-          if start > end:
-              print(f"Replay already complete through {previous}.", flush=True)
-              write_outputs("false", end.isoformat())
-              raise SystemExit(0)
-
-          from ops.replay import replay_range
-
-          result = replay_range(
-              start,
-              end,
-              budget_s=BUDGET_S,
-              save_every=SAVE_EVERY,
-              on_checkpoint=checkpoint,
-          )
-          print(json.dumps(result.as_dict()), flush=True)
-          write_outputs("true" if not result.complete else "false", end.isoformat())
+              end = date.fromisoformat(end_text)
+              ledger = replay_book(start, end, refresh=False, progress=True)
+          else:
+              as_of = resolve_as_of(os.environ.get("AS_OF") or "today")
+              ledger = replay_book(date(2020, 1, 2), as_of, refresh=True, progress=True)
+              print(json.dumps(run_live_session(as_of, refresh=False), default=str), flush=True)
+          print(json.dumps({
+              "path": str(ledger.path),
+              "sessions": int(len(ledger.nav)),
+              "hash": ledger.spec.hash(),
+              "last_nav": None if ledger.nav.empty else float(ledger.nav["nav"].iloc[-1]),
+          }, default=str), flush=True)
           PY
 
       - name: Upload market cache
@@ -208,13 +113,21 @@ jobs:
           aws s3 sync "$HALALQUANT_DATA_DIR/" "s3://${R2_BUCKET}/${R2_PREFIX}/" \
             --endpoint-url "$R2_ENDPOINT"
 
-      - name: Commit ledger
+      - name: Upload ledgers to R2
+        if: success()
+        run: |
+          if [ -d ledgers ]; then
+            aws s3 sync ledgers/ "s3://${R2_BUCKET}/ledgers/" --endpoint-url "$R2_ENDPOINT"
+          fi
+
+      - name: Commit spec, NAV, and diagnostics
         if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f ops/state ops/runs
-          git reset -- ops/state/.gitignore
+          git add books ops/state/nav.csv ops/state/account.json 2>/dev/null || true
+          find ledgers \( -name spec.yaml -o -name manifest.json -o -name nav.parquet -o -name diagnostics.json \) \
+            | xargs -r git add -f
           if git diff --staged --quiet; then
             echo "No ledger changes."
             exit 0
@@ -222,12 +135,3 @@ jobs:
           git commit -m "Mark paper NAV"
           git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
-
-      - name: Continue replay
-        if: success() && steps.session.outputs.continue == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh workflow run main.yml --ref "${GITHUB_REF_NAME}" \
-            -f mode=replay \
-            -f replay_end="${{ steps.session.outputs.replay_end }}"

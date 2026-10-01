@@ -162,56 +162,67 @@ def _dispatch(args) -> int:
 
 
 def _cmd_run(args) -> int:
-    from ops.session import run_session
+    if args.targets_only:
+        from ops.session import run_session
 
-    result = run_session(
+        result = run_session(
+            args.as_of,
+            refresh=not args.skip_refresh,
+            coverage=args.coverage,
+            persist=not args.no_persist,
+            trade=False,
+            capital=args.capital,
+            min_notional=args.min_notional,
+            lookback_days=args.lookback_days,
+            venue=args.venue,
+            commit=not args.draft_only,
+        )
+        _print_session(result)
+        return 0
+    from ops.fund import run_live_session
+
+    print(json.dumps(run_live_session(
         args.as_of,
         refresh=not args.skip_refresh,
-        coverage=args.coverage,
-        persist=not args.no_persist,
-        trade=not args.targets_only,
         capital=args.capital,
-        min_notional=args.min_notional,
-        lookback_days=args.lookback_days,
+        persist=not args.no_persist,
         venue=args.venue,
-        commit=not args.draft_only,
-    )
-    _print_session(result)
+    ), indent=2, default=str))
     return 0
 
 
 def _cmd_schedule(args) -> int:
+    from ops.fund import run_live_session
     from ops.schedule import run_schedule
-    from ops.session import run_session
 
     def runner(day: date):
-        return run_session(
+        return run_live_session(
             day,
             refresh=not args.skip_refresh,
             venue=args.venue,
-            commit=not args.draft_only,
             capital=args.capital,
         )
 
     outcome = run_schedule(args.as_of, dry_run=args.dry_run, runner=runner)
-    if outcome["status"] == "ran":
-        _print_session(outcome["result"])
-        return 0
-    print(json.dumps(outcome, indent=2))
+    print(json.dumps(outcome, indent=2, default=str))
     return 0
 
 
 def _cmd_replay(args) -> int:
-    from ops.replay import replay_range
+    from ops.fund import replay_book
 
-    budget = None if not args.budget_minutes else float(args.budget_minutes) * 60
-    result = replay_range(
+    ledger = replay_book(
         args.start,
         args.end,
-        budget_s=budget,
-        lookback_days=args.lookback_days,
+        progress=True,
     )
-    print(json.dumps(result.as_dict(), indent=2))
+    print(json.dumps({
+        "book": ledger.spec.id,
+        "hash": ledger.spec.hash(),
+        "sessions": int(len(ledger.nav)),
+        "last_nav": None if ledger.nav.empty else float(ledger.nav["nav"].iloc[-1]),
+        "path": str(ledger.path),
+    }, indent=2))
     return 0
 
 

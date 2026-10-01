@@ -19,6 +19,37 @@ def health_report(
     root: Path | None = None,
     benchmark: pd.DataFrame | None = None,
 ) -> dict:
+    try:
+        from ops.fund import load_live_ledger
+
+        ledger = load_live_ledger()
+        if ledger is not None and not ledger.nav.empty and nav is None:
+            from monterey.diagnostics.performance import relative, stats
+
+            values = ledger.nav_series()
+            report = {
+                "window": f"{values.index[0].date()} to {values.index[-1].date()}",
+                "n_sessions": int(len(values)),
+                "sessions_required": MIN_SESSIONS,
+                **{k: stats(values).get(k) for k in ("max_drawdown", "sharpe", "sortino", "var_95", "cvar_95")},
+                "beta_spus": None,
+                "beta_spy": None,
+                "tracking_error_spus": None,
+                "alpha_spus": None,
+                "confidence": 0.95,
+            }
+            diag = ledger.diagnostics()
+            benches = diag.get("benchmarks") or {}
+            if "SPUS" in benches:
+                rel = benches["SPUS"].get("relative") or {}
+                report["beta_spus"] = rel.get("beta")
+                report["tracking_error_spus"] = rel.get("tracking_error")
+                report["alpha_spus"] = rel.get("alpha")
+            if "SPY" in benches:
+                report["beta_spy"] = (benches["SPY"].get("relative") or {}).get("beta")
+            return report
+    except Exception:
+        pass
     frame = nav if nav is not None else _read_nav(root)
     if frame is None or frame.empty or "nav" not in frame.columns:
         return _empty("no NAV rows")

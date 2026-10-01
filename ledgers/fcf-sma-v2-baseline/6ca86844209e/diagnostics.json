@@ -1,0 +1,605 @@
+{
+  "book": "fcf-sma-v2-baseline",
+  "spec_hash": "6ca86844209e",
+  "rules": [
+    [
+      "book",
+      "fcf-sma-v2-baseline"
+    ],
+    [
+      "hash",
+      "6ca86844209e"
+    ],
+    [
+      "universe",
+      "sp500 point-in-time"
+    ],
+    [
+      "sector screen",
+      "on"
+    ],
+    [
+      "AAOIFI lines",
+      "debt 30% / cash 30% / recv 70%"
+    ],
+    [
+      "breach exit",
+      "next_open"
+    ],
+    [
+      "brain",
+      "fcf_quality (keep_quantile=0.5, min_holdings=20)"
+    ],
+    [
+      "weights",
+      "cap"
+    ],
+    [
+      "name cap",
+      "10%"
+    ],
+    [
+      "sector cap",
+      "none"
+    ],
+    [
+      "throttle",
+      "SPY 200-day SMA"
+    ],
+    [
+      "rebalance",
+      "daily_to_target, drift band 0.0%, min $100"
+    ],
+    [
+      "dividends",
+      "credited"
+    ],
+    [
+      "cost",
+      "10 bp charged"
+    ],
+    [
+      "purify",
+      "ex_date"
+    ]
+  ],
+  "performance": {
+    "start": "2020-01-02",
+    "end": "2026-09-25",
+    "sessions": 1692,
+    "total_return": 1.0644475131122624,
+    "cagr": 0.1137269386596218,
+    "volatility": 0.1462884458105872,
+    "max_drawdown": -0.24822817697859467,
+    "drawdown_peak": "2021-12-27",
+    "drawdown_trough": "2023-03-13",
+    "calmar": 0.45815483175154914,
+    "sharpe": 0.6752151630380168,
+    "sortino": 0.858947377232747,
+    "var_95": 0.015183469666780303,
+    "cvar_95": 0.022858950948802158
+  },
+  "yearly": [
+    {
+      "year": 2020,
+      "return": 0.0527920444,
+      "intra_year_drawdown": -0.1909358944,
+      "year_end": 1051740.3783012393
+    },
+    {
+      "year": 2021,
+      "return": 0.2831469981,
+      "intra_year_drawdown": -0.0808903171,
+      "year_end": 1349537.5092225047
+    },
+    {
+      "year": 2022,
+      "return": -0.2080350614,
+      "intra_year_drawdown": -0.2071184149,
+      "year_end": 1068786.3906288547
+    },
+    {
+      "year": 2023,
+      "return": 0.1524609037,
+      "intra_year_drawdown": -0.0802445077,
+      "year_end": 1231734.529578659
+    },
+    {
+      "year": 2024,
+      "return": 0.2741415503,
+      "intra_year_drawdown": -0.072282061,
+      "year_end": 1569404.1430227528
+    },
+    {
+      "year": 2025,
+      "return": 0.1249865763,
+      "intra_year_drawdown": -0.1349609202,
+      "year_end": 1765558.5937102663
+    },
+    {
+      "year": 2026,
+      "return": 0.1681205488,
+      "intra_year_drawdown": -0.0860245449,
+      "year_end": 2062385.2734312858
+    }
+  ],
+  "components": {
+    "total": 1.0644475131122606,
+    "price": 1.0676676722909795,
+    "dividends": 0.05869737391360075,
+    "purification": -0.00028413624964152007,
+    "costs": -0.05995380279432205
+  },
+  "benchmarks": {
+    "SPUS": {
+      "performance": {
+        "start": "2020-01-02",
+        "end": "2026-09-25",
+        "sessions": 1692,
+        "total_return": 2.1167271201406606,
+        "cagr": 0.18402772314854676,
+        "volatility": 0.2115623280712604,
+        "max_drawdown": -0.3080151286248147,
+        "drawdown_peak": "2020-02-19",
+        "drawdown_trough": "2020-03-23",
+        "calmar": 0.597463260879975,
+        "sharpe": 0.8123117191281936,
+        "sortino": 1.082821941841685,
+        "var_95": 0.020221162089231415,
+        "cvar_95": 0.0307871361066311
+      },
+      "yearly": [
+        {
+          "year": 2020,
+          "return": 0.2399392343,
+          "intra_year_drawdown": -0.3080151286,
+          "year_end": 23.8859386444
+        },
+        {
+          "year": 2021,
+          "return": 0.3562166781,
+          "intra_year_drawdown": -0.0818834087,
+          "year_end": 32.3945083618
+        },
+        {
+          "year": 2022,
+          "return": -0.2276119385,
+          "intra_year_drawdown": -0.2782801726,
+          "year_end": 25.0211315155
+        },
+        {
+          "year": 2023,
+          "return": 0.3419644452,
+          "intra_year_drawdown": -0.1068556751,
+          "year_end": 33.5774688721
+        },
+        {
+          "year": 2024,
+          "return": 0.2649492191,
+          "intra_year_drawdown": -0.1146328907,
+          "year_end": 42.4737930298
+        },
+        {
+          "year": 2025,
+          "return": 0.1977556638,
+          "intra_year_drawdown": -0.2282480761,
+          "year_end": 50.8732261658
+        },
+        {
+          "year": 2026,
+          "return": 0.1801885872,
+          "intra_year_drawdown": -0.1065872148,
+          "year_end": 60.0400009155
+        }
+      ],
+      "relative": {
+        "beta": 0.44949462658149797,
+        "tracking_error": 0.161001276006771,
+        "alpha": 0.02152847622599898,
+        "correlation": 0.6500590605647221,
+        "up_capture": 0.627450236567846,
+        "down_capture": 0.6289377207871716
+      },
+      "selection": {
+        "days": 1340,
+        "book": 1.8556880633701769,
+        "bench": 2.2897059739695336,
+        "by_year": [
+          {
+            "year": 2020,
+            "book": 0.18507635635042696,
+            "bench": 0.20760945849769796
+          },
+          {
+            "year": 2021,
+            "book": 0.26915427388375157,
+            "bench": 0.3416964479411586
+          },
+          {
+            "year": 2022,
+            "book": -0.10707384391864272,
+            "bench": -0.07100634703337305
+          },
+          {
+            "year": 2023,
+            "book": 0.21036776780762256,
+            "bench": 0.2766196706942545
+          },
+          {
+            "year": 2024,
+            "book": 0.2615474574413581,
+            "bench": 0.25526313881538254
+          },
+          {
+            "year": 2025,
+            "book": 0.1941811196279155,
+            "bench": 0.18447265604414786
+          },
+          {
+            "year": 2026,
+            "book": 0.16612022637891966,
+            "bench": 0.15144238939833055
+          }
+        ]
+      },
+      "always_invested": {
+        "total_return": 1.6867006976206125,
+        "cagr": 0.15819170329927235,
+        "max_drawdown": -0.31300303417940467,
+        "calmar": 0.5053999035951876
+      },
+      "switch": {
+        "cuts": 18,
+        "raises": 18,
+        "off_day_loss": -0.2591359760397147,
+        "on_day_missed": 0.444878077160066,
+        "out_of_market": -0.09460433016309622,
+        "days_not_invested": 352,
+        "by_year": [
+          {
+            "year": 2020,
+            "cuts": 3,
+            "off_day_loss": -0.07917925417393179,
+            "on_day_missed": 0.08573557886368843,
+            "days_not_invested": 63
+          },
+          {
+            "year": 2021,
+            "cuts": 0,
+            "off_day_loss": 0.0,
+            "on_day_missed": 0.0,
+            "days_not_invested": 0
+          },
+          {
+            "year": 2022,
+            "cuts": 8,
+            "off_day_loss": -0.10250419335070027,
+            "on_day_missed": 0.11988555515447419,
+            "days_not_invested": 211
+          },
+          {
+            "year": 2023,
+            "cuts": 4,
+            "off_day_loss": -0.03467573285659786,
+            "on_day_missed": 0.0889757057149263,
+            "days_not_invested": 21
+          },
+          {
+            "year": 2024,
+            "cuts": 0,
+            "off_day_loss": 0.0,
+            "on_day_missed": 0.0,
+            "days_not_invested": 0
+          },
+          {
+            "year": 2025,
+            "cuts": 2,
+            "off_day_loss": -0.05423539912804909,
+            "on_day_missed": 0.06396867523298289,
+            "days_not_invested": 44
+          },
+          {
+            "year": 2026,
+            "cuts": 1,
+            "off_day_loss": -0.018083169604800053,
+            "on_day_missed": 0.025619940927033458,
+            "days_not_invested": 13
+          }
+        ]
+      }
+    },
+    "SPY": {
+      "performance": {
+        "start": "2020-01-02",
+        "end": "2026-09-25",
+        "sessions": 1692,
+        "total_return": 1.611277415054385,
+        "cagr": 0.15330152228441496,
+        "volatility": 0.20064420405029573,
+        "max_drawdown": -0.33717265401236196,
+        "drawdown_peak": "2020-02-19",
+        "drawdown_trough": "2020-03-23",
+        "calmar": 0.45466772129982513,
+        "sharpe": 0.7139700556015226,
+        "sortino": 0.8853856629231193,
+        "var_95": 0.01765146519952021,
+        "cvar_95": 0.0299787651961096
+      },
+      "yearly": [
+        {
+          "year": 2020,
+          "return": 0.1723521264,
+          "intra_year_drawdown": -0.337172654,
+          "year_end": 346.3032226562
+        },
+        {
+          "year": 2021,
+          "return": 0.2872878506,
+          "intra_year_drawdown": -0.0511413211,
+          "year_end": 445.7919311523
+        },
+        {
+          "year": 2022,
+          "return": -0.1817537451,
+          "intra_year_drawdown": -0.2449639399,
+          "year_end": 364.767578125
+        },
+        {
+          "year": 2023,
+          "return": 0.2617580089,
+          "intra_year_drawdown": -0.0997431883,
+          "year_end": 460.2484130859
+        },
+        {
+          "year": 2024,
+          "return": 0.2488646295,
+          "intra_year_drawdown": -0.0840560162,
+          "year_end": 574.7879638672
+        },
+        {
+          "year": 2025,
+          "return": 0.1771906378,
+          "intra_year_drawdown": -0.1875522908,
+          "year_end": 676.6350097656
+        },
+        {
+          "year": 2026,
+          "return": 0.1399794046,
+          "intra_year_drawdown": -0.0888497298,
+          "year_end": 771.3499755859
+        }
+      ],
+      "relative": {
+        "beta": 0.42224363317396924,
+        "tracking_error": 0.1663158321823963,
+        "alpha": 0.038288106986946326,
+        "correlation": 0.5791348539117822,
+        "up_capture": 0.6906641982894967,
+        "down_capture": 0.684440765365981
+      },
+      "selection": {
+        "days": 1340,
+        "book": 1.8556880633701769,
+        "bench": 1.7490075338400883,
+        "by_year": [
+          {
+            "year": 2020,
+            "book": 0.18507635635042696,
+            "bench": 0.19865261255883926
+          },
+          {
+            "year": 2021,
+            "book": 0.26915427388375157,
+            "bench": 0.27035408487262513
+          },
+          {
+            "year": 2022,
+            "book": -0.10707384391864272,
+            "bench": -0.03788876789728457
+          },
+          {
+            "year": 2023,
+            "book": 0.21036776780762256,
+            "bench": 0.19634116195505769
+          },
+          {
+            "year": 2024,
+            "book": 0.2615474574413581,
+            "bench": 0.23304794786605276
+          },
+          {
+            "year": 2025,
+            "book": 0.1941811196279155,
+            "bench": 0.15217986316175147
+          },
+          {
+            "year": 2026,
+            "book": 0.16612022637891966,
+            "bench": 0.10402073344441787
+          }
+        ]
+      },
+      "always_invested": {
+        "total_return": 1.6071221258794677,
+        "cagr": 0.15302862837832842,
+        "max_drawdown": -0.33530757050967575,
+        "calmar": 0.4563828611018867
+      },
+      "switch": {
+        "cuts": 18,
+        "raises": 18,
+        "off_day_loss": -0.2591359760397147,
+        "on_day_missed": 0.4089202333023185,
+        "out_of_market": -0.11204647275617552,
+        "days_not_invested": 352,
+        "by_year": [
+          {
+            "year": 2020,
+            "cuts": 3,
+            "off_day_loss": -0.07917925417393179,
+            "on_day_missed": 0.10055401254126739,
+            "days_not_invested": 63
+          },
+          {
+            "year": 2021,
+            "cuts": 0,
+            "off_day_loss": 0.0,
+            "on_day_missed": 0.0,
+            "days_not_invested": 0
+          },
+          {
+            "year": 2022,
+            "cuts": 8,
+            "off_day_loss": -0.10250419335070027,
+            "on_day_missed": 0.10095067944213287,
+            "days_not_invested": 211
+          },
+          {
+            "year": 2023,
+            "cuts": 4,
+            "off_day_loss": -0.03467573285659786,
+            "on_day_missed": 0.07833912021835499,
+            "days_not_invested": 21
+          },
+          {
+            "year": 2024,
+            "cuts": 0,
+            "off_day_loss": 0.0,
+            "on_day_missed": 0.0,
+            "days_not_invested": 0
+          },
+          {
+            "year": 2025,
+            "cuts": 2,
+            "off_day_loss": -0.05423539912804909,
+            "on_day_missed": 0.05154782037283656,
+            "days_not_invested": 44
+          },
+          {
+            "year": 2026,
+            "cuts": 1,
+            "off_day_loss": -0.018083169604800053,
+            "on_day_missed": 0.0254696046172882,
+            "days_not_invested": 13
+          }
+        ]
+      }
+    }
+  },
+  "trading": {
+    "annual_turnover": 4.165266554966318,
+    "traded_notional": 72700354.51107883,
+    "costs": 72700.35451107883,
+    "by_year_notional": {
+      "2020": 9034818.026511192,
+      "2021": 4819481.380443573,
+      "2022": 17727248.596233368,
+      "2023": 13419377.279182434,
+      "2024": 5476324.432910919,
+      "2025": 11139362.673679352,
+      "2026": 11083742.122117996
+    },
+    "switch_share": 0.561177910482784,
+    "fills": 48394,
+    "median_fills_per_day": 30.0,
+    "small_fill_share": 0.891350167376121
+  },
+  "concentration": [
+    {
+      "year": 2020,
+      "names": 79.7766497462,
+      "top5": 0.3501434751,
+      "top10": 0.5043404715,
+      "capped": 1.6395939086,
+      "effective_names": 25.8919845022
+    },
+    {
+      "year": 2021,
+      "names": 88.5555555556,
+      "top5": 0.3671609265,
+      "top10": 0.5047800359,
+      "capped": 2.0,
+      "effective_names": 24.5057655473
+    },
+    {
+      "year": 2022,
+      "names": 99.6545454545,
+      "top5": 0.3492931212,
+      "top10": 0.4705366845,
+      "capped": 2.1454545455,
+      "effective_names": 26.6869827052
+    },
+    {
+      "year": 2023,
+      "names": 94.1974789916,
+      "top5": 0.4018906781,
+      "top10": 0.5483371055,
+      "capped": 3.0,
+      "effective_names": 22.4224701035
+    },
+    {
+      "year": 2024,
+      "names": 96.2896825397,
+      "top5": 0.4557145992,
+      "top10": 0.6164322015,
+      "capped": 3.9166666667,
+      "effective_names": 19.0389928713
+    },
+    {
+      "year": 2025,
+      "names": 102.780952381,
+      "top5": 0.4937683518,
+      "top10": 0.6712807633,
+      "capped": 4.2285714286,
+      "effective_names": 16.8182487193
+    },
+    {
+      "year": 2026,
+      "names": 109.9884393064,
+      "top5": 0.4768919393,
+      "top10": 0.6283901018,
+      "capped": 3.7687861272,
+      "effective_names": 18.3029402957
+    }
+  ],
+  "sectors": {
+    "information technology": 0.6556860463020436,
+    "communication services": 0.09423369068657618,
+    "health care": 0.07629567087695308,
+    "industrials": 0.06128930633436669,
+    "financials": 0.04960916539001768,
+    "consumer discretionary": 0.0329117048722548,
+    "consumer staples": 0.019261012426010634,
+    "materials": 0.00816159333377614,
+    "energy": 0.0025518097780013018
+  },
+  "compliance": {
+    "excluded_exposure": {
+      "sessions": 0,
+      "names": [],
+      "latest_weight": 0.0
+    },
+    "breaches": {
+      "events": 122,
+      "names": 46,
+      "checked": 104,
+      "still_held": 13
+    },
+    "purification": {
+      "dividends": 72732.190422,
+      "purification": 382.6357628246518,
+      "posts": 693,
+      "share_of_dividends": 0.005260886006657546
+    },
+    "watch_list": [
+      {
+        "symbol": "EXPE",
+        "ratio": "cash_ratio",
+        "value": 0.29391739558765967,
+        "line": 0.3,
+        "gap": 0.00608260441234032
+      }
+    ],
+    "delistings": 0
+  }
+}

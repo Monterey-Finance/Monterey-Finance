@@ -32,6 +32,40 @@ ledgers/<book>/<spec_hash>/
 
 There is no second backtest engine. `Research/sleeves` is a shim over `monterey.legacy.sleeves` so papers 01–15 still open.
 
+<div>
+<img width="500" align="left" alt="image" src="https://github.com/user-attachments/assets/c6e78a0d-0e5f-44f8-b33c-c5d965222ab8"  />
+
+The engine **calls** these. They do not call each other in a big chain on their own.
+
+- **Universe** — `members()`: PIT S&P 500, or today’s list if `pit: false`. No Halal yet.
+- **Screen** — `screen()`: same membership plus a verdict per name (`is_compliant`, `reason`). Banned activities, debt/cash/receivables lines. `watch_list()` is ops-only (near the line, not a sell).
+- **Brain** — `run_brain()`: among the screened set, a table of `symbol / score / market_cap`. **No weights. No cash. No SMA.** Live brain is `fcf_quality` (top half by FCF/sales).
+- **Construction** — `build_weights()`: that table → weights that **sum to 1**. This is “the fully invested book.”
+- **Overlay** — `regime()`: one number per day, `exposure` in `[0, 1]`. SMA on → 1. SMA off → `off_exposure` (0 for v2). The engine then does `target = weight × exposure`. Cash is not a second stock list; it is leftover NAV.
+- **Execution** — `plan_orders` / `fill_orders`: “we hold X shares, we want Y% of NAV.” Whole shares, skip tiny trades, sells before buys, 10 bp off cash. *Planning* happens at the close; *filling* happens at the next open (that is the engine’s timing, not a separate layer clock).
+- **Accounting** — `settle_dividends()`: cash in for the dividend, cash out for the impure slice. Not part of “who do we own.”
+
+
+
+**Layers are the recipe for the book. The engine is the kitchen that cooks that recipe every day.**
+
+We already have the daily loop (dividends → fill yesterday → decide today’s book → orders → mark). `monterey/layers/` is only the **“decide today’s book”** part, split so you can swap one piece without rewriting the day.
+
+The YAML maps 1:1 onto these files:
+
+| Spec section | File | One-line job |
+|---|---|---|
+| `universe` | `universe.py` | Who is in the S&P 500 *today*? |
+| `screen` | `screen.py` | Of those, who is Halal? |
+| `signal` | `signals/` (brains) | Of those, who do we *want*? |
+| `construction` | `construction.py` | How big is each position, if we are 100% invested? |
+| `overlay` | `overlay.py` | What fraction of NAV is actually invested (0–1)? |
+| `execution` | `execution.py` | Turn those weights into whole-share orders and fills. |
+| `accounting` | `accounting.py` | Dividends in, purification out. |
+
+</div>
+
+
 ## Live book (v2 baseline)
 
 **`fcf-sma-v2-baseline`** (hash `6ca86844209e`), $1M paper, 2020-01-02 → 2026-09-30.
@@ -47,6 +81,8 @@ There is no second backtest engine. `Research/sleeves` is a shim over `monterey.
 | Accounting | Dividends credited on the ex-date, **10 bp** charged on every fill, impure slice donated from credited cash |
 
 Headline on that window: **+106% total, 11.4% CAGR, −24.8% max drawdown** (SPUS +212% / −31% DD). Calmar 0.46 vs SPUS 0.60. The switch cut 18 times; off-day fund return −26%, missed +45% of SPUS on switch-on days. IT is 66% of the last session. Full write-up: [`Research/diagnostics/v2-baseline.md`](Research/diagnostics/v2-baseline.md) (gitignored).
+
+<img width="1875" height="1114" alt="image" src="https://github.com/user-attachments/assets/828b7d16-b666-411b-af35-c4bf97f06789" />
 
 The archived v1 path (`1b-fcf-sma-v1` / `ledgers/fcf-sma-v1/`) is the old survivorship book: today’s list, no sector screen, dividends not credited, costs not charged. **Do not score new work against it.**
 

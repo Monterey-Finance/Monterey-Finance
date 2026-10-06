@@ -14,8 +14,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from monterey.data import ResearchData, load_research_data
-from monterey.paths import LEDGERS
+from monterey.data import ResearchData, load_research_data, load_snapshot
+from monterey.paths import LEDGERS, SNAPSHOTS
 from monterey.spec import BookSpec
 
 SPRINT_WINDOW = ("2020-01-02", "2026-09-30")
@@ -26,11 +26,17 @@ def boot(
     start: str = "2019-12-01",
     end: str = "2026-09-30",
     *,
+    snapshot: str | None = None,
     refresh: bool = False,
     figures: bool = True,
     quiet: bool = False,
 ) -> ResearchData:
-    """Load the frozen research data for ``paper`` and set notebook defaults."""
+    """Load the frozen research data for ``paper`` and set notebook defaults.
+
+    ``snapshot`` is a hash under ``data/snapshots/`` (the v2 run's
+    ``data_snapshot``). That skips the cache and uses the same facts the live
+    book already replayed.
+    """
     pd.set_option("display.width", 160)
     pd.set_option("display.max_columns", 40)
     pd.set_option("display.float_format", lambda v: f"{v:,.4f}")
@@ -42,7 +48,13 @@ def boot(
         pass
     if figures:
         Path("figures").mkdir(exist_ok=True)
-    data = load_research_data(start, end, refresh=refresh, progress=not quiet)
+    if snapshot:
+        folder = Path(snapshot)
+        if not folder.exists():
+            folder = SNAPSHOTS / snapshot
+        data = load_snapshot(folder)
+    else:
+        data = load_research_data(start, end, refresh=refresh, progress=not quiet)
     data.manifest["paper"] = paper
     if not quiet:
         print(data.describe().to_string(index=False))

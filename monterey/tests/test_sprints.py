@@ -5,7 +5,7 @@ from __future__ import annotations
 import pandas as pd
 
 from monterey.research import compare, run_book
-from monterey.sprints import write_notebooks
+from monterey.sprints import survivorship_in_book, universe_survivorship, write_notebooks
 from monterey.tests.synthetic import make_data
 
 
@@ -48,3 +48,12 @@ def test_paper_17_survivorship_variant(tmp_path, monkeypatch):
     ccc_now = current.positions[(current.positions["symbol"] == "CCC") & (current.positions["shares"] > 0)]
     assert ccc_pit["date"].min() >= pd.Timestamp("2020-06-01")
     assert not ccc_now.empty
+    census = universe_survivorship(data, "2020-01-02", "2020-07-31")
+    before = census[census["date"] < pd.Timestamp("2020-06-01")]
+    after = census[census["date"] >= pd.Timestamp("2020-06-01")]
+    assert not before.empty and (before["joiners"] >= 1).all()
+    assert not after.empty and (after["joiners"] == 0).all()
+    ghosts = survivorship_in_book(current, data)
+    joiners = ghosts[ghosts["kind"] == "joiner"] if not ghosts.empty else ghosts
+    assert not joiners.empty
+    assert "CCC" in set(joiners["symbol"])

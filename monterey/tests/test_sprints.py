@@ -17,6 +17,7 @@ def test_write_notebooks(tmp_path):
         text = path.read_text(encoding="utf-8")
         assert "from monterey.research import boot" in text
         assert "run_sprint" in text
+        assert "_repo_root" in text
 
 
 def test_paper_17_survivorship_variant(tmp_path, monkeypatch):

@@ -283,14 +283,38 @@ def _code_cell(source: list[str]) -> dict:
     return {"cell_type": "code", "metadata": {}, "execution_count": None, "outputs": [], "source": source}
 
 
+# Notebooks run from papers/<id>/, not the repo root. Put the package on sys.path
+# so the kernel does not need a prior pip install (still recommended once).
+_NOTEBOOK_PATH = [
+    "import subprocess\n",
+    "import sys\n",
+    "from pathlib import Path\n",
+    "\n",
+    "def _repo_root() -> Path:\n",
+    "    start = Path.cwd().resolve()\n",
+    "    for candidate in (start, *start.parents):\n",
+    "        if (candidate / \"monterey\" / \"__init__.py\").exists():\n",
+    "            return candidate\n",
+    "    raise FileNotFoundError(f\"Monterey repo root not found from {start}\")\n",
+    "\n",
+    "_ROOT = _repo_root()\n",
+    "if str(_ROOT) not in sys.path:\n",
+    "    sys.path.insert(0, str(_ROOT))\n",
+    "try:\n",
+    "    import monterey  # noqa: F401\n",
+    "except ModuleNotFoundError:\n",
+    "    subprocess.check_call([sys.executable, \"-m\", \"pip\", \"install\", \"-e\", f\"{_ROOT}[research]\"])\n",
+    "\n",
+]
+
+
 def _notebook_cells(number: str, info: dict, md: list[str]) -> list[dict]:
     if number == "17":
         return [
             {"cell_type": "markdown", "metadata": {}, "source": md},
             _code_cell(
                 [
-                    "from pathlib import Path\n",
-                    "\n",
+                    *_NOTEBOOK_PATH,
                     "from monterey.diagnostics.performance import yearly\n",
                     "from monterey.research import boot, compare\n",
                     "from monterey.sprints import (\n",
@@ -364,6 +388,7 @@ def _notebook_cells(number: str, info: dict, md: list[str]) -> list[dict]:
         {"cell_type": "markdown", "metadata": {}, "source": md},
         _code_cell(
             [
+                *_NOTEBOOK_PATH,
                 "from monterey.research import boot, compare\n",
                 "from monterey.sprints import run_sprint, score_against_baseline\n",
                 "\n",

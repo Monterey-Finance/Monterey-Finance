@@ -95,8 +95,8 @@ Papers **07–15** locked the working book: FCF quality engine, 10% name cap, wh
 | **13** | Sleeve overlap / diversification audit | Done |
 | **14** | CVaR position sizing | Done |
 | **15** | AAOIFI boundary monitoring | Done |
-| **16–20** | Honest throttle, PIT effect, execution, FCF layers, sector lid | Sprint notebooks vs v2 |
-| **21–27** | Halal cash, NAV brake, SPUS throttle, FCF floor, sector budget, exit completeness, activity honesty | Queued — see below |
+| **16–20** | Foundational v2 honesty sprints (throttle, PIT, execution, FCF layers, sector lid) | Built the v2 book — see below |
+| **21–27** | Halal cash, NAV brake, SPUS throttle, FCF floor, sector budget, exit completeness, activity honesty | Queued product layers — see below |
 
 ---
 
@@ -363,9 +363,20 @@ The live paper book is **`fcf-sma-v2-baseline`** (hash `6ca86844209e`): point-in
 
 What is still broken, in one page: the switch is expensive (18 cuts; fund −26% on off days, missed +45% of SPUS on the way back in; 352 sessions in **zero-yield cash**). Always invested would have been +169% / −31% DD — the brake traded return for drawdown about one-for-one. On fully invested days the FCF list still lags SPUS. IT is **66%** of the last session; top-five names ~48%. Daily re-target prints ~30 tiny fills a day. **122** filing breaches; **13** names were still held five sessions later. Purification is a few hundred dollars because this is a buyback book, not a dividend book.
 
-Sprints **16–20** (notebooks already in `papers/`) take the first cuts: honest throttle, PIT vs today’s list, drift-band execution, tighter FCF layers, sector / name lid. Score them against v2. Do not score them against archived v1.
+> [!NOTE]
+> **Foundational research 16–20** — honesty sprints and implementations that built **v2**. They sit on the new engine (`fcf-sma-v2-baseline`). They are not the 21–27 product queue. Score them against v2, never against archived v1.
+>
+> **16. Honest throttle.** Overlay: confirmation, hysteresis, partial off, vol target, always-on vs the raw SPY 200-day switch. [Notebook](papers/16-honest-throttle/code.ipynb)
+>
+> **17. Point-in-time universe.** Membership: today’s S&P list on every past date vs who was in the index that day. v2 already runs PIT; this measures the survivorship leak. [Notebook](papers/17-pit-universe/code.ipynb)
+>
+> **18. Execution policy.** Fills: drift band and min trade vs daily re-target (~30 tiny fills a day). [Notebook](papers/18-execution/code.ipynb)
+>
+> **19. FCF layers.** Brain: conversion, then stability, then yield — stacked on the median FCF cutoff. [Notebook](papers/19-fcf-layers/code.ipynb)
+>
+> **20. Concentration / sector lid.** Construction: IT lid and a tighter name cap. Paper 25 is sector *floors*, not this lid. [Notebook](papers/20-concentration/code.ipynb)
 
-The seven ideas below are the **next** layers. Each one maps to a hole above. Same write-up shape as papers 01–15: mechanics, white-paper question, then a short note in plain English. None of these is a live rule until it beats v2 on Calmar / max drawdown without failing the frozen kill rules.
+The seven ideas below are the **next** layers (21–27). Each one maps to a hole above. Same write-up shape as papers 01–15: mechanics, white-paper question, then a short note in plain English. None of these is a live rule until it beats v2 on Calmar / max drawdown without failing the frozen kill rules.
 
 ### Overlay, cash, and the crash path
 
@@ -450,7 +461,7 @@ A topic in 1B is complete when the folder has a reproducible notebook, figures, 
 
 ### Phase 1C — v2 layers (October 2026)
 
-The 07–15 architecture is still the live spec, now run honestly on `fcf-sma-v2-baseline`. Papers **16–20** test the first overlay / universe / execution / brain / cap family. Papers **21–27** (above) are the follow-on: Halal cash, a NAV-path brake, SPUS as the trend series, a hard FCF floor, a real-economy sector budget, breach-exit completeness, and an activity-screen audit. Promote a winner with `python -m ops rules propose …` only after it beats v2 on Calmar / max drawdown.
+The 07–15 architecture is still the live spec, now run honestly on `fcf-sma-v2-baseline`. Papers **16–20** are the foundational honesty sprints that built that v2 book (overlay, universe, execution, brain, caps). Papers **21–27** (above) are the follow-on product layers: Halal cash, a NAV-path brake, SPUS as the trend series, a hard FCF floor, a real-economy sector budget, breach-exit completeness, and an activity-screen audit. Promote a winner with `python -m ops rules propose …` only after it beats v2 on Calmar / max drawdown.
 
 ## What stays out of this folder
 

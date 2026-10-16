@@ -1,0 +1,3 @@
+book,name_days,extra_name_days,slip_bps,commission_bps,still_unfilled,stuck_nav_bps,still_held_5
+v2-baseline,102,0,0.0,6.819502079296111,0,0.0,13
+breach-complete,102,0,0.0,6.810741679210662,0,0.0,13

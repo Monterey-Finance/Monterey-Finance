@@ -13,6 +13,7 @@ def make_data(
     crash_on: str | None = "2020-03-02",
     breach: tuple[str, str] | None = ("BBB", "2020-04-15"),
     delist: tuple[str, str] | None = None,
+    halt: tuple[str, str, str] | None = None,
 ) -> ResearchData:
     days = pd.bdate_range("2019-01-01", "2020-12-31")
     n = len(days)
@@ -39,6 +40,8 @@ def make_data(
         for i, day in enumerate(days):
             px = float(path[i])
             if delist and symbol == delist[0] and day >= pd.Timestamp(delist[1]):
+                continue
+            if halt and symbol == halt[0] and pd.Timestamp(halt[1]) <= day <= pd.Timestamp(halt[2]):
                 continue
             rows.append({"symbol": symbol, "date": day, "open": px * 0.999, "close": px, "adj_close": px, "volume": 1e6})
     prices = pd.DataFrame(rows)

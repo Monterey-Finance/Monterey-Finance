@@ -33,6 +33,9 @@ DEFAULTS: dict[str, dict[str, Any]] = {
         "receivables": 0.70,
         # A failed 10-Q / 10-K between snapshots: next_open sells, report_only only flags.
         "breach_exit": "next_open",
+        # Keep selling a breached residual until the shares are flat. False is omitted
+        # from the hash so the v2 baseline stays put.
+        "breach_complete": False,
         # Ratios inside this distance of a line go on the watch list.
         "watch_band": 0.02,
     },
@@ -107,7 +110,10 @@ class BookSpec:
 
     def rules(self) -> dict[str, Any]:
         """The parts that change what the book trades. The hash covers only these."""
-        return {section: copy.deepcopy(dict(getattr(self, section))) for section in SECTIONS}
+        out = {section: copy.deepcopy(dict(getattr(self, section))) for section in SECTIONS}
+        if not out["screen"].get("breach_complete"):
+            out["screen"].pop("breach_complete", None)
+        return out
 
     def hash(self) -> str:
         payload = json.dumps(self.rules(), sort_keys=True, default=str, separators=(",", ":"))
@@ -184,7 +190,7 @@ class BookSpec:
             ("universe", f"{self.universe['index']} {'point-in-time' if self.universe['pit'] else 'current list'}"),
             ("sector screen", "on" if s["sectors"] else "OFF"),
             ("AAOIFI lines", f"debt {s['debt']:.0%} / cash {s['cash']:.0%} / recv {s['receivables']:.0%}"),
-            ("breach exit", str(s["breach_exit"])),
+            ("breach exit", str(s["breach_exit"]) + (", complete" if s.get("breach_complete") else "")),
             ("brain", f"{self.signal['brain']}" + (f" ({params})" if params else "")),
             ("weights", str(c["weight"])),
             ("name cap", "none" if not c["name_cap"] else f"{c['name_cap']:.0%}"),

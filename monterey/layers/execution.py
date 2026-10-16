@@ -128,6 +128,20 @@ def fill_orders(
     return fills
 
 
+def fill_flatten(
+    account: Account,
+    orders: Iterable[dict],
+    quotes: dict[str, float],
+    *,
+    day: str,
+    price_field: str,
+    cost_bps: float = 0.0,
+) -> list[dict]:
+    """Sell a breached residual in full, including a fraction the usual round-to-zero path drops."""
+    rate = float(cost_bps) / 10_000.0
+    return [_fill_flatten_one(account, order, quotes, day, price_field, rate) for order in orders]
+
+
 def _fill_one(account: Account, order: dict, quotes: dict, day: str, price_field: str, rate: float) -> dict:
     symbol = str(order["symbol"])
     price = quotes.get(symbol)
@@ -169,3 +183,33 @@ def _fill_one(account: Account, order: dict, quotes: dict, day: str, price_field
     account.positions[symbol] = float(account.positions.get(symbol, 0)) + shares
     status = "filled" if shares == requested else "partial"
     return {**base, "shares": shares, "price": price, "cost": cost, "status": status, "detail": "buy" if status == "filled" else "partial buy"}
+
+
+def _fill_flatten_one(account: Account, order: dict, quotes: dict, day: str, price_field: str, rate: float) -> dict:
+    symbol = str(order["symbol"])
+    price = quotes.get(symbol)
+    base = {
+        "symbol": symbol,
+        "side": "sell",
+        "as_of": day,
+        "price_field": price_field,
+        "target_weight": 0.0,
+        "reason": order.get("reason") or "filing breach",
+        "cost": 0.0,
+    }
+    if price is None or price <= 0:
+        return {**base, "shares": 0, "price": None, "status": "rejected", "detail": "no print"}
+    held = float(account.positions.get(symbol, 0.0))
+    requested = float(order.get("shares") or 0.0)
+    shares = min(requested, held)
+    if shares <= 1e-12:
+        return {**base, "shares": 0, "price": price, "status": "rejected", "detail": "zero shares"}
+    left = held - shares
+    if left <= 1e-9:
+        account.positions.pop(symbol, None)
+    else:
+        account.positions[symbol] = left
+    notional = shares * price
+    cost = notional * rate
+    account.cash += notional - cost
+    return {**base, "shares": shares, "price": price, "cost": cost, "status": "filled", "detail": "flatten"}

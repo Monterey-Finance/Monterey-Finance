@@ -101,6 +101,71 @@ def test_filing_breach_sells_at_the_next_open_until_the_next_snapshot() -> None:
     assert still[(still["date"] == pd.Timestamp("2020-04-20")) & (still["symbol"] == "BBB")]["shares"].sum() > 0
 
 
+def test_breach_complete_off_keeps_the_v2_hash() -> None:
+    book = BookSpec.load("fcf-sma-v2-baseline")
+    assert book.screen["breach_complete"] is False
+    assert book.hash() == "6ca86844209e"
+    assert book.replace(screen={"breach_complete": True}).hash() != book.hash()
+
+
+def test_breach_complete_sells_a_fractional_residual() -> None:
+    data = make_data(crash_on=None)
+    done = _hold_dust(_spec(screen={"breach_complete": True}), data)
+    assert done.state.positions.get("BBB", 0) == 0
+    filled = [f for f in done.fills if f.get("detail") == "flatten" and f.get("symbol") == "BBB"]
+    assert filled and filled[-1]["shares"] == pytest.approx(0.4)
+
+
+def test_fractional_residual_stays_when_completeness_is_off() -> None:
+    data = make_data(crash_on=None)
+    done = _hold_dust(_spec(), data)
+    assert done.state.positions.get("BBB", 0) == pytest.approx(0.4)
+
+
+def test_breach_complete_waits_for_the_next_real_print() -> None:
+    data = make_data(crash_on=None, halt=("BBB", "2020-04-16", "2020-04-20"))
+    plain = simulate(_spec(), data, "2020-01-02", "2020-04-30")
+    complete = simulate(_spec(screen={"breach_complete": True}), data, "2020-01-02", "2020-04-30")
+
+    def held(ledger, day: str) -> float:
+        pos = ledger.positions
+        return float(pos[(pos["date"] == pd.Timestamp(day)) & (pos["symbol"] == "BBB")]["shares"].sum())
+
+    assert held(plain, "2020-04-16") == 0  # the seven-day fill sells the halt at a stale open
+    assert held(complete, "2020-04-20") > 0
+    assert held(complete, "2020-04-21") == 0
+    waits = complete.events
+    assert ((waits["type"] == "breach_wait") & (waits["symbol"] == "BBB")).any()
+    flatten = complete.fills
+    sold = flatten[(flatten["symbol"] == "BBB") & (flatten["detail"] == "flatten") & (flatten["status"] == "filled")]
+    assert pd.Timestamp(sold["date"].iloc[-1]) == pd.Timestamp("2020-04-21")
+    assert sold["price_field"].iloc[-1] == "open"
+
+
+def test_breach_complete_still_reenters_after_the_next_passing_snapshot() -> None:
+    data = make_data(crash_on=None)
+    ledger = simulate(_spec(screen={"breach_complete": True}), data, "2020-01-02", "2020-06-30")
+    pos = ledger.positions
+    held = lambda day: pos[(pos["date"] == pd.Timestamp(day)) & (pos["symbol"] == "BBB")]["shares"].sum()  # noqa: E731
+    assert held("2020-04-16") == 0
+    assert held("2020-05-05") > 0
+
+
+def _hold_dust(spec, data):
+    """Run through the breach, then leave 0.4 BBB shares in the exit set and step two more sessions."""
+    sim = Simulator(spec, data)
+    for day in data.sessions_between("2020-01-02", "2020-04-16"):
+        sim.step(day)
+    assert sim.state.positions.get("BBB", 0) == 0
+    assert "BBB" in sim.state.breached
+    sim.state.positions["BBB"] = 0.4
+    nxt = list(data.sessions_between("2020-04-17", "2020-04-21"))
+    sim.step(nxt[0])  # close sees the residual and queues a flatten sell
+    out = sim.step(nxt[1])  # next open is the first chance to fill it
+    sim.fills = out["fills"]
+    return sim
+
+
 def test_point_in_time_name_is_not_held_before_it_joins() -> None:
     data = make_data(crash_on=None, breach=None)
     ledger = simulate(_spec(), data, "2020-01-02", "2020-07-31")

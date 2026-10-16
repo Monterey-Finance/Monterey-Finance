@@ -6,6 +6,8 @@ One session ``t``:
 2. Orders created at close ``t−1`` fill at open ``t`` (sells first, whole shares, cash-limited, cost charged).
 3. At close ``t``: overlay exposure, the monthly selection (rebuilt on a new metrics
    snapshot), breach exits from filings known by ``t``, then target weights.
+   ``breach_complete`` keeps a failed name in that exit set until its shares are
+   flat, and sells the residual at the next real print rather than a stale fill.
 4. Orders to reach the targets are created at close ``t`` and wait for open ``t+1``.
    The very first session fills at the close so a NAV exists.
 5. A held name with no price for a week is cashed out at its last close (delisting).
@@ -26,7 +28,7 @@ import pandas as pd
 from monterey.data import ResearchData
 from monterey.layers.accounting import settle_dividends
 from monterey.layers.construction import build_weights, drop_and_renormalise
-from monterey.layers.execution import equity, fill_orders, plan_orders
+from monterey.layers.execution import equity, fill_flatten, fill_orders, plan_orders
 from monterey.layers.overlay import regime
 from monterey.layers.screen import screen
 from monterey.layers.signals import Context, run_brain
@@ -77,6 +79,8 @@ class Simulator:
         self.regime = regime(data, spec, self.sessions)
         self.close = data.prices.close.ffill(limit=STALE_ROWS)
         self.open = data.prices.open.ffill(limit=STALE_ROWS)
+        self.raw_close = data.prices.close
+        self.raw_open = data.prices.open
         self.cost_bps = float(spec.accounting["cost_bps"])
         self._selections: dict[Any, Selection] = {}
 
@@ -124,9 +128,19 @@ class Simulator:
         out["cashflows"].extend(flows)
 
         # 2. Yesterday's orders fill at today's open.
+        #    A completeness sell uses the raw print: open, else today's close, else it waits.
+        complete = bool(spec.screen.get("breach_complete"))
+        carried = set(s.breached) if complete else set()
         fills: list[dict] = []
         if s.pending:
-            fills.extend(fill_orders(s, s.pending, opens, day=label, price_field="open", cost_bps=self.cost_bps))
+            if complete:
+                flatten = [o for o in s.pending if o.get("flatten")]
+                rest = [o for o in s.pending if not o.get("flatten")]
+                if rest:
+                    fills.extend(fill_orders(s, rest, opens, day=label, price_field="open", cost_bps=self.cost_bps))
+                fills.extend(self._fill_flatten(s, flatten, day, label))
+            else:
+                fills.extend(fill_orders(s, s.pending, opens, day=label, price_field="open", cost_bps=self.cost_bps))
             s.pending = []
         max_gap = _max_gap(s, closes, s.last_targets) if fills else None
 
@@ -139,7 +153,14 @@ class Simulator:
         if rebuilt:
             s.snapshot = stamp
             if stamp is not None:
-                s.breached = {k: v for k, v in s.breached.items() if v > stamp}
+                if complete:
+                    s.breached = {
+                        k: v
+                        for k, v in s.breached.items()
+                        if v > stamp or float(s.positions.get(k, 0.0)) > 1e-12
+                    }
+                else:
+                    s.breached = {k: v for k, v in s.breached.items() if v > stamp}
             out["events"].append({"date": label, "type": "rebuild", "symbol": "", "detail": f"snapshot {stamp}, {len(chosen.weights)} names"})
         if s.exposure is not None and exposure != s.exposure:
             out["events"].append({"date": label, "type": "switch", "symbol": spec.overlay.get("ticker", ""), "detail": f"exposure {s.exposure:.2f} -> {exposure:.2f}"})
@@ -173,11 +194,17 @@ class Simulator:
             default_reason = "rebalance"
         reasons = {n: "filing breach" for n in blocked}
         orders = plan_orders(s, targets, closes, spec, as_of=label, reasons=reasons, default_reason=default_reason, exits_only=exits_only)
+        if complete:
+            stuck = [n for n in s.breached if float(s.positions.get(n, 0.0)) > 1e-12]
+            if stuck:
+                orders = _queue_flatten(orders, s, stuck, self.raw_close, day, label, self.cost_bps)
         actionable = [o for o in orders if o.get("status") != "rejected"]
         for order in orders:
             out["orders"].append({"date": label, **{k: order.get(k) for k in ("symbol", "side", "shares", "target_weight", "current_weight", "drift", "price_ref", "notional", "est_cost", "status", "reason")}})
         if not s.traded and actionable and str(spec.execution["first_fill"]) == "close":
-            fills.extend(fill_orders(s, actionable, closes, day=label, price_field="close", cost_bps=self.cost_bps))
+            ordinary = [o for o in actionable if not o.get("flatten")]
+            fills.extend(fill_orders(s, ordinary, closes, day=label, price_field="close", cost_bps=self.cost_bps))
+            s.pending = [o for o in actionable if o.get("flatten")]
         else:
             s.pending = actionable
         if any(f.get("status") in {"filled", "partial"} for f in fills):
@@ -198,6 +225,13 @@ class Simulator:
         for symbol in list(s.last_close):
             if symbol not in s.positions:
                 s.last_close.pop(symbol, None)
+        if complete:
+            for symbol in sorted(carried):
+                if float(s.positions.get(symbol, 0.0)) <= 1e-12:
+                    continue
+                filed = s.breached.get(symbol, "")
+                waited = _sessions_since(self.sessions, filed, day)
+                out["events"].append({"date": label, "type": "breach_wait", "symbol": symbol, "detail": f"still held {waited} sessions since {filed}"})
 
         # 6. Mark.
         nav = equity(s, closes)
@@ -280,6 +314,21 @@ class Simulator:
         s.last_day = label
         return out
 
+    def _fill_flatten(self, state: SimState, orders: list[dict], day, label: str) -> list[dict]:
+        fills: list[dict] = []
+        for order in orders:
+            symbol = str(order["symbol"])
+            open_px = _raw_print(self.raw_open, day, symbol)
+            close_px = _raw_print(self.raw_close, day, symbol)
+            if open_px is not None:
+                quotes, field = {symbol: open_px}, "open"
+            elif close_px is not None:
+                quotes, field = {symbol: close_px}, "close"
+            else:
+                quotes, field = {}, "open"
+            fills.extend(fill_flatten(state, [order], quotes, day=label, price_field=field, cost_bps=self.cost_bps))
+        return fills
+
 
 def simulate(
     spec: BookSpec,
@@ -315,6 +364,59 @@ def simulate(
     if root is not None:
         ledger.write(root)
     return ledger
+
+
+def _raw_print(panel: pd.DataFrame, day, symbol: str) -> float | None:
+    """A real print on ``day``. Missing days are not filled from the prior close."""
+    day = pd.Timestamp(day).normalize()
+    if panel is None or panel.empty or day not in panel.index or symbol not in panel.columns:
+        return None
+    try:
+        number = float(panel.at[day, symbol])
+    except (TypeError, ValueError):
+        return None
+    if not np.isfinite(number) or number <= 0:
+        return None
+    return number
+
+
+def _sessions_since(sessions: pd.DatetimeIndex, filed: str, day) -> int:
+    if not filed:
+        return 0
+    start = pd.Timestamp(filed)
+    end = pd.Timestamp(day).normalize()
+    return int(((sessions > start) & (sessions <= end)).sum())
+
+
+def _queue_flatten(orders, state: SimState, symbols, raw_close: pd.DataFrame, day, as_of: str, cost_bps: float) -> list[dict]:
+    """Replace the rounded exit with a sell of every share still held."""
+    blocked = {str(symbol) for symbol in symbols}
+    kept = [order for order in orders if str(order.get("symbol")) not in blocked]
+    rate = float(cost_bps) / 10_000.0
+    for symbol in sorted(blocked):
+        held = float(state.positions.get(symbol, 0.0))
+        if held <= 1e-12:
+            continue
+        price = _raw_print(raw_close, day, symbol)
+        notional = None if price is None else held * price
+        kept.append(
+            {
+                "symbol": symbol,
+                "side": "sell",
+                "shares": held,
+                "target_weight": 0.0,
+                "current_weight": None,
+                "drift": None,
+                "price_ref": price,
+                "notional": notional,
+                "est_cost": None if notional is None else notional * rate,
+                "created_as_of": as_of,
+                "status": "pending",
+                "reason": "filing breach",
+                "flatten": True,
+            }
+        )
+    return kept
 
 
 def _max_gap(state: SimState, closes: dict[str, float], targets: dict[str, float]) -> float | None:

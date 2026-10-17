@@ -99,7 +99,7 @@ ledgers, table = run_sprint("16", rd)   # or run_book("fcf-sma-v2-baseline", rd,
 table
 ```
 
-`boot` loads halalquant once, freezes `data/snapshots/<hash>/`, and prints the snapshot hash for figure captions. Kill rules stay frozen in [`Research/book-construction-status.md`](Research/book-construction-status.md). Mandate metric is **Calmar / max drawdown**, not beating SPUS.
+`boot` loads halalquant once, freezes `data/snapshots/<hash>/`, and prints the snapshot hash for figure captions. Kill rules stay frozen in [`Research/book-construction-status.md`](Research/book-construction-status.md). Function arguments and layer knobs are in [`Research/pipeline.md`](Research/pipeline.md). Mandate metric is **Calmar / max drawdown**, not beating SPUS.
 
 October sprints (notebooks under `Research/papers/16–20`):
 

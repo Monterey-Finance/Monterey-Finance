@@ -39,16 +39,17 @@ Beating SPUS is interesting. It is **not** the mandate.
 4. Write up with the structure below (factor papers) or a shorter ops note (1B studies).
 5. Decide: follow-up, revise, or kill.
 
-Papers **01–15** still open through [`sleeves/`](sleeves/) (a shim over `monterey.legacy.sleeves`). **New work uses one simulator and scores against the v2 baseline**, not the old paper NAV.
+Papers **01–15** still open through [`sleeves/`](sleeves/) (a shim over `monterey.legacy.sleeves`). **New work uses one simulator and scores against the v2 baseline**, not the old paper NAV. Function arguments and layer knobs are in [`pipeline.md`](pipeline.md).
 
 ```python
-from monterey.research import boot, run_book
-from monterey.sprints import run_sprint, score_against_baseline
+from monterey.research import boot, compare, run_book
+from monterey.sprints import score_against_baseline
 
-rd = boot("paper-21", start="2019-12-01", end="2026-09-30")
-ledgers, table = run_sprint("21", rd)
-# or: run_book("fcf-sma-v2-baseline", rd, overlay={...}, id="cash-sukuk")
-score_against_baseline(table)  # fcf-sma-v2-baseline / 6ca86844209e
+rd = boot("paper-23", start="2019-12-01", end="2026-09-30")
+base = run_book("fcf-sma-v2-baseline", rd, paper="23-spus-throttle", id="v2")
+trial = run_book("fcf-sma-v2-baseline", rd, paper="23-spus-throttle", id="spus-sma", overlay={"ticker": "SPUS"})
+compare([base, trial], rd)
+score_against_baseline(trial, base, rd)  # v2 hash 6ca86844209e
 ```
 
 Vary **one layer** per paper. Kill rules stay in [`book-construction-status.md`](book-construction-status.md). The score is **Calmar and max drawdown**, not beating SPUS.
@@ -56,6 +57,7 @@ Vary **one layer** per paper. Kill rules stay in [`book-construction-status.md`]
 ```text
 Research/
 ├── README.md
+├── pipeline.md       # function reference for notebooks and layers
 ├── sleeves/          # reusable live-rule loaders, thresholds, triggers
 ├── assets/
 └── papers/

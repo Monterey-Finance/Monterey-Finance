@@ -23,12 +23,15 @@ Scored window: **2020-01-02 → 2026-09-30**. Load from **2019-12-01** so the 20
 - [Scores](#scores)
 - [Which argument a paper sets](#which-argument-a-paper-sets)
 - [Adding a knob](#adding-a-knob)
+- [Exemplars](#exemplars) — full notebook cells to copy, then change one section
 
 ---
 
 ## Starting a notebook
 
-Run the notebook from `Research/papers/<id>/`. The first cell puts the repo root on `sys.path` (see any paper 16–20 notebook). Then:
+Run the notebook from `Research/papers/<id>/`. The first cell must put the repo root on `sys.path` or `import monterey` fails. Copy [Exemplar A](#a-first-cell) for that cell. Do not paste a function signature from this page into a cell — those lines are definitions, not calls.
+
+A short trial after the first cell looks like this. Full grids, plots, and layer checks are in [Exemplars](#exemplars).
 
 ```python
 from monterey.research import boot, compare, run_book
@@ -844,3 +847,266 @@ trial.spec.summary()
 ```
 
 Score it with `compare([base, trial], rd)` and `score_against_baseline(trial, base, rd)`. If the question is a count (name-days in breach, sessions in cash, sector weight), read `ledger.positions`, `ledger.nav`, or `ledger.events` directly. `compare` only sees the NAV path.
+
+---
+
+## Exemplars
+
+Copy a whole cell. Change the placeholders. Leave the other six spec sections on v2.
+
+Placeholders in this section:
+
+| Token | Replace with |
+| --- | --- |
+| `paper-xx-slug` | `rd.manifest["paper"]`. Example: `"paper-20-concentration"`. |
+| `xx-slug` | Folder under `ledgers/experiments/`. Example: `"20-concentration"`. |
+| `trial-id` | Book `id`. Becomes the ledger folder and the `compare` row name. |
+| `section={...}` | One of `universe`, `screen`, `signal`, `construction`, `overlay`, `execution`, `accounting`. Unknown keys raise before any session runs. |
+
+These cells are situations, not papers. A construction lid, an overlay ticker, and a screen flag all use Exemplar B. They differ only in the `section={...}` dict. [Which argument a paper sets](#which-argument-a-paper-sets) says which dict that paper uses.
+
+### A. First cell
+
+Puts the repo on `sys.path`, loads facts from 2019-12-01, prints the snapshot hash, and simulates the unchanged v2 book.
+
+```python
+import subprocess
+import sys
+from pathlib import Path
+
+def _repo_root() -> Path:
+    start = Path.cwd().resolve()
+    for candidate in (start, *start.parents):
+        if (candidate / "monterey" / "__init__.py").exists():
+            return candidate
+    raise FileNotFoundError(f"Monterey repo root not found from {start}")
+
+_ROOT = _repo_root()
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+try:
+    import monterey  # noqa: F401
+except ModuleNotFoundError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-e", f"{_ROOT}[research]"])
+
+from monterey.research import boot, compare, run_book
+from monterey.sprints import score_against_baseline
+from monterey.spec import BookSpec
+
+rd = boot("paper-xx-slug", start="2019-12-01", end="2026-09-30")
+print("snapshot", rd.manifest.get("hash"))
+print("v2 hash", BookSpec.load("fcf-sma-v2-baseline").hash())
+
+base = run_book(
+    "fcf-sma-v2-baseline",
+    rd,
+    paper="xx-slug",
+    id="v2",
+)
+```
+
+`run_book` simulates **2020-01-02 → 2026-09-30** even when `boot` started in December 2019. First argument is the book name under `books/`. Second is `rd`. `paper` and `id` are not spec sections.
+
+### B. One trial against v2
+
+Same book, one section changed. Then the scorecard and the kill rules.
+
+```python
+trial = run_book(
+    "fcf-sma-v2-baseline",
+    rd,
+    paper="xx-slug",
+    id="trial-id",
+    construction={"sector_cap": 0.40},
+)
+compare([base, trial], rd)
+verdict = score_against_baseline(trial, base, rd)
+print(trial.spec.id, "KILLED" if verdict["killed"] else "keep", "; ".join(verdict["reasons"]) or "pass")
+print("hash", trial.spec.hash())
+trial.spec.summary()
+```
+
+Swap only the section keyword. Examples of the last argument, each a different situation:
+
+```python
+universe={"pit": False}
+screen={"breach_complete": True}
+signal={"brain": "fcf_layers", "params": {"conversion_min": 0.5, "min_holdings": 20}}
+construction={"sector_cap": 0.40, "name_cap": 0.08}
+overlay={"ticker": "SPUS"}
+overlay={"kind": "none"}
+execution={"drift_band": 0.01, "min_trade": 2500}
+accounting={"cost_bps": 20.0}
+```
+
+Passing two sections in one `run_book` is allowed. It is no longer a one-knob test.
+
+### C. Several trials (a grid)
+
+Keep the baseline. Loop `(id, changes)` pairs. Score each trial against `base`, not against each other.
+
+```python
+variants = [
+    ("trial-a", {"construction": {"sector_cap": 0.40}}),
+    ("trial-b", {"construction": {"sector_cap": 0.50}}),
+    ("trial-c", {"construction": {"name_cap": 0.08}}),
+]
+trials = []
+for name, changes in variants:
+    trials.append(
+        run_book("fcf-sma-v2-baseline", rd, paper="xx-slug", id=name, **changes)
+    )
+
+compare([base, *trials], rd)
+for trial in trials:
+    verdict = score_against_baseline(trial, base, rd)
+    print(trial.spec.id, "KILLED" if verdict["killed"] else "keep", "; ".join(verdict["reasons"]) or "pass")
+```
+
+`**changes` is how `run_book` receives a section dict stored in a variable. Writing `construction=changes` is wrong when `changes` is already `{"construction": {...}}`.
+
+### D. Prepared sprint (papers 16–20 only)
+
+The grid is already coded in `monterey.sprints`. Papers 21–27 are not in this table. Call Exemplar B or C for those.
+
+```python
+from monterey.sprints import run_sprint, score_against_baseline
+
+ledgers, table = run_sprint("20", rd)
+table
+
+baseline, *rest = ledgers
+for book in rest:
+    verdict = score_against_baseline(book, baseline, rd)
+    print(book.spec.id, "KILLED" if verdict["killed"] else "keep", "; ".join(verdict["reasons"]) or "pass")
+```
+
+### E. Inspect a layer without a full run
+
+Use this when the question is “did the lid / screen / switch bind on this date?” A full sim is not required.
+
+```python
+import pandas as pd
+from monterey.layers import screen, build_weights, regime
+from monterey.layers.signals import Context, run_brain
+from monterey.spec import BookSpec
+
+day = "2022-06-30"
+spec = BookSpec.load("fcf-sma-v2-baseline").replace(
+    id="trial-id",
+    construction={"sector_cap": 0.40},
+)
+
+held = screen(rd, day, spec)
+picked = run_brain(Context(data=rd, spec=spec, as_of=pd.Timestamp(day).date(), screen=held))
+weights = build_weights(picked, spec, rd.sectors)
+
+print("hash", spec.hash())
+print("names", len(weights), "sum", float(weights.sum()))
+print("max name", float(weights.max()) if len(weights) else None)
+print(weights.groupby(weights.index.map(lambda s: rd.sectors.get(s, "unknown"))).sum().sort_values(ascending=False))
+
+frame = regime(rd, spec, rd.sessions)
+frame.loc[day, ["raw", "on", "exposure"]]
+```
+
+### F. Figures: NAV, drawdown, calendar years
+
+The book has no revenue series. Plot NAV (growth of $1) and drawdown. `boot(..., figures=True)` creates `./figures` in the notebook directory.
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+from monterey.diagnostics import yearly
+
+books = [base, *trials]
+figures = Path("figures")
+figures.mkdir(exist_ok=True)
+
+spus = rd.total_return("SPUS").reindex(base.nav_series().index).ffill()
+
+fig, axes = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
+for book in books:
+    nav = book.nav_series()
+    axes[0].plot(nav.index, nav / nav.iloc[0], label=book.spec.id)
+    dd = nav / nav.cummax() - 1.0
+    axes[1].plot(dd.index, dd, label=book.spec.id)
+axes[0].plot(spus.index, spus / spus.iloc[0], label="SPUS", alpha=0.7)
+axes[0].set_title("Growth of $1")
+axes[0].legend()
+axes[1].set_title("Drawdown from peak")
+axes[1].legend()
+fig.tight_layout()
+fig.savefig(figures / "nav-and-drawdown.png", dpi=140)
+plt.show()
+
+calendar = pd.concat({book.spec.id: yearly(book.nav_series())["return"] for book in books}, axis=1)
+calendar["SPUS"] = yearly(spus)["return"]
+calendar
+```
+
+A topic is not finished at `compare`. Save the figure. If the trial is a cap or a screen, also plot the quantity the rule claims to change (Exemplar G).
+
+### G. A count `compare` cannot see
+
+`compare` only sees the NAV path. Sector mix, residual shares, cash days, and event types live on the ledger tables.
+
+```python
+import pandas as pd
+from monterey.diagnostics import diagnose
+
+diag = diagnose(trial, rd)
+diag["sectors"]
+diag["compliance"]["breaches"]
+
+pos = trial.positions.copy()
+pos["date"] = pd.to_datetime(pos["date"])
+live = pos[pos["invested_weight"].astype(float) > 0]
+by_sector = (
+    live.groupby(["date", "sector"])["invested_weight"].sum()
+    / live.groupby("date")["invested_weight"].sum()
+)
+by_sector.groupby("sector").mean().sort_values(ascending=False)
+
+events = trial.events
+events["type"].value_counts()
+events[events["type"] == "breach_wait"].head()
+
+cash_days = (trial.nav["invested"] / trial.nav["nav"] < 0.05).sum()
+print("near-cash sessions", int(cash_days))
+```
+
+Change the filter. The pattern is: load a ledger table, group, count.
+
+### H. Reopen a ledger already on disk
+
+Skip the sim when `nav.parquet` is already written.
+
+```python
+from monterey.ledger import Ledger
+
+base = Ledger.read("ledgers/fcf-sma-v2-baseline/6ca86844209e")
+trial = Ledger.read("ledgers/experiments/xx-slug/trial-id/<spec hash>")
+compare([base, trial], rd)
+```
+
+`v2_baseline_ledger()` in `monterey.sprints` reads that v2 folder when it exists. `v2_snapshot_hash()` is the snapshot stamped on it. Pass that to `boot(..., snapshot=)` when the notebook must use the same facts as the scored book.
+
+### I. New key, then the same notebook
+
+The notebook does not invent a parameter. Add the key to `DEFAULTS` in `monterey/spec.py`, read it in the one layer that owns the decision, then call Exemplar B with that key. Unknown keys raise.
+
+```python
+trial = run_book(
+    "fcf-sma-v2-baseline",
+    rd,
+    paper="xx-slug",
+    id="trial-id",
+    screen={"breach_complete": True},
+)
+assert trial.spec.hash() != base.spec.hash()
+compare([base, trial], rd)
+score_against_baseline(trial, base, rd)
+```
+
+If the hash did not move, the key was dropped or never reached the spec. If it moved and `spec.summary()` shows a second section changed, the replace was too wide.

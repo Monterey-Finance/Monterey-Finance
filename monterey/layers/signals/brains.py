@@ -58,8 +58,16 @@ def fcf_quality(
     keep_quantile: float = 0.5,
     min_holdings: int = 20,
     drop_high_vol_quantile: float | None = None,
+    margin_floor: float | None = None,
 ) -> pd.DataFrame:
-    """Paper 01: top ``keep_quantile`` of compliant names by FCF / sales, cap-weighted."""
+    """Paper 01: top ``keep_quantile`` of compliant names by FCF / sales, cap-weighted.
+
+    Paper 24: when ``margin_floor`` is set, keep names at or above that FCF / sales
+    line and do **not** backfill to ``min_holdings``. Fewer than 20 names is cash
+    for the gap, not a weaker cutoff. An empty table is the whole book in cash.
+    """
+    if margin_floor is not None:
+        return _fcf_margin_floor(ctx, float(margin_floor))
     rules = _rules(ctx).with_fcf(
         keep_quantile=float(keep_quantile),
         min_holdings=int(min_holdings),
@@ -68,6 +76,23 @@ def fcf_quality(
     snap = _snapshot(ctx)
     selected = select_fcf_quality(snap, ctx.as_of, rules, price_panel=_price_panel(ctx))
     return _finish(selected, "fcf_margin")
+
+
+def _fcf_margin_floor(ctx: Context, floor: float) -> pd.DataFrame:
+    from monterey.legacy.sleeves.compliance import halal_pass
+
+    passed = halal_pass(_snapshot(ctx), _rules(ctx))
+    if passed.empty:
+        return pd.DataFrame(columns=["symbol", "score", "market_cap"])
+    passed = score_cash_generation(passed)
+    fcf = pd.to_numeric(passed["fcf"], errors="coerce")
+    passed = passed[
+        (fcf > 0)
+        & np.isfinite(passed["fcf_margin"])
+        & (pd.to_numeric(passed["market_cap"], errors="coerce") > 0)
+    ].copy()
+    kept = passed[passed["fcf_margin"] >= floor].copy()
+    return _finish(kept, "fcf_margin")
 
 
 @brain("roic")

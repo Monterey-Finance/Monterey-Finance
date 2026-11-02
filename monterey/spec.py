@@ -47,6 +47,9 @@ DEFAULTS: dict[str, dict[str, Any]] = {
         "weight": "cap",
         "name_cap": 0.10,
         "sector_cap": None,
+        # Min weight per GICS label already on the FCF list. None/{} is omitted
+        # from the hash so the v2 baseline stays put. Paper 25.
+        "sector_floors": None,
         "collapse_share_classes": True,
     },
     "overlay": {
@@ -113,6 +116,8 @@ class BookSpec:
         out = {section: copy.deepcopy(dict(getattr(self, section))) for section in SECTIONS}
         if not out["screen"].get("breach_complete"):
             out["screen"].pop("breach_complete", None)
+        if not out["construction"].get("sector_floors"):
+            out["construction"].pop("sector_floors", None)
         return out
 
     def hash(self) -> str:
@@ -195,12 +200,20 @@ class BookSpec:
             ("weights", str(c["weight"])),
             ("name cap", "none" if not c["name_cap"] else f"{c['name_cap']:.0%}"),
             ("sector cap", "none" if not c["sector_cap"] else f"{c['sector_cap']:.0%}"),
+            ("sector floors", _floors_label(c.get("sector_floors"))),
             ("throttle", throttle),
             ("rebalance", f"{e['rebalance']}, drift band {e['drift_band']:.1%}, min ${e['min_trade']:,.0f}"),
             ("dividends", "credited" if a["dividends"] else "NOT credited"),
             ("cost", f"{a['cost_bps']:.0f} bp charged"),
             ("purify", str(a["purify"])),
         ]
+
+
+def _floors_label(floors) -> str:
+    if not floors:
+        return "none"
+    parts = [f"{name} {float(level):.0%}" for name, level in sorted(dict(floors).items())]
+    return ", ".join(parts)
 
 
 def resolve_book(path: str | Path) -> Path:

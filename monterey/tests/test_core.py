@@ -7,7 +7,7 @@ import pytest
 
 from monterey import BookSpec
 from monterey.diagnostics import diagnose
-from monterey.layers.construction import apply_sector_cap
+from monterey.layers.construction import apply_sector_cap, apply_sector_floors
 from monterey.ledger import Ledger, list_ledgers
 from monterey.sim import SimState, Simulator, simulate
 from monterey.tests.synthetic import make_data
@@ -196,12 +196,73 @@ def test_state_round_trip_continues_the_same_path() -> None:
     assert resumed.state.last_nav == pytest.approx(whole.nav["nav"].iloc[-1], rel=1e-9)
 
 
+def test_margin_floor_keeps_the_line_and_does_not_backfill() -> None:
+    from monterey.layers import screen
+    from monterey.layers.signals import Context, run_brain
+
+    data = make_data(crash_on=None, breach=None)
+    quantile = _spec()
+    floor = _spec(signal={"params": {"margin_floor": 0.15, "min_holdings": 20}})
+    day = "2020-03-31"
+
+    def pick(spec):
+        held = screen(data, day, spec)
+        return run_brain(Context(data=data, spec=spec, as_of=pd.Timestamp(day).date(), screen=held))
+
+    q_names = set(pick(quantile)["symbol"].astype(str))
+    f_names = set(pick(floor)["symbol"].astype(str))
+    assert q_names == {"AAA", "BBB"}
+    assert f_names == {"AAA"}  # AAA ~30% FCF margin, BBB ~10%; no fill-back to 20
+    assert floor.hash() != quantile.hash()
+    empty = simulate(_spec(signal={"params": {"margin_floor": 0.99}}), data, "2020-01-02", "2020-02-28")
+    assert (empty.nav["invested"] / empty.nav["nav"] < 0.01).all()
+
+
 def test_sector_cap_holds() -> None:
     w = pd.Series({"A": 0.4, "B": 0.3, "C": 0.2, "D": 0.1})
     sectors = {"A": "tech", "B": "tech", "C": "health", "D": "energy"}
     capped = apply_sector_cap(w, sectors, 0.5)
     assert capped[["A", "B"]].sum() == pytest.approx(0.5, abs=1e-6)
     assert capped.sum() == pytest.approx(1.0)
+
+
+def test_sector_floors_off_keeps_the_v2_hash() -> None:
+    book = BookSpec.load("fcf-sma-v2-baseline")
+    assert not book.construction.get("sector_floors")
+    assert book.hash() == "6ca86844209e"
+    lifted = book.replace(construction={"sector_floors": {"Health Care": 0.10, "Industrials": 0.10, "Consumer Staples": 0.05}})
+    assert lifted.hash() != book.hash()
+    assert "Health Care 10%" in dict(lifted.summary())["sector floors"]
+
+
+def test_sector_floors_lift_names_already_on_the_list() -> None:
+    w = pd.Series({"A": 0.70, "B": 0.20, "C": 0.10})
+    sectors = {"A": "Information Technology", "B": "Information Technology", "C": "Health Care"}
+    lifted = apply_sector_floors(w, sectors, {"Health Care": 0.25})
+    assert lifted["C"] == pytest.approx(0.25, abs=1e-6)
+    assert lifted[["A", "B"]].sum() == pytest.approx(0.75, abs=1e-6)
+    assert lifted.sum() == pytest.approx(1.0)
+    assert set(lifted.index) == {"A", "B", "C"}
+    alias = apply_sector_floors(w, {"A": "Information Technology", "B": "Information Technology", "C": "Healthcare"}, {"Health Care": 0.25})
+    assert alias["C"] == pytest.approx(0.25, abs=1e-6)
+
+
+def test_sector_floors_skip_a_sector_with_no_names() -> None:
+    w = pd.Series({"A": 0.80, "C": 0.20})
+    sectors = {"A": "information technology", "C": "health care"}
+    lifted = apply_sector_floors(w, sectors, {"Health Care": 0.30, "Industrials": 0.10})
+    assert lifted["C"] == pytest.approx(0.30, abs=1e-6)
+    assert "industrials" not in {sectors.get(s, "").lower() for s in lifted.index}
+
+
+def test_sector_floors_respect_the_name_cap() -> None:
+    it = {f"T{i}": 0.10 for i in range(9)}
+    w = pd.Series({**it, "H": 0.10})
+    sectors = {name: "Information Technology" for name in it}
+    sectors["H"] = "Health Care"
+    lifted = apply_sector_floors(w, sectors, {"Health Care": 0.25}, name_cap=0.10)
+    assert lifted["H"] == pytest.approx(0.10, abs=1e-6)
+    assert lifted.max() == pytest.approx(0.10, abs=1e-6)
 
 
 def test_snapshot_round_trip(tmp_path) -> None:

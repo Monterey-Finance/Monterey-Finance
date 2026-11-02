@@ -207,6 +207,7 @@ These are the keys `replace` and `run_book` accept. Defaults are the v2 book unl
 | `weight` | `"cap"` | `"cap"` uses market cap. `"equal"` uses 1/N. `"score"` uses the brain's score, floored at 0. |
 | `name_cap` | `0.10` | Max weight of one name. `None` leaves weights uncapped. |
 | `sector_cap` | `None` | Max weight of one sector. `None` leaves sectors uncapped. |
+| `sector_floors` | `None` | Min weight per sector **already on the FCF list** (paper 25). A dict of GICS label → floor, e.g. `{"Health Care": 0.10, "Industrials": 0.10, "Consumer Staples": 0.05}`. Labels match case-insensitively. A floor with no names in the selection is skipped — the brain is not expanded. `None` or `{}` is omitted from the hash so v2 stays `6ca86844209e`. |
 | `collapse_share_classes` | `True` | Keep the larger listing of a dual class, then renormalise. |
 
 Weights from this section sum to 1. The overlay has not been applied yet.
@@ -407,13 +408,16 @@ run_book(..., signal={"brain": "fcf_quality", "params": {"keep_quantile": 0.5, "
 ```
 
 **keep_quantile** : float, default `0.5`
-Keep names at or above the `(1 - keep_quantile)` quantile of FCF margin. `0.5` is the top half. This is a rank cutoff, not a margin of 50% or of 6%.
+Keep names at or above the `(1 - keep_quantile)` quantile of FCF margin. `0.5` is the top half. This is a rank cutoff, not a margin of 50% or of 6%. Ignored when `margin_floor` is set.
 
 **min_holdings** : int, default `20`
-If the quantile cut leaves fewer names, fill back with the next-highest FCF margins until this count. If the whole positive-FCF pool is smaller than this, the brain returns an empty table.
+If the quantile cut leaves fewer names, fill back with the next-highest FCF margins until this count. If the whole positive-FCF pool is smaller than this, the brain returns an empty table. The floor path does not backfill.
+
+**margin_floor** : float or None, default `None`
+Paper 24. Absolute FCF / sales line (try `0.06`, `0.08`, `0.10`). Names below it are out. Do not restack conversion / stability / yield — that is `fcf_layers`. Idle NAV from a short list still earns zero (paper 21 is the yield).
 
 **drop_high_vol_quantile** : float or None, default `None`
-Drop the highest-volatility slice of the selection. `None` keeps them.
+Drop the highest-volatility slice of the selection. `None` keeps them. Not used on the floor path.
 
 Positive FCF and a positive market cap are required before the cut. The score column is `fcf_margin`.
 
@@ -485,7 +489,7 @@ from monterey.layers import build_weights
 weights = build_weights(detail, spec, rd.sectors)   # index: symbol, values sum to 1
 ```
 
-`spec.construction["weight"]` chooses cap, equal, or score. Dual classes collapse when `collapse_share_classes` is true. `apply_name_cap` then clips `name_cap`. A set `sector_cap` calls `apply_sector_cap`. An empty selection returns an empty series, and the book holds cash.
+`spec.construction["weight"]` chooses cap, equal, or score. Dual classes collapse when `collapse_share_classes` is true. `apply_name_cap` then clips `name_cap`. A set `sector_cap` calls `apply_sector_cap`. A set `sector_floors` calls `apply_sector_floors`. An empty selection returns an empty series, and the book holds cash.
 
 ### `apply_name_cap`
 
@@ -508,7 +512,20 @@ from monterey.layers import apply_sector_cap
 apply_sector_cap(weights, rd.sectors, cap=0.40, name_cap=0.10)
 ```
 
-This is a ceiling. A sector floor (paper 25: minimum weight in health care, industrials, staples) is not a parameter.
+This is a ceiling. Paper 25 is the other construction: a minimum, not a lid.
+
+### `apply_sector_floors`
+
+```python
+apply_sector_floors(weights, sectors, floors, name_cap=None, iterations=50) -> Series
+```
+
+Scale any named sector below its floor **up** to that floor, taking the extra from other names already in the book, in proportion to the donor room above *their* floors. Re-apply `name_cap` each pass. A floor whose sector has no holdings is skipped. If donors have no room, the last pass is kept and the floor is not fully met.
+
+```python
+from monterey.layers import apply_sector_floors
+apply_sector_floors(weights, rd.sectors, {"Health Care": 0.10, "Industrials": 0.10, "Consumer Staples": 0.05}, name_cap=0.10)
+```
 
 ### `drop_and_renormalise`
 
@@ -808,6 +825,8 @@ Change one section. Leave the other six on v2. Papers 16–20 already have noteb
 | 19 FCF layers | `run_sprint("19", rd)` | `signal`: `brain="fcf_layers"` and one of `conversion_min`, `stability_min_positive`, `yield_drop_quantile` |
 | 20 Sector lid | `run_sprint("20", rd)` | `construction`: `sector_cap`, `name_cap` |
 | 23 SPUS throttle | `run_book` | `overlay={"ticker": "SPUS"}`. A rule that needs SPY and SPUS both on is a new `overlay.kind`. |
+| 24 Hard FCF floor | `run_book` | `signal={"params": {"margin_floor": 0.08}}`. Absolute FCF / sales. Does not backfill to `min_holdings`. |
+| 25 Sector floors | `run_book` | `construction={"sector_floors": {"Health Care": 0.10, "Industrials": 0.10, "Consumer Staples": 0.05}}`. Minimums on names already in the FCF list. Not a tech lid (paper 20). |
 | 26 Exit completeness | `run_book` | `screen={"breach_complete": True}`. The notebook then counts `breach_wait` events and residual shares. The behavior is already in `step`. |
 
 These October ideas have no argument yet. Adding one is [the next section](#adding-a-knob).
@@ -816,8 +835,6 @@ These October ideas have no argument yet. Adding one is [the next section](#addi
 | --- | --- |
 | 21 Halal cash | A yield on idle cash. `off_exposure` still holds stocks. |
 | 22 NAV brake | A cut based on this book's peak NAV. `regime()` cannot see NAV. |
-| 24 FCF floor | An absolute FCF-margin cutoff that does not backfill to `min_holdings`. `keep_quantile` is a rank. |
-| 25 Sector floors | A minimum weight for sectors already in the book. `sector_cap` is a ceiling. |
 | 27 Activity list | A tighter ban than `EXCLUDED_ACTIVITIES`, plus an allow list for names such as Visa. `"Financials"` currently passes. |
 
 ---
@@ -932,7 +949,9 @@ Swap only the section keyword. Examples of the last argument, each a different s
 universe={"pit": False}
 screen={"breach_complete": True}
 signal={"brain": "fcf_layers", "params": {"conversion_min": 0.5, "min_holdings": 20}}
+signal={"params": {"margin_floor": 0.08}}
 construction={"sector_cap": 0.40, "name_cap": 0.08}
+construction={"sector_floors": {"Health Care": 0.10, "Industrials": 0.10, "Consumer Staples": 0.05}}
 overlay={"ticker": "SPUS"}
 overlay={"kind": "none"}
 execution={"drift_band": 0.01, "min_trade": 2500}

@@ -1,6 +1,6 @@
 """Book layers: universe/screen → signal (brain) → construction → overlay → execution → accounting."""
 
-from monterey.layers.accounting import settle_dividends
+from monterey.layers.accounting import settle_cash_yield, settle_dividends
 from monterey.layers.construction import apply_sector_cap, apply_sector_floors, build_weights, drop_and_renormalise
 from monterey.layers.execution import equity, fill_orders, plan_orders
 from monterey.layers.overlay import regime
@@ -23,6 +23,7 @@ __all__ = [
     "regime",
     "run_brain",
     "screen",
+    "settle_cash_yield",
     "settle_dividends",
     "watch_list",
 ]

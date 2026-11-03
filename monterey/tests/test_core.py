@@ -265,6 +265,51 @@ def test_sector_floors_respect_the_name_cap() -> None:
     assert lifted.max() == pytest.approx(0.10, abs=1e-6)
 
 
+def test_cash_yield_off_keeps_the_v2_hash() -> None:
+    book = BookSpec.load("fcf-sma-v2-baseline")
+    assert not book.accounting.get("cash_yield")
+    assert book.hash() == "6ca86844209e"
+    assert book.replace(accounting={"cash_yield": 0.04}).hash() != book.hash()
+
+
+def test_cash_yield_credits_idle_cash() -> None:
+    data = make_data()
+    paid = simulate(_spec(accounting={"cash_yield": 0.50}), data, "2020-01-02", "2020-04-30")
+    free = simulate(_spec(), data, "2020-01-02", "2020-04-30")
+    yields = paid.cashflows[paid.cashflows["type"] == "cash_yield"]
+    assert not yields.empty
+    assert yields["amount"].sum() > 0
+    after = paid.nav.set_index("date").loc[pd.Timestamp("2020-04-30")]
+    free_after = free.nav.set_index("date").loc[pd.Timestamp("2020-04-30")]
+    assert after["cash"] / after["nav"] > 0.99
+    assert after["nav"] > free_after["nav"]
+
+
+def test_nav_brake_off_keeps_the_v2_hash() -> None:
+    book = BookSpec.load("fcf-sma-v2-baseline")
+    assert not book.overlay.get("nav_brake")
+    assert book.hash() == "6ca86844209e"
+    assert book.replace(overlay={"nav_brake": 0.12}).hash() != book.hash()
+
+
+def test_nav_brake_cuts_after_the_book_falls() -> None:
+    data = make_data()
+    ledger = simulate(_spec(overlay={"kind": "none", "nav_brake": 0.08, "nav_brake_off": 0.0}), data, "2020-01-02", "2020-04-30")
+    nav = ledger.nav.set_index("date")
+    crash = pd.Timestamp("2020-03-02")
+    assert nav.loc[crash, "exposure"] == 1.0  # the close that prints the loss is still invested
+    later = nav.loc[nav.index > crash]
+    assert (later["exposure"] == 0.0).any()
+
+
+def test_either_and_both_sma_kinds_run() -> None:
+    data = make_data(crash_on=None, breach=None)
+    either = simulate(_spec(overlay={"kind": "either_sma", "ticker": "SPUS"}), data, "2020-01-02", "2020-02-28")
+    both = simulate(_spec(overlay={"kind": "both_sma", "ticker": "SPUS"}), data, "2020-01-02", "2020-02-28")
+    assert either.nav["exposure"].min() >= 0
+    assert both.nav["nav"].iloc[-1] > 0
+
+
 def test_snapshot_round_trip(tmp_path) -> None:
     from monterey.data import load_snapshot, save_snapshot
 

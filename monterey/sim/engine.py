@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 
 from monterey.data import ResearchData
-from monterey.layers.accounting import settle_dividends
+from monterey.layers.accounting import settle_cash_yield, settle_dividends
 from monterey.layers.construction import build_weights, drop_and_renormalise
 from monterey.layers.execution import equity, fill_flatten, fill_orders, plan_orders
 from monterey.layers.overlay import regime
@@ -52,6 +52,9 @@ class SimState:
     last_targets: dict[str, float] = field(default_factory=dict)
     last_day: str | None = None
     last_nav: float | None = None
+    peak_nav: float | None = None
+    nav_braked: bool = False
+    brake_peak: float | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -126,6 +129,8 @@ class Simulator:
         paid = self.data.dividends_by_day.get(day, [])
         flows = settle_dividends(s, holders, paid, self.data.impure_ratios(day), spec, day=label) if paid else []
         out["cashflows"].extend(flows)
+        yield_flows = settle_cash_yield(s, spec, day=label)
+        out["cashflows"].extend(yield_flows)
 
         # 2. Yesterday's orders fill at today's open.
         #    A completeness sell uses the raw print: open, else today's close, else it waits.
@@ -147,6 +152,8 @@ class Simulator:
         # 3. Targets at today's close.
         reg = self.regime.loc[day] if day in self.regime.index else None
         exposure = float(reg["exposure"]) if reg is not None else 0.0
+        prior_brake = s.nav_braked
+        exposure = min(exposure, _nav_brake_exposure(s, spec))
         chosen = self.selection(day)
         stamp = None if chosen.stamp is None else chosen.stamp.isoformat()
         rebuilt = stamp != s.snapshot
@@ -163,7 +170,10 @@ class Simulator:
                     s.breached = {k: v for k, v in s.breached.items() if v > stamp}
             out["events"].append({"date": label, "type": "rebuild", "symbol": "", "detail": f"snapshot {stamp}, {len(chosen.weights)} names"})
         if s.exposure is not None and exposure != s.exposure:
-            out["events"].append({"date": label, "type": "switch", "symbol": spec.overlay.get("ticker", ""), "detail": f"exposure {s.exposure:.2f} -> {exposure:.2f}"})
+            why = spec.overlay.get("ticker", "")
+            if s.nav_braked != prior_brake:
+                why = "NAV brake"
+            out["events"].append({"date": label, "type": "switch", "symbol": why, "detail": f"exposure {s.exposure:.2f} -> {exposure:.2f}"})
 
         new_breach = False
         watch = set(chosen.weights.index) | set(s.positions)
@@ -187,7 +197,7 @@ class Simulator:
         trigger = rebuilt or new_breach or exposure != s.exposure or not s.traded
         exits_only = str(spec.execution["rebalance"]) == "on_signal" and not trigger
         if exposure <= 0:
-            default_reason = "SMA cash"
+            default_reason = "NAV cash" if s.nav_braked else "SMA cash"
         elif rebuilt:
             default_reason = "monthly rebuild"
         else:
@@ -288,6 +298,7 @@ class Simulator:
             )
         divs = float(sum(r["amount"] for r in flows if r["type"] == "dividend"))
         purification = float(-sum(r["amount"] for r in flows if r["type"] == "purification"))
+        cash_yield = float(sum(r["amount"] for r in yield_flows))
         out["nav"].append(
             {
                 "date": label,
@@ -306,6 +317,7 @@ class Simulator:
                 "costs": costs,
                 "dividends": divs,
                 "purification": purification,
+                "cash_yield": cash_yield,
                 "snapshot": stamp,
                 "max_gap": max_gap,
             }
@@ -364,6 +376,38 @@ def simulate(
     if root is not None:
         ledger.write(root)
     return ledger
+
+
+def _nav_brake_exposure(state: SimState, spec: BookSpec) -> float:
+    """Cut exposure when this book's prior NAV is far enough below its own peak."""
+    x = spec.overlay.get("nav_brake")
+    if not x:
+        return 1.0
+    nav = state.last_nav
+    if nav is None:
+        return 1.0
+    peak = state.peak_nav if state.peak_nav is not None else nav
+    off = float(spec.overlay.get("nav_brake_off") or 0.0)
+    recover_frac = spec.overlay.get("nav_brake_recover")
+    recover_frac = 0.5 if recover_frac is None else float(recover_frac)
+    if not state.nav_braked:
+        if nav > peak:
+            state.peak_nav = nav
+            return 1.0
+        state.peak_nav = peak
+        if nav <= peak * (1.0 - float(x)):
+            state.nav_braked = True
+            state.brake_peak = peak
+            return off
+        return 1.0
+    peak = state.brake_peak if state.brake_peak is not None else peak
+    recover_nav = peak * (1.0 - float(x)) + recover_frac * (peak * float(x))
+    if nav >= recover_nav:
+        state.nav_braked = False
+        state.brake_peak = None
+        state.peak_nav = max(peak, nav)
+        return 1.0
+    return off
 
 
 def _raw_print(panel: pd.DataFrame, day, symbol: str) -> float | None:

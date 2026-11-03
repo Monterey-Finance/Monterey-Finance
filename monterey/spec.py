@@ -65,6 +65,11 @@ DEFAULTS: dict[str, dict[str, Any]] = {
         # Annualised volatility target on the ticker; null turns it off.
         "vol_target": None,
         "vol_lookback": 20,
+        # Paper 22: cut when this book's NAV is this far below its own peak.
+        # None is omitted from the hash so v2 stays put. regime() cannot see NAV.
+        "nav_brake": None,
+        "nav_brake_off": 0.0,
+        "nav_brake_recover": 0.5,
     },
     "execution": {
         # Signals from the close trade at the next open.
@@ -86,6 +91,8 @@ DEFAULTS: dict[str, dict[str, Any]] = {
         "purify": "ex_date",
         # v1 parity only: take purification even when dividends are not credited.
         "purify_uncredited": False,
+        # Paper 21: annual yield on idle cash. None/0 is omitted from the hash.
+        "cash_yield": None,
     },
 }
 
@@ -118,6 +125,12 @@ class BookSpec:
             out["screen"].pop("breach_complete", None)
         if not out["construction"].get("sector_floors"):
             out["construction"].pop("sector_floors", None)
+        if not out["accounting"].get("cash_yield"):
+            out["accounting"].pop("cash_yield", None)
+        if not out["overlay"].get("nav_brake"):
+            out["overlay"].pop("nav_brake", None)
+            out["overlay"].pop("nav_brake_off", None)
+            out["overlay"].pop("nav_brake_recover", None)
         return out
 
     def hash(self) -> str:
@@ -179,14 +192,21 @@ class BookSpec:
         s, c, o, e, a = self.screen, self.construction, self.overlay, self.execution, self.accounting
         params = ", ".join(f"{k}={v}" for k, v in sorted((self.signal.get("params") or {}).items()))
         throttle = o["kind"]
-        if o["kind"] == "spy_sma":
-            throttle = f"{o['ticker']} {o['window']}-day SMA"
+        if o["kind"] in {"spy_sma", "both_sma", "either_sma"}:
+            if o["kind"] == "both_sma":
+                throttle = f"SPY and {o['ticker']} {o['window']}-day SMA"
+            elif o["kind"] == "either_sma":
+                throttle = f"SPY or {o['ticker']} {o['window']}-day SMA"
+            else:
+                throttle = f"{o['ticker']} {o['window']}-day SMA"
             if o["confirm_days"]:
                 throttle += f", confirm {o['confirm_days']}d"
             if o["band"]:
                 throttle += f", band {o['band']:.1%}"
             if o["off_exposure"]:
                 throttle += f", off {o['off_exposure']:.0%}"
+        if o.get("nav_brake"):
+            throttle += f", NAV brake {o['nav_brake']:.0%} to {o.get('nav_brake_off') or 0:.0%}"
         if o.get("vol_target"):
             throttle += f", vol target {o['vol_target']:.0%}"
         return [
@@ -206,6 +226,7 @@ class BookSpec:
             ("dividends", "credited" if a["dividends"] else "NOT credited"),
             ("cost", f"{a['cost_bps']:.0f} bp charged"),
             ("purify", str(a["purify"])),
+            ("cash yield", "none" if not a.get("cash_yield") else f"{float(a['cash_yield']):.1%}"),
         ]
 
 

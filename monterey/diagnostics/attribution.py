@@ -22,14 +22,18 @@ def components(nav: pd.DataFrame) -> dict:
     purify = frame["purification"].astype(float) / prior
     cost = frame["costs"].astype(float) / prior
     total = frame["nav"].astype(float).pct_change()
-    price = total - div + purify + cost
-    return {
+    yield_col = frame["cash_yield"].astype(float) / prior if "cash_yield" in frame else 0.0
+    price = total - div + purify + cost - yield_col
+    out = {
         "total": _compound(total),
         "price": _compound(price),
         "dividends": _compound(div),
         "purification": -_compound(purify),
         "costs": -_compound(cost),
     }
+    if "cash_yield" in frame:
+        out["cash_yield"] = _compound(yield_col)
+    return out
 
 
 def switch_cost(nav: pd.DataFrame, bench: pd.Series) -> dict:

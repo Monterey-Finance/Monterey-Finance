@@ -44,3 +44,15 @@ def settle_dividends(
             account.cash -= amount
             rows.append({"date": day, "type": "purification", "symbol": symbol, "amount": -amount, "shares": shares, "per_share": float(per_share), "ratio": float(ratio)})
     return rows
+
+
+def settle_cash_yield(account: Account, spec: BookSpec, *, day: str) -> list[dict]:
+    """Credit idle cash at ``accounting.cash_yield`` (annual) for one session."""
+    annual = spec.accounting.get("cash_yield")
+    if not annual or account.cash <= 0:
+        return []
+    amount = float(account.cash) * ((1.0 + float(annual)) ** (1.0 / 252.0) - 1.0)
+    if amount <= 0:
+        return []
+    account.cash += amount
+    return [{"date": day, "type": "cash_yield", "symbol": "", "amount": amount, "shares": None, "per_share": None, "ratio": float(annual)}]

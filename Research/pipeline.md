@@ -216,14 +216,17 @@ Weights from this section sum to 1. The overlay has not been applied yet.
 
 | Key | Default | Meaning |
 | --- | --- | --- |
-| `kind` | `"spy_sma"` | `"spy_sma"` is the moving-average switch. `"none"` (or `"off"` or `""`) is always invested, exposure 1, before any vol target. |
-| `ticker` | `"SPY"` | Price series the switch reads. `"SPUS"` is a valid ticker. |
+| `kind` | `"spy_sma"` | `"spy_sma"` is the moving-average switch on `ticker`. `"none"` (or `"off"` or `""`) is always invested, exposure 1, before any vol target. `"both_sma"` is on only when SPY **and** `ticker` are on. `"either_sma"` is on when either is on. |
+| `ticker` | `"SPY"` | Price series the switch reads. `"SPUS"` is a valid ticker. For `both_sma` / `either_sma`, this is the second series (usually `"SPUS"`). |
 | `window` | `200` | Sessions in the simple moving average. |
 | `confirm_days` | `0` | The switch flips after more than this many consecutive closes on the other side of the line. `0` flips on the first close. `2` flips on the third. |
 | `band` | `0.0` | Hysteresis. On above `sma * (1 + band)`, off below `sma * (1 - band)`. |
 | `off_exposure` | `0.0` | Fraction of the stock book kept when the switch is off. `0.5` still owns those stocks, at half size. |
 | `vol_target` | `None` | Annualised volatility target on `ticker`. Exposure is scaled down to it, in steps of 5%. `None` turns it off. |
 | `vol_lookback` | `20` | Sessions of daily returns used for that realised vol. |
+| `nav_brake` | `None` | Cut when this book's prior NAV is this far below its own peak. `0.12` is a 12% trailing stop. `None` is omitted from the hash. Applied in `step`, not in `regime()`. |
+| `nav_brake_off` | `0.0` | Exposure while the NAV brake is on. `0.5` keeps half the stock book. |
+| `nav_brake_recover` | `0.5` | Stay braked until NAV has recovered this share of the loss from the peak that triggered. `0` waits for a new high. |
 
 `regime()` builds this series once, before the first session, from prices. It does not see the book's own NAV.
 
@@ -246,8 +249,9 @@ Weights from this section sum to 1. The overlay has not been applied yet.
 | `cost_bps` | `10.0` | Commission on each fill, in basis points of notional. Charged inside the fill, taken out of cash. |
 | `purify` | `"ex_date"` | `"ex_date"` donates `impure ratio × gross dividend` on the ex-date. `"off"` keeps it. |
 | `purify_uncredited` | `False` | Donate even when `dividends` is false. v1 parity only. |
+| `cash_yield` | `None` | Annual yield on idle cash, credited each session as `(1 + y)**(1/252) − 1`. `None` or `0` is omitted from the hash. Paper 21. |
 
-There is no cash-yield argument. Idle cash earns zero.
+Idle cash earns zero unless `cash_yield` is set. `off_exposure` still holds stocks; it is not this yield.
 
 #### `benchmarks`
 
@@ -559,13 +563,13 @@ frame = regime(rd, spec, rd.sessions)
 frame.loc["2022-06-30", ["raw", "on", "exposure"]]
 ```
 
-`kind: "none"` sets `on` and `raw` true and `exposure` to 1, then still applies `vol_target` if you set one. Any other `kind` raises `ValueError`.
+`kind: "none"` sets `on` and `raw` true and `exposure` to 1, then still applies `vol_target` if you set one. `both_sma` / `either_sma` combine SPY with `ticker`. Any other `kind` raises `ValueError`.
 
 The series is indexed by the close that decided it. The engine reads `exposure` at close `t` and the resulting orders fill at open `t+1`.
 
 `off_exposure` is a fraction of the **stock** book. It is not a yield on cash. Cash is whatever NAV is left after `target weight × NAV` is spent on shares.
 
-A brake on this book's own peak-to-trough path cannot be expressed here. `regime` runs in `Simulator.__init__`, before any NAV exists. That rule has to read `state.last_nav` inside `step`.
+A brake on this book's own peak-to-trough path cannot be expressed here. `regime` runs in `Simulator.__init__`, before any NAV exists. Set `overlay.nav_brake`; `step` reads `state.last_nav` and caps exposure.
 
 ---
 
@@ -643,7 +647,7 @@ rows = settle_dividends(state, state.positions, paid, rd.impure_ratios(day), spe
 
 Each credit is a cashflow row with `type: "dividend"` and a positive `amount`. When `spec.accounting["purify"]` is `"ex_date"` and the ratio is positive, a second row with `type: "purification"` and a negative amount leaves cash. `"off"` keeps the gross dividend. The function returns `[]` and does nothing when `holders` have no shares in the paying names.
 
-The engine calls this only on sessions that have a dividend. A yield on idle cash would be a separate call, every session, and a new `accounting` key. That key does not exist yet.
+The engine calls this only on sessions that have a dividend. A yield on idle cash is `settle_cash_yield`, every session, when `accounting.cash_yield` is set.
 
 ---
 
@@ -824,7 +828,9 @@ Change one section. Leave the other six on v2. Papers 16–20 already have noteb
 | 18 Execution | `run_sprint("18", rd)` | `execution`: `rebalance`, `drift_band`, `min_trade` |
 | 19 FCF layers | `run_sprint("19", rd)` | `signal`: `brain="fcf_layers"` and one of `conversion_min`, `stability_min_positive`, `yield_drop_quantile` |
 | 20 Sector lid | `run_sprint("20", rd)` | `construction`: `sector_cap`, `name_cap` |
-| 23 SPUS throttle | `run_book` | `overlay={"ticker": "SPUS"}`. A rule that needs SPY and SPUS both on is a new `overlay.kind`. |
+| 21 Halal cash | `run_book` | `accounting={"cash_yield": 0.04}`. Annual yield on idle cash. Equity list unchanged. |
+| 22 NAV brake | `run_book` | `overlay={"kind": "none", "nav_brake": 0.12}`. Trailing stop on this book's NAV. `nav_brake_off` is 0 or 0.5. |
+| 23 SPUS throttle | `run_book` | `overlay={"ticker": "SPUS"}`. `"both_sma"` / `"either_sma"` combine SPY and SPUS. |
 | 24 Hard FCF floor | `run_book` | `signal={"params": {"margin_floor": 0.08}}`. Absolute FCF / sales. Does not backfill to `min_holdings`. |
 | 25 Sector floors | `run_book` | `construction={"sector_floors": {"Health Care": 0.10, "Industrials": 0.10, "Consumer Staples": 0.05}}`. Minimums on names already in the FCF list. Not a tech lid (paper 20). |
 | 26 Exit completeness | `run_book` | `screen={"breach_complete": True}`. The notebook then counts `breach_wait` events and residual shares. The behavior is already in `step`. |
@@ -833,8 +839,6 @@ These October ideas have no argument yet. Adding one is [the next section](#addi
 
 | Paper | What is missing |
 | --- | --- |
-| 21 Halal cash | A yield on idle cash. `off_exposure` still holds stocks. |
-| 22 NAV brake | A cut based on this book's peak NAV. `regime()` cannot see NAV. |
 | 27 Activity list | A tighter ban than `EXCLUDED_ACTIVITIES`, plus an allow list for names such as Visa. `"Financials"` currently passes. |
 
 ---

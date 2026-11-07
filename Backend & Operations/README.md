@@ -17,6 +17,8 @@
 
 The shadow fund is **not** a registered vehicle. There is no custodian, no LP subscriptions, and no charity wire. This folder is the operator contract: how a session is run, what is official, and what the desk is allowed to show.
 
+Function signatures, spec keys, and where to edit each layer: [`docs/fund.md`](../docs/fund.md).
+
 Strategy lives in a YAML **BookSpec**. Market facts live in **halalquant**. Execution and NAV live in **`monterey/`**. `ops/` is the weekday loop around that engine. `desk/` only reads ledgers.
 
 ---

@@ -113,6 +113,8 @@ October sprints (notebooks under `Research/papers/16–20`):
 
 A winner becomes a spec proposal (`python -m ops rules propose …`) and, after audit confirm, the live v3 book.
 
+Layer-by-layer function reference for the fund (spec, layers, simulator, ledger, ops, desk): [`docs/fund.md`](docs/fund.md). Research notebooks use [`Research/pipeline.md`](Research/pipeline.md).
+
 ## How the systems run
 
 ```bash

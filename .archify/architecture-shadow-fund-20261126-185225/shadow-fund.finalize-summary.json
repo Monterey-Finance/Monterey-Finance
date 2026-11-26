@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+    "sha256": "4a3eb9f6794ea87493c3b1ba76a92f48572342b1427477d11d1264fcba55f931",
+    "bytes": 23005
+  },
+  "artifact": {
+    "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+    "sha256": "90bf4d020fc50a27d592d871995c8c6e10a4ed6faab691def5f888e590178794",
+    "bytes": 1002334
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html"
+      },
+      "evidence": {
+        "reason": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome transport: Node v22.23.1, libuv 1.52.1, darwin; pid=1577, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=true, ended=false, destroyed=false, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.finalize.json",
+    "summaryReceipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.finalize-summary.json",
+    "browserCheckReceipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 2167,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

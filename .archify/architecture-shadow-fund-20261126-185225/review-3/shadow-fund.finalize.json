@@ -1,0 +1,1492 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-26T15:11:30.759Z",
+  "specification": {
+    "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+    "sha256": "29e1131ec9199509ccf0fd2bfdff3ebaac68cc195bf5dc6fa2e4382aeeb82745",
+    "bytes": 23004
+  },
+  "artifact": {
+    "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+    "sha256": "5165fa7a4ae498c55cf8e12cacf990813ec0898433948955873d2bc285f8d39c",
+    "bytes": 1001984
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "29e1131ec9199509ccf0fd2bfdff3ebaac68cc195bf5dc6fa2e4382aeeb82745",
+          "bytes": 23004
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 845,
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "e3afd80b-4e79-4683-bda2-1c349a8d4e63",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+        "output": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "specification": {
+          "sha256": "29e1131ec9199509ccf0fd2bfdff3ebaac68cc195bf5dc6fa2e4382aeeb82745",
+          "bytes": 23004
+        },
+        "artifact": {
+          "sha256": "5165fa7a4ae498c55cf8e12cacf990813ec0898433948955873d2bc285f8d39c",
+          "bytes": 1001984
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "evidence": {
+          "verified": true,
+          "repository": "https://github.com/Monterey-Finance/Monterey-Finance",
+          "revision": "5038a12b782f8ac087a43c4e39803f4df56670a5",
+          "references": 47
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 186,
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "artifact": {
+          "sha256": "5165fa7a4ae498c55cf8e12cacf990813ec0898433948955873d2bc285f8d39c",
+          "bytes": 1001984
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 19,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 14.5,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 6.860655737704918,
+            "maxBends": 4,
+            "routesOverSuggestedBends": 4,
+            "maxStretch": 1.156,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 18,
+            "minInteriorSegmentPx": 60,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [
+              {
+                "left": {
+                  "id": "action-ops",
+                  "from": "action",
+                  "to": "ops",
+                  "label": "weekday session",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "right": {
+                  "id": "ops-book",
+                  "from": "ops",
+                  "to": "book",
+                  "label": "live_spec",
+                  "collectionIndex": 4,
+                  "artifactIndex": 5
+                },
+                "point": [
+                  541,
+                  228
+                ],
+                "sharedNode": "ops"
+              },
+              {
+                "left": {
+                  "id": "action-ops",
+                  "from": "action",
+                  "to": "ops",
+                  "label": "weekday session",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "right": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "point": [
+                  810,
+                  170
+                ]
+              },
+              {
+                "left": {
+                  "id": "action-ops",
+                  "from": "action",
+                  "to": "ops",
+                  "label": "weekday session",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "right": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "point": [
+                  924,
+                  168.79795897113272
+                ]
+              },
+              {
+                "left": {
+                  "id": "action-ops",
+                  "from": "action",
+                  "to": "ops",
+                  "label": "weekday session",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "right": {
+                  "id": "cli-sim",
+                  "from": "replaycli",
+                  "to": "sim",
+                  "label": "simulate",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "point": [
+                  824,
+                  170
+                ]
+              },
+              {
+                "left": {
+                  "id": "action-ops",
+                  "from": "action",
+                  "to": "ops",
+                  "label": "weekday session",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "right": {
+                  "id": "cli-ledger",
+                  "from": "replaycli",
+                  "to": "ledger",
+                  "label": "write if saving",
+                  "collectionIndex": 21,
+                  "artifactIndex": 22
+                },
+                "point": [
+                  504,
+                  336
+                ]
+              },
+              {
+                "left": {
+                  "id": "ops-book",
+                  "from": "ops",
+                  "to": "book",
+                  "label": "live_spec",
+                  "collectionIndex": 4,
+                  "artifactIndex": 5
+                },
+                "right": {
+                  "id": "cli-ledger",
+                  "from": "replaycli",
+                  "to": "ledger",
+                  "label": "write if saving",
+                  "collectionIndex": 21,
+                  "artifactIndex": 22
+                },
+                "point": [
+                  504,
+                  228
+                ]
+              },
+              {
+                "left": {
+                  "id": "ops-snapshot",
+                  "from": "ops",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 6,
+                  "artifactIndex": 7
+                },
+                "right": {
+                  "id": "snapshot-hq",
+                  "from": "snapshot",
+                  "to": "halalquant",
+                  "label": "read cache",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "point": [
+                  549,
+                  768
+                ],
+                "sharedNode": "snapshot"
+              },
+              {
+                "left": {
+                  "id": "ops-snapshot",
+                  "from": "ops",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 6,
+                  "artifactIndex": 7
+                },
+                "right": {
+                  "id": "cli-ledger",
+                  "from": "replaycli",
+                  "to": "ledger",
+                  "label": "write if saving",
+                  "collectionIndex": 21,
+                  "artifactIndex": 22
+                },
+                "point": [
+                  504,
+                  517
+                ]
+              },
+              {
+                "left": {
+                  "id": "snapshot-hq",
+                  "from": "snapshot",
+                  "to": "halalquant",
+                  "label": "read cache",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "right": {
+                  "id": "ops-ledger",
+                  "from": "ops",
+                  "to": "ledger",
+                  "label": "write ledger",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "point": [
+                  232,
+                  768
+                ]
+              },
+              {
+                "left": {
+                  "id": "snapshot-hq",
+                  "from": "snapshot",
+                  "to": "halalquant",
+                  "label": "read cache",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "right": {
+                  "id": "cli-ledger",
+                  "from": "replaycli",
+                  "to": "ledger",
+                  "label": "write if saving",
+                  "collectionIndex": 21,
+                  "artifactIndex": 22
+                },
+                "point": [
+                  504,
+                  768
+                ]
+              },
+              {
+                "left": {
+                  "id": "snapshot-hq",
+                  "from": "snapshot",
+                  "to": "halalquant",
+                  "label": "read cache",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "right": {
+                  "id": "desk-account",
+                  "from": "desk",
+                  "to": "account",
+                  "label": "fallback state",
+                  "collectionIndex": 24,
+                  "artifactIndex": 25
+                },
+                "point": [
+                  115,
+                  720.2020410288673
+                ]
+              },
+              {
+                "left": {
+                  "id": "ops-sim",
+                  "from": "ops",
+                  "to": "sim",
+                  "label": "step if clear",
+                  "collectionIndex": 9,
+                  "artifactIndex": 10
+                },
+                "right": {
+                  "id": "cli-ledger",
+                  "from": "replaycli",
+                  "to": "ledger",
+                  "label": "write if saving",
+                  "collectionIndex": 21,
+                  "artifactIndex": 22
+                },
+                "point": [
+                  504,
+                  374
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "sim-screen",
+                  "from": "sim",
+                  "to": "screen",
+                  "label": "screen()",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "point": [
+                  924,
+                  344
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "sim-brain",
+                  "from": "sim",
+                  "to": "brain",
+                  "label": "run_brain()",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "point": [
+                  924,
+                  408
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "sim-weights",
+                  "from": "sim",
+                  "to": "weights",
+                  "label": "weights",
+                  "collectionIndex": 16,
+                  "artifactIndex": 17
+                },
+                "point": [
+                  924,
+                  464
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "sim-sma",
+                  "from": "sim",
+                  "to": "sma",
+                  "label": "exposure",
+                  "collectionIndex": 17,
+                  "artifactIndex": 18
+                },
+                "point": [
+                  924,
+                  528
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "sim-execution",
+                  "from": "sim",
+                  "to": "execution",
+                  "label": "orders and fills",
+                  "collectionIndex": 18,
+                  "artifactIndex": 19
+                },
+                "point": [
+                  924,
+                  584
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "sim-accounting",
+                  "from": "sim",
+                  "to": "accounting",
+                  "label": "ex-date cash",
+                  "collectionIndex": 19,
+                  "artifactIndex": 20
+                },
+                "point": [
+                  924,
+                  648
+                ]
+              },
+              {
+                "left": {
+                  "id": "ops-ledger",
+                  "from": "ops",
+                  "to": "ledger",
+                  "label": "write ledger",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "right": {
+                  "id": "desk-account",
+                  "from": "desk",
+                  "to": "account",
+                  "label": "fallback state",
+                  "collectionIndex": 24,
+                  "artifactIndex": 25
+                },
+                "point": [
+                  232,
+                  719
+                ]
+              }
+            ],
+            "detours": [
+              {
+                "relationship": {
+                  "id": "operator-desk",
+                  "from": "operator",
+                  "to": "desk",
+                  "label": "open desk",
+                  "collectionIndex": 1,
+                  "artifactIndex": 2
+                },
+                "bends": 4,
+                "stretch": 1.156
+              },
+              {
+                "relationship": {
+                  "id": "action-ops",
+                  "from": "action",
+                  "to": "ops",
+                  "label": "weekday session",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "bends": 4,
+                "stretch": 1
+              },
+              {
+                "relationship": {
+                  "id": "ops-snapshot",
+                  "from": "ops",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 6,
+                  "artifactIndex": 7
+                },
+                "bends": 4,
+                "stretch": 1.069
+              },
+              {
+                "relationship": {
+                  "id": "ops-ledger",
+                  "from": "ops",
+                  "to": "ledger",
+                  "label": "write ledger",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "bends": 3,
+                "stretch": 1.058
+              }
+            ]
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 10,
+            "emptyTopRatio": 0.01,
+            "occupiedTop": 10,
+            "viewBoxTop": 0,
+            "canvasHeight": 1010,
+            "typicalNodeHeight": 56,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "legacy-930",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 930,
+            "actualBudgetPx": 930,
+            "limit": "legacy",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "boundary",
+              "id": null
+            },
+            "minimumSourceTextPx": 9,
+            "minimumProjectedTextPx": 6.860655737704918,
+            "semanticTextCount": 67
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "e3afd80b-4e79-4683-bda2-1c349a8d4e63"
+      }
+    },
+    "browser-check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 4452,
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--json",
+        "--require-provenance",
+        "--out-dir",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/review-3"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "pass",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "e3afd80b-4e79-4683-bda2-1c349a8d4e63",
+        "artifact": {
+          "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+          "sha256": "5165fa7a4ae498c55cf8e12cacf990813ec0898433948955873d2bc285f8d39c",
+          "bytes": 1001984
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "available",
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        },
+        "diagnostics": [],
+        "containment": {
+          "status": "pass",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "theme": "light",
+              "innerWidth": 1440,
+              "innerHeight": 900,
+              "scrollWidth": 1440,
+              "scrollHeight": 985,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1047,
+              "diagramWidth": 1017,
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 842,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.502459016393442,
+              "minimumProjectedNonEdgeTextPx": 7.502459016393442,
+              "minimumProjectedEdgeTextPx": 8.336065573770492,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "theme": "light",
+              "innerWidth": 1600,
+              "innerHeight": 1000,
+              "scrollWidth": 1600,
+              "scrollHeight": 1051,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1047,
+              "diagramWidth": 1017,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 842,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.502459016393442,
+              "minimumProjectedNonEdgeTextPx": 7.502459016393442,
+              "minimumProjectedEdgeTextPx": 8.336065573770492,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "theme": "light",
+              "innerWidth": 1920,
+              "innerHeight": 1080,
+              "scrollWidth": 1920,
+              "scrollHeight": 1080,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1069,
+              "diagramWidth": 1039,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 860,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.664754098360655,
+              "minimumProjectedNonEdgeTextPx": 7.664754098360655,
+              "minimumProjectedEdgeTextPx": 8.51639344262295,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "theme": "light",
+              "innerWidth": 2048,
+              "innerHeight": 1320,
+              "scrollWidth": 2048,
+              "scrollHeight": 1320,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1357,
+              "diagramWidth": 1307,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 1082,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 9,
+              "minimumProjectedNonEdgeTextPx": 9,
+              "minimumProjectedEdgeTextPx": 10,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 44,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            }
+          ]
+        },
+        "themeStates": {
+          "status": "pass",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 1440,
+              "height": 900,
+              "requestedTheme": "dark",
+              "resolvedTheme": "dark",
+              "ok": true
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "requestedTheme": "dark",
+              "resolvedTheme": "dark",
+              "ok": true
+            }
+          ]
+        },
+        "readability": {
+          "status": "pass",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "theme": "light",
+              "innerWidth": 1440,
+              "innerHeight": 900,
+              "scrollWidth": 1440,
+              "scrollHeight": 985,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1047,
+              "diagramWidth": 1017,
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 842,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.502459016393442,
+              "minimumProjectedNonEdgeTextPx": 7.502459016393442,
+              "minimumProjectedEdgeTextPx": 8.336065573770492,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "theme": "light",
+              "innerWidth": 1600,
+              "innerHeight": 1000,
+              "scrollWidth": 1600,
+              "scrollHeight": 1051,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1047,
+              "diagramWidth": 1017,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 842,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.502459016393442,
+              "minimumProjectedNonEdgeTextPx": 7.502459016393442,
+              "minimumProjectedEdgeTextPx": 8.336065573770492,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "theme": "light",
+              "innerWidth": 1920,
+              "innerHeight": 1080,
+              "scrollWidth": 1920,
+              "scrollHeight": 1080,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1069,
+              "diagramWidth": 1039,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 860,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.664754098360655,
+              "minimumProjectedNonEdgeTextPx": 7.664754098360655,
+              "minimumProjectedEdgeTextPx": 8.51639344262295,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "theme": "light",
+              "innerWidth": 2048,
+              "innerHeight": 1320,
+              "scrollWidth": 2048,
+              "scrollHeight": 1320,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1357,
+              "diagramWidth": 1307,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 1082,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 9,
+              "minimumProjectedNonEdgeTextPx": 9,
+              "minimumProjectedEdgeTextPx": 10,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 44,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            }
+          ]
+        },
+        "viewerChrome": {
+          "status": "pass",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "theme": "light",
+              "innerWidth": 1440,
+              "innerHeight": 900,
+              "scrollWidth": 1440,
+              "scrollHeight": 985,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1047,
+              "diagramWidth": 1017,
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 842,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.502459016393442,
+              "minimumProjectedNonEdgeTextPx": 7.502459016393442,
+              "minimumProjectedEdgeTextPx": 8.336065573770492,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "theme": "light",
+              "innerWidth": 1600,
+              "innerHeight": 1000,
+              "scrollWidth": 1600,
+              "scrollHeight": 1051,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1047,
+              "diagramWidth": 1017,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 842,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.502459016393442,
+              "minimumProjectedNonEdgeTextPx": 7.502459016393442,
+              "minimumProjectedEdgeTextPx": 8.336065573770492,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "theme": "light",
+              "innerWidth": 1920,
+              "innerHeight": 1080,
+              "scrollWidth": 1920,
+              "scrollHeight": 1080,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1069,
+              "diagramWidth": 1039,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 860,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 7.664754098360655,
+              "minimumProjectedNonEdgeTextPx": 7.664754098360655,
+              "minimumProjectedEdgeTextPx": 8.51639344262295,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "theme": "light",
+              "innerWidth": 2048,
+              "innerHeight": 1320,
+              "scrollWidth": 2048,
+              "scrollHeight": 1320,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1357,
+              "diagramWidth": 1307,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 1082,
+                "cardsPx": 0,
+                "viewBoxHeight": 1010
+              },
+              "viewBoxWidth": 1220,
+              "minimumProjectedNodeTextPx": 9,
+              "minimumProjectedNonEdgeTextPx": 9,
+              "minimumProjectedEdgeTextPx": 10,
+              "minimumProjectedNodeText": "monterey — one spec, one engine, one ledger",
+              "minimumProjectedNodeTextDetail": "boundary",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "boundary",
+                "id": null
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 44,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            }
+          ]
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "directory": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/review-3",
+          "receipt": "shadow-fund.browser-check.json",
+          "files": []
+        }
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "diagnostics": [],
+  "evidence": {
+    "receipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/review-3/shadow-fund.finalize.json",
+    "summaryReceipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/review-3/shadow-fund.finalize-summary.json",
+    "browserCheckReceipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/review-3/shadow-fund.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "repositoryReferences": {
+    "status": "verified",
+    "revision": "5038a12b782f8ac087a43c4e39803f4df56670a5",
+    "count": 47
+  },
+  "codeAnalysisOffer": {
+    "action": "offer-code-analysis",
+    "reason": "Archify’s built-in Architecture Diagnosis adds component findings, a radial star map, and a rotatable 3D view of repository dependencies.",
+    "instruction": "Use the referenced pitch once per repository and wait for consent before starting.",
+    "dependencies": "installed",
+    "diagramButton": true,
+    "quality": "showcase",
+    "start": {
+      "argv": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "start",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance",
+        "--ir",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+        "--quality",
+        "showcase"
+      ]
+    },
+    "reference": "references/delivery-contract.md#architecture-diagnosis-offer"
+  },
+  "finishedAt": "2026-11-26T15:11:36.630Z",
+  "durationMs": 5885,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.3.2",
+    "availableVersion": "3.3.2",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-26T15:09:21.611Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

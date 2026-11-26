@@ -1,0 +1,908 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "layout": {
+    "mode": "auto"
+  },
+  "meta": {
+    "title": "Monterey shadow fund",
+    "locale": "en",
+    "output": ".archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/Monterey-Finance/Monterey-Finance.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "5038a12b782f8ac087a43c4e39803f4df56670a5"
+    },
+    "views": [
+      {
+        "id": "daily",
+        "label": "Daily session",
+        "focus": [
+          "operator",
+          "ops",
+          "sim",
+          "ledger",
+          "desk"
+        ],
+        "note": "Ops steps the simulator. The desk only reads the ledger."
+      },
+      {
+        "id": "recipe",
+        "label": "Book recipe",
+        "focus": [
+          "sim",
+          "screen",
+          "brain",
+          "weights",
+          "sma",
+          "execution",
+          "accounting"
+        ],
+        "note": "The engine calls each layer. The layers do not call each other."
+      },
+      {
+        "id": "publish",
+        "label": "Weekday publish",
+        "focus": [
+          "action",
+          "r2",
+          "ledger",
+          "halalquant"
+        ],
+        "note": "Git keeps spec, NAV, and diagnostics. R2 keeps the full ledger and cache."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "operator",
+      "type": "external",
+      "label": "Operator",
+      "sublabel": "CLI",
+      "icon": "person",
+      "sources": [
+        {
+          "path": "ops/__main__.py",
+          "line": 1,
+          "end_line": 4,
+          "label": "ops entry"
+        },
+        {
+          "path": "desk/__main__.py",
+          "line": 4,
+          "end_line": 6,
+          "label": "desk entry"
+        }
+      ],
+      "explanation": "The operator runs the paper session and opens the desk. Neither command places a live-capital order.",
+      "pos": [
+        36,
+        228
+      ],
+      "size": [
+        128,
+        56
+      ]
+    },
+    {
+      "id": "ops",
+      "type": "backend",
+      "label": "ops",
+      "sublabel": "run, replay, rules",
+      "icon": "backend",
+      "emphasis": true,
+      "sources": [
+        {
+          "path": "ops/cli.py",
+          "line": 164,
+          "end_line": 226,
+          "label": "run and replay"
+        },
+        {
+          "path": "ops/fund.py",
+          "line": 40,
+          "end_line": 179,
+          "label": "session and replay"
+        },
+        {
+          "path": "ops/ruleset.py",
+          "line": 48,
+          "end_line": 121,
+          "label": "propose and confirm"
+        }
+      ],
+      "explanation": "Default ops run and the weekday job call run_live_session or replay_book. A halted account or an already marked day is skipped. ops run --targets-only is the older sleeve session and can reach Alpaca paper; that path does not step this simulator.",
+      "pos": [
+        250,
+        220
+      ],
+      "size": [
+        180,
+        80
+      ]
+    },
+    {
+      "id": "replaycli",
+      "type": "backend",
+      "label": "monterey CLI",
+      "sublabel": "replay one BookSpec",
+      "sources": [
+        {
+          "path": "monterey/__main__.py",
+          "line": 56,
+          "end_line": 72,
+          "label": "run command"
+        }
+      ],
+      "explanation": "python -m monterey run loads a named YAML book, loads market data, and calls the same simulate() the ops replay uses. --no-write skips the ledger folder.",
+      "pos": [
+        620,
+        860
+      ],
+      "size": [
+        176,
+        56
+      ]
+    },
+    {
+      "id": "book",
+      "type": "backend",
+      "label": "BookSpec",
+      "sublabel": "books/*.yaml",
+      "sources": [
+        {
+          "path": "monterey/spec.py",
+          "line": 136,
+          "end_line": 182,
+          "label": "hash and load"
+        },
+        {
+          "path": "ops/live_rules.py",
+          "line": 14,
+          "end_line": 24,
+          "label": "live book"
+        },
+        {
+          "path": "books/fcf-sma-v2-baseline.yaml",
+          "line": 1,
+          "end_line": 44,
+          "label": "v2 baseline"
+        }
+      ],
+      "explanation": "The live book is fcf-sma-v2-baseline. The hash covers the seven rule sections. A confirmed overlay is applied in live_spec before the session starts, and a new hash means a new ledger folder.",
+      "pos": [
+        560,
+        200
+      ],
+      "size": [
+        156,
+        56
+      ]
+    },
+    {
+      "id": "rules",
+      "type": "database",
+      "label": "Rules overlay",
+      "sublabel": "after confirm",
+      "sources": [
+        {
+          "path": "ops/live_rules.py",
+          "line": 53,
+          "end_line": 62,
+          "label": "read overlay"
+        },
+        {
+          "path": "ops/ruleset.py",
+          "line": 79,
+          "end_line": 111,
+          "label": "confirm writes it"
+        }
+      ],
+      "explanation": "propose stores a proposal. confirm writes ops/state/rules_overlay.json. The next live_spec applies those section changes. With no file, the YAML book is used as written.",
+      "pos": [
+        250,
+        36
+      ],
+      "size": [
+        176,
+        58
+      ]
+    },
+    {
+      "id": "snapshot",
+      "type": "database",
+      "label": "Market snapshot",
+      "sublabel": "data/snapshots",
+      "icon": "database",
+      "sources": [
+        {
+          "path": "monterey/data/loader.py",
+          "line": 20,
+          "end_line": 55,
+          "label": "reuse snapshot"
+        },
+        {
+          "path": "monterey/data/loader.py",
+          "line": 69,
+          "end_line": 123,
+          "label": "read cache, freeze"
+        },
+        {
+          "path": "monterey/paths.py",
+          "line": 9,
+          "end_line": 11,
+          "label": "snapshot path"
+        }
+      ],
+      "explanation": "load_research_data reuses data/snapshots/<hash> until the cache changes. A miss, or refresh=True, reads the halalquant cache and freezes parquet again. The weekday job passes refresh=True after restoring that cache from R2.",
+      "pos": [
+        560,
+        740
+      ],
+      "size": [
+        176,
+        56
+      ]
+    },
+    {
+      "id": "halalquant",
+      "type": "external",
+      "label": "halalquant",
+      "sublabel": "cache.duckdb",
+      "icon": "external",
+      "sources": [
+        {
+          "path": "monterey/data/loader.py",
+          "line": 45,
+          "end_line": 86,
+          "label": "cache reads"
+        },
+        {
+          "path": "ops/data.py",
+          "line": 72,
+          "end_line": 75,
+          "label": "refresh_facts"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "line": 40,
+          "end_line": 65,
+          "label": "cache from R2"
+        }
+      ],
+      "explanation": "Market facts are point-in-time membership, sectors, prices, dividends, and filing events in the local halalquant cache. ops run calls refresh_dataset unless --skip-refresh. The weekday job does not; it syncs the cache from R2 first.",
+      "pos": [
+        36,
+        430
+      ],
+      "size": [
+        158,
+        58
+      ]
+    },
+    {
+      "id": "sim",
+      "type": "backend",
+      "label": "Simulator",
+      "sublabel": "one daily step",
+      "icon": "backend",
+      "emphasis": true,
+      "sources": [
+        {
+          "path": "monterey/sim/engine.py",
+          "line": 76,
+          "end_line": 113,
+          "label": "regime and selection"
+        },
+        {
+          "path": "monterey/sim/engine.py",
+          "line": 116,
+          "end_line": 219,
+          "label": "session order"
+        },
+        {
+          "path": "monterey/sim/engine.py",
+          "line": 345,
+          "end_line": 378,
+          "label": "simulate window"
+        }
+      ],
+      "explanation": "One engine serves ops, the monterey CLI, and notebooks. A close signal does not earn that day's return. Filing breaches with breach_exit next_open are queued here, between the close decision and the next open. A name with no price for a week is cashed at its last close.",
+      "pos": [
+        560,
+        300
+      ],
+      "size": [
+        210,
+        400
+      ]
+    },
+    {
+      "id": "screen",
+      "type": "backend",
+      "label": "Screen",
+      "sublabel": "members and AAOIFI",
+      "sources": [
+        {
+          "path": "monterey/layers/screen.py",
+          "line": 11,
+          "end_line": 21,
+          "label": "screen()"
+        },
+        {
+          "path": "monterey/data/research_data.py",
+          "line": 116,
+          "end_line": 132,
+          "label": "PIT members"
+        },
+        {
+          "path": "monterey/data/research_data.py",
+          "line": 160,
+          "end_line": 176,
+          "label": "halal()"
+        }
+      ],
+      "explanation": "The daily path calls screen(), which calls ResearchData.halal. That loads index members, then sector and AAOIFI ratio verdicts. universe.py members() is not called on this path. v2 uses point-in-time S&P 500 membership and 30/30/70 ratios.",
+      "pos": [
+        930,
+        312
+      ],
+      "size": [
+        158,
+        48
+      ]
+    },
+    {
+      "id": "brain",
+      "type": "backend",
+      "label": "Brain",
+      "sublabel": "scores, no weights",
+      "sources": [
+        {
+          "path": "monterey/layers/signals/registry.py",
+          "line": 57,
+          "end_line": 67,
+          "label": "run_brain"
+        },
+        {
+          "path": "monterey/layers/signals/brains.py",
+          "line": 56,
+          "end_line": 78,
+          "label": "fcf_quality"
+        }
+      ],
+      "explanation": "run_brain picks signal.brain. The live brain is fcf_quality: the top half of compliant names by FCF over sales, at least 20 names. The table is symbol, score, and market cap. It does not set weights, cash, or the SMA.",
+      "pos": [
+        930,
+        376
+      ],
+      "size": [
+        158,
+        48
+      ]
+    },
+    {
+      "id": "weights",
+      "type": "backend",
+      "label": "Construction",
+      "sublabel": "weights sum to 1",
+      "sources": [
+        {
+          "path": "monterey/layers/construction.py",
+          "line": 13,
+          "end_line": 33,
+          "label": "build_weights"
+        }
+      ],
+      "explanation": "build_weights turns the brain table into a fully invested book. v2 is cap-weighted with a 10% name cap and dual-class names collapsed. The SMA has not been applied yet.",
+      "pos": [
+        930,
+        440
+      ],
+      "size": [
+        176,
+        48
+      ]
+    },
+    {
+      "id": "sma",
+      "type": "backend",
+      "label": "SMA overlay",
+      "sublabel": "exposure 0 to 1",
+      "sources": [
+        {
+          "path": "monterey/layers/overlay.py",
+          "line": 1,
+          "end_line": 35,
+          "label": "regime()"
+        },
+        {
+          "path": "monterey/sim/engine.py",
+          "line": 152,
+          "end_line": 194,
+          "label": "scale targets"
+        }
+      ],
+      "explanation": "regime() runs once when the simulator is built. v2 is SPY versus its 200-day SMA: exposure is 1 or 0. The step then sets target = weight \u00d7 exposure. Cash is the uninvested NAV, not a second list of names.",
+      "pos": [
+        930,
+        504
+      ],
+      "size": [
+        156,
+        48
+      ]
+    },
+    {
+      "id": "execution",
+      "type": "backend",
+      "label": "Execution",
+      "sublabel": "whole shares",
+      "sources": [
+        {
+          "path": "monterey/layers/execution.py",
+          "line": 29,
+          "end_line": 48,
+          "label": "plan_orders"
+        },
+        {
+          "path": "monterey/layers/execution.py",
+          "line": 106,
+          "end_line": 128,
+          "label": "fills"
+        },
+        {
+          "path": "monterey/sim/engine.py",
+          "line": 135,
+          "end_line": 219,
+          "label": "open then close"
+        }
+      ],
+      "explanation": "Orders are planned at the close from whole shares, a minimum trade, and the drift band. They fill at the next open: sells first, then buys limited by cash, with cost_bps taken from cash. The first session fills at that day's close so a NAV exists.",
+      "pos": [
+        930,
+        568
+      ],
+      "size": [
+        160,
+        48
+      ]
+    },
+    {
+      "id": "accounting",
+      "type": "backend",
+      "label": "Accounting",
+      "sublabel": "dividends, purify",
+      "sources": [
+        {
+          "path": "monterey/layers/accounting.py",
+          "line": 15,
+          "end_line": 44,
+          "label": "settle_dividends"
+        },
+        {
+          "path": "monterey/sim/engine.py",
+          "line": 127,
+          "end_line": 133,
+          "label": "ex-date cash"
+        }
+      ],
+      "explanation": "Holders at the prior close are credited on the ex-date. When purify is ex_date, the impure slice leaves cash the same day. That is a paper ledger entry, not a charity wire.",
+      "pos": [
+        930,
+        632
+      ],
+      "size": [
+        172,
+        48
+      ]
+    },
+    {
+      "id": "ledger",
+      "type": "database",
+      "label": "Ledger",
+      "sublabel": "ledgers/book/hash",
+      "icon": "database",
+      "emphasis": true,
+      "sources": [
+        {
+          "path": "monterey/ledger.py",
+          "line": 108,
+          "end_line": 129,
+          "label": "write parquet"
+        },
+        {
+          "path": "ops/fund.py",
+          "line": 66,
+          "end_line": 79,
+          "label": "ops writes it"
+        },
+        {
+          "path": "monterey/diagnostics/report.py",
+          "line": 15,
+          "end_line": 62,
+          "label": "diagnostics.json"
+        }
+      ],
+      "explanation": "Each spec hash has one folder: spec.yaml, manifest.json, and parquet for nav, positions, orders, fills, cashflows, and events. diagnose() then writes diagnostics.json beside them. NAV comes from fills and the close mark.",
+      "pos": [
+        300,
+        860
+      ],
+      "size": [
+        180,
+        62
+      ]
+    },
+    {
+      "id": "account",
+      "type": "database",
+      "label": "Paper account",
+      "sublabel": "ops/state",
+      "sources": [
+        {
+          "path": "ops/fund.py",
+          "line": 83,
+          "end_line": 96,
+          "label": "sync cash"
+        },
+        {
+          "path": "ops/fund.py",
+          "line": 112,
+          "end_line": 166,
+          "label": "halt and mirror"
+        },
+        {
+          "path": "ops/fund.py",
+          "line": 205,
+          "end_line": 227,
+          "label": "nav.csv"
+        }
+      ],
+      "explanation": "ops/state/account.json holds paper cash, shares, pending orders, and the halt flag. nav.csv is a cutover mirror of the ledger NAV. A halt skips the session before the simulator steps.",
+      "pos": [
+        250,
+        430
+      ],
+      "size": [
+        186,
+        58
+      ]
+    },
+    {
+      "id": "desk",
+      "type": "frontend",
+      "label": "Desk",
+      "sublabel": "read-only TUI",
+      "icon": "frontend",
+      "pos": [
+        40,
+        860
+      ],
+      "size": [
+        130,
+        56
+      ],
+      "sources": [
+        {
+          "path": "desk/model.py",
+          "line": 90,
+          "end_line": 111,
+          "label": "prefer live ledger"
+        },
+        {
+          "path": "desk/model.py",
+          "line": 114,
+          "end_line": 156,
+          "label": "holdings and rules"
+        },
+        {
+          "path": "desk/app.py",
+          "line": 651,
+          "end_line": 698,
+          "label": "open and cycle"
+        }
+      ],
+      "explanation": "python -m desk does not trade. It prefers a ledger whose manifest mode is live, and otherwise the last ops/state snapshot. Rules shown are that ledger's spec. Tabs 6 and 7 read diagnostics and compare two NAV paths."
+    },
+    {
+      "id": "action",
+      "type": "cloud",
+      "label": "Weekday Action",
+      "sublabel": "22:30 UTC",
+      "icon": "calendar",
+      "pos": [
+        1000,
+        36
+      ],
+      "size": [
+        180,
+        56
+      ],
+      "sources": [
+        {
+          "path": ".github/workflows/main.yml",
+          "line": 1,
+          "end_line": 6,
+          "label": "schedule"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "line": 72,
+          "end_line": 107,
+          "label": "catch-up session"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "line": 116,
+          "end_line": 137,
+          "label": "upload and commit"
+        }
+      ],
+      "explanation": "Weekdays the Action restores the cache and ledgers, replays the live book through the session date with refresh=True, then calls run_live_session with refresh=False. It commits the git slice and uploads the cache and ledgers to R2."
+    },
+    {
+      "id": "r2",
+      "type": "cloud",
+      "label": "Cloudflare R2",
+      "sublabel": "monterey-fund",
+      "icon": "cloud",
+      "pos": [
+        1000,
+        128
+      ],
+      "size": [
+        160,
+        52
+      ],
+      "sources": [
+        {
+          "path": ".github/workflows/main.yml",
+          "line": 40,
+          "end_line": 70,
+          "label": "bucket and download"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "line": 110,
+          "end_line": 121,
+          "label": "upload"
+        }
+      ],
+      "explanation": "Bucket monterey-fund stores the halalquant cache under prefix halalquant and the full ledger tree under ledgers/. Git does not keep positions, orders, fills, cashflows, or events."
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "monterey \u2014 one spec, one engine, one ledger",
+      "wraps": [
+        "replaycli",
+        "book",
+        "snapshot",
+        "sim",
+        "screen",
+        "brain",
+        "weights",
+        "sma",
+        "execution",
+        "accounting",
+        "ledger"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "ops \u2014 paper session and confirmed rules",
+      "wraps": [
+        "ops",
+        "rules",
+        "account"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "operator-ops",
+      "from": "operator",
+      "to": "ops",
+      "label": "runs ops",
+      "variant": "emphasis"
+    },
+    {
+      "id": "operator-desk",
+      "from": "operator",
+      "to": "desk",
+      "label": "open desk"
+    },
+    {
+      "id": "operator-cli",
+      "from": "operator",
+      "to": "replaycli",
+      "label": "monterey run"
+    },
+    {
+      "id": "action-ops",
+      "from": "action",
+      "to": "ops",
+      "label": "weekday session",
+      "variant": "dashed"
+    },
+    {
+      "id": "ops-book",
+      "from": "ops",
+      "to": "book",
+      "label": "live_spec"
+    },
+    {
+      "id": "ops-rules",
+      "from": "ops",
+      "to": "rules",
+      "label": "read if confirmed"
+    },
+    {
+      "id": "ops-snapshot",
+      "from": "ops",
+      "to": "snapshot",
+      "label": "load data"
+    },
+    {
+      "id": "ops-hq",
+      "from": "ops",
+      "to": "halalquant",
+      "label": "refresh cache"
+    },
+    {
+      "id": "snapshot-hq",
+      "from": "snapshot",
+      "to": "halalquant",
+      "label": "read cache"
+    },
+    {
+      "id": "ops-sim",
+      "from": "ops",
+      "to": "sim",
+      "label": "step if clear",
+      "variant": "emphasis"
+    },
+    {
+      "id": "cli-book",
+      "from": "replaycli",
+      "to": "book",
+      "label": "load YAML"
+    },
+    {
+      "id": "cli-snapshot",
+      "from": "replaycli",
+      "to": "snapshot",
+      "label": "load data"
+    },
+    {
+      "id": "cli-sim",
+      "from": "replaycli",
+      "to": "sim",
+      "label": "simulate"
+    },
+    {
+      "id": "sim-snapshot",
+      "from": "sim",
+      "to": "snapshot",
+      "label": "read facts"
+    },
+    {
+      "id": "sim-screen",
+      "from": "sim",
+      "to": "screen",
+      "label": "screen()"
+    },
+    {
+      "id": "sim-brain",
+      "from": "sim",
+      "to": "brain",
+      "label": "run_brain()"
+    },
+    {
+      "id": "sim-weights",
+      "from": "sim",
+      "to": "weights",
+      "label": "weights"
+    },
+    {
+      "id": "sim-sma",
+      "from": "sim",
+      "to": "sma",
+      "label": "exposure"
+    },
+    {
+      "id": "sim-execution",
+      "from": "sim",
+      "to": "execution",
+      "label": "orders and fills"
+    },
+    {
+      "id": "sim-accounting",
+      "from": "sim",
+      "to": "accounting",
+      "label": "ex-date cash"
+    },
+    {
+      "id": "ops-ledger",
+      "from": "ops",
+      "to": "ledger",
+      "label": "write ledger",
+      "variant": "emphasis"
+    },
+    {
+      "id": "cli-ledger",
+      "from": "replaycli",
+      "to": "ledger",
+      "label": "write if saving"
+    },
+    {
+      "id": "ops-account",
+      "from": "ops",
+      "to": "account",
+      "label": "halt and cash"
+    },
+    {
+      "id": "desk-ledger",
+      "from": "desk",
+      "to": "ledger",
+      "label": "read live ledger"
+    },
+    {
+      "id": "desk-account",
+      "from": "desk",
+      "to": "account",
+      "label": "fallback state"
+    },
+    {
+      "id": "action-r2",
+      "from": "action",
+      "to": "r2",
+      "label": "sync R2",
+      "variant": "dashed"
+    },
+    {
+      "id": "action-ledger",
+      "from": "action",
+      "to": "ledger",
+      "label": "commit git slice",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "One session",
+      "items": [
+        "Ex-date dividends hit prior-close holders; the impure slice leaves cash.",
+        "Yesterday's orders fill at today's open: sells, then buys, cost in basis points.",
+        "At the close the engine screens, scores, weights, and scales by SMA exposure.",
+        "New orders wait for the next open. The first session fills at that close.",
+        "Layers do not call each other. The simulator is the only caller."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "What is official",
+      "items": [
+        "NAV is ledgers/<book>/<hash>/nav.parquet, marked from fills.",
+        "Git keeps spec.yaml, manifest.json, nav.parquet, diagnostics.json, plus ops/state nav.csv and account.json.",
+        "Positions, orders, fills, cashflows, and events stay on R2.",
+        "A confirmed overlay changes the spec hash and starts a new ledger folder."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Left off this map",
+      "items": [
+        "Research notebooks are not drawn. They call this same simulator; they are not a second engine.",
+        "universe.py members() is not on the daily path. Membership is inside screen() via ResearchData.halal.",
+        "ops run --targets-only is the older sleeve session, local paper or Alpaca. The default session does not use it.",
+        "No custodian, subscriptions, or charity wire. Purification is a paper cashflow."
+      ]
+    }
+  ]
+}

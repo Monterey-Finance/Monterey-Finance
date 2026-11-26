@@ -1,0 +1,819 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-26T15:09:05.324Z",
+  "specification": {
+    "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+    "sha256": "4a3eb9f6794ea87493c3b1ba76a92f48572342b1427477d11d1264fcba55f931",
+    "bytes": 23005
+  },
+  "artifact": {
+    "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+    "sha256": "90bf4d020fc50a27d592d871995c8c6e10a4ed6faab691def5f888e590178794",
+    "bytes": 1002334
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "4a3eb9f6794ea87493c3b1ba76a92f48572342b1427477d11d1264fcba55f931",
+          "bytes": 23005
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 1081,
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "f268d8dc-0625-4514-b8f6-258c103eaa7b",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/candidate.json",
+        "output": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "specification": {
+          "sha256": "4a3eb9f6794ea87493c3b1ba76a92f48572342b1427477d11d1264fcba55f931",
+          "bytes": 23005
+        },
+        "artifact": {
+          "sha256": "90bf4d020fc50a27d592d871995c8c6e10a4ed6faab691def5f888e590178794",
+          "bytes": 1002334
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "evidence": {
+          "verified": true,
+          "repository": "https://github.com/Monterey-Finance/Monterey-Finance",
+          "revision": "5038a12b782f8ac087a43c4e39803f4df56670a5",
+          "references": 47
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 196,
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "artifact": {
+          "sha256": "90bf4d020fc50a27d592d871995c8c6e10a4ed6faab691def5f888e590178794",
+          "bytes": 1002334
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 17,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 5.7,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 6.860655737704918,
+            "maxBends": 4,
+            "routesOverSuggestedBends": 5,
+            "maxStretch": 1.294,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 14,
+            "minInteriorSegmentPx": 60,
+            "shortSegmentCount": 1,
+            "shortEndpointSegmentCount": 1,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [
+              {
+                "left": {
+                  "id": "operator-cli",
+                  "from": "operator",
+                  "to": "replaycli",
+                  "label": "monterey run",
+                  "collectionIndex": 2,
+                  "artifactIndex": 3
+                },
+                "right": {
+                  "id": "ops-snapshot",
+                  "from": "ops",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 6,
+                  "artifactIndex": 7
+                },
+                "point": [
+                  354,
+                  308
+                ]
+              },
+              {
+                "left": {
+                  "id": "operator-cli",
+                  "from": "operator",
+                  "to": "replaycli",
+                  "label": "monterey run",
+                  "collectionIndex": 2,
+                  "artifactIndex": 3
+                },
+                "right": {
+                  "id": "ops-hq",
+                  "from": "ops",
+                  "to": "halalquant",
+                  "label": "refresh cache",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "point": [
+                  208,
+                  308
+                ]
+              },
+              {
+                "left": {
+                  "id": "operator-cli",
+                  "from": "operator",
+                  "to": "replaycli",
+                  "label": "monterey run",
+                  "collectionIndex": 2,
+                  "artifactIndex": 3
+                },
+                "right": {
+                  "id": "snapshot-hq",
+                  "from": "snapshot",
+                  "to": "halalquant",
+                  "label": "read cache",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "point": [
+                  557,
+                  768
+                ]
+              },
+              {
+                "left": {
+                  "id": "operator-cli",
+                  "from": "operator",
+                  "to": "replaycli",
+                  "label": "monterey run",
+                  "collectionIndex": 2,
+                  "artifactIndex": 3
+                },
+                "right": {
+                  "id": "ops-ledger",
+                  "from": "ops",
+                  "to": "ledger",
+                  "label": "write ledger",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "point": [
+                  232,
+                  308
+                ]
+              },
+              {
+                "left": {
+                  "id": "operator-cli",
+                  "from": "operator",
+                  "to": "replaycli",
+                  "label": "monterey run",
+                  "collectionIndex": 2,
+                  "artifactIndex": 3
+                },
+                "right": {
+                  "id": "ops-account",
+                  "from": "ops",
+                  "to": "account",
+                  "label": "halt and cash",
+                  "collectionIndex": 22,
+                  "artifactIndex": 23
+                },
+                "point": [
+                  326,
+                  308
+                ]
+              },
+              {
+                "left": {
+                  "id": "action-ops",
+                  "from": "action",
+                  "to": "ops",
+                  "label": "weekday session",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "right": {
+                  "id": "ops-book",
+                  "from": "ops",
+                  "to": "book",
+                  "label": "live_spec",
+                  "collectionIndex": 4,
+                  "artifactIndex": 5
+                },
+                "point": [
+                  504,
+                  184
+                ],
+                "sharedNode": "ops"
+              },
+              {
+                "left": {
+                  "id": "snapshot-hq",
+                  "from": "snapshot",
+                  "to": "halalquant",
+                  "label": "read cache",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "right": {
+                  "id": "ops-ledger",
+                  "from": "ops",
+                  "to": "ledger",
+                  "label": "write ledger",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "point": [
+                  232.00000000000006,
+                  768
+                ]
+              },
+              {
+                "left": {
+                  "id": "snapshot-hq",
+                  "from": "snapshot",
+                  "to": "halalquant",
+                  "label": "read cache",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "right": {
+                  "id": "desk-account",
+                  "from": "desk",
+                  "to": "account",
+                  "label": "fallback state",
+                  "collectionIndex": 24,
+                  "artifactIndex": 25
+                },
+                "point": [
+                  115,
+                  675.2020410288673
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "cli-snapshot",
+                  "from": "replaycli",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "point": [
+                  715,
+                  836
+                ],
+                "sharedNode": "replaycli"
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "cli-sim",
+                  "from": "replaycli",
+                  "to": "sim",
+                  "label": "simulate",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "point": [
+                  754,
+                  836
+                ],
+                "sharedNode": "replaycli"
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "sim-screen",
+                  "from": "sim",
+                  "to": "screen",
+                  "label": "screen()",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "point": [
+                  799,
+                  344
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "sim-brain",
+                  "from": "sim",
+                  "to": "brain",
+                  "label": "run_brain()",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "point": [
+                  799,
+                  408
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "sim-weights",
+                  "from": "sim",
+                  "to": "weights",
+                  "label": "weights",
+                  "collectionIndex": 16,
+                  "artifactIndex": 17
+                },
+                "point": [
+                  799,
+                  472
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "sim-sma",
+                  "from": "sim",
+                  "to": "sma",
+                  "label": "exposure",
+                  "collectionIndex": 17,
+                  "artifactIndex": 18
+                },
+                "point": [
+                  799,
+                  528
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "sim-execution",
+                  "from": "sim",
+                  "to": "execution",
+                  "label": "orders and fills",
+                  "collectionIndex": 18,
+                  "artifactIndex": 19
+                },
+                "point": [
+                  799,
+                  584
+                ]
+              },
+              {
+                "left": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "id": "sim-accounting",
+                  "from": "sim",
+                  "to": "accounting",
+                  "label": "ex-date cash",
+                  "collectionIndex": 19,
+                  "artifactIndex": 20
+                },
+                "point": [
+                  799,
+                  648
+                ]
+              },
+              {
+                "left": {
+                  "id": "ops-ledger",
+                  "from": "ops",
+                  "to": "ledger",
+                  "label": "write ledger",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "right": {
+                  "id": "desk-account",
+                  "from": "desk",
+                  "to": "account",
+                  "label": "fallback state",
+                  "collectionIndex": 24,
+                  "artifactIndex": 25
+                },
+                "point": [
+                  232,
+                  674
+                ]
+              }
+            ],
+            "detours": [
+              {
+                "relationship": {
+                  "id": "operator-desk",
+                  "from": "operator",
+                  "to": "desk",
+                  "label": "open desk",
+                  "collectionIndex": 1,
+                  "artifactIndex": 2
+                },
+                "bends": 4,
+                "stretch": 1.207
+              },
+              {
+                "relationship": {
+                  "id": "operator-cli",
+                  "from": "operator",
+                  "to": "replaycli",
+                  "label": "monterey run",
+                  "collectionIndex": 2,
+                  "artifactIndex": 3
+                },
+                "bends": 4,
+                "stretch": 1
+              },
+              {
+                "relationship": {
+                  "id": "ops-snapshot",
+                  "from": "ops",
+                  "to": "snapshot",
+                  "label": "load data",
+                  "collectionIndex": 6,
+                  "artifactIndex": 7
+                },
+                "bends": 4,
+                "stretch": 1
+              },
+              {
+                "relationship": {
+                  "id": "cli-book",
+                  "from": "replaycli",
+                  "to": "book",
+                  "label": "load YAML",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "bends": 4,
+                "stretch": 1.294
+              },
+              {
+                "relationship": {
+                  "id": "ops-ledger",
+                  "from": "ops",
+                  "to": "ledger",
+                  "label": "write ledger",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "bends": 3,
+                "stretch": 1.051
+              }
+            ]
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 6,
+            "emptyTopRatio": 0.006,
+            "occupiedTop": 6,
+            "viewBoxTop": 0,
+            "canvasHeight": 1010,
+            "typicalNodeHeight": 56,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "legacy-930",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 930,
+            "actualBudgetPx": 930,
+            "limit": "legacy",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "boundary",
+              "id": null
+            },
+            "minimumSourceTextPx": 9,
+            "minimumProjectedTextPx": 6.860655737704918,
+            "semanticTextCount": 67
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "f268d8dc-0625-4514-b8f6-258c103eaa7b"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 692,
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "/Users/raoabdul/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "f268d8dc-0625-4514-b8f6-258c103eaa7b",
+        "artifact": {
+          "path": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html",
+          "sha256": "90bf4d020fc50a27d592d871995c8c6e10a4ed6faab691def5f888e590178794",
+          "bytes": 1002334
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "available",
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/browser-check-runtime",
+            "severity": "error",
+            "message": "browser-check could not complete its Chrome inspection.",
+            "subject": {
+              "artifact": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html"
+            },
+            "evidence": {
+              "reason": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome transport: Node v22.23.1, libuv 1.52.1, darwin; pid=1577, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=true, ended=false, destroyed=false, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+            },
+            "supportedFixes": [
+              "resolve the reported Chrome inspection error, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "shadow-fund.browser-check.json",
+          "files": []
+        },
+        "error": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome transport: Node v22.23.1, libuv 1.52.1, darwin; pid=1577, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=true, ended=false, destroyed=false, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.html"
+      },
+      "evidence": {
+        "reason": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome transport: Node v22.23.1, libuv 1.52.1, darwin; pid=1577, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=0, messages=0, bufferedBytes=0.\nChrome write pipe: writable=true, ended=false, destroyed=false, completedWrites=1, writtenBytes=50, bufferedBytes=0."
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.finalize.json",
+    "summaryReceipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.finalize-summary.json",
+    "browserCheckReceipt": "/Users/raoabdul/Documents/Development/Monterey-Finance/.archify/architecture-shadow-fund-20261126-185225/shadow-fund.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-26T15:09:07.491Z",
+  "durationMs": 2167,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}
